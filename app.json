@@ -1,0 +1,41 @@
+{
+  "expo": {
+    "name": "designmobile",
+    "slug": "designmobile",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "icon": "./assets/icon.png",
+    "userInterfaceStyle": "light",
+    "splash": {
+      "image": "./assets/splash.png",
+      "resizeMode": "contain",
+      "backgroundColor": "#ffffff"
+    },
+    "updates": {
+      "fallbackToCacheTimeout": 0
+    },
+    "assetBundlePatterns": [
+      "assets/Fonts/Baloo.ttf"
+    ],
+    "ios": {
+      "supportsTablet": true
+    },
+    "android": {
+      "adaptiveIcon": {
+        "foregroundImage": "./assets/adaptive-icon.png",
+        "backgroundColor": "#FFFFFF"
+      }
+    },
+    "web": {
+      "favicon": "./assets/favicon.png"
+    },
+    "packagerOpts": {
+      "assetExts": ["js", "json", "txt", "xml"],
+      "sourceExts": ["expo.js", "expo.json", "js", "json", "ts", "tsx", "jsx"],
+      "config": {
+        "githubUrl": "https://github.com/y4smln/bicallMobile",
+        "githubBranch": "master"
+      }
+    }
+  }
+}
