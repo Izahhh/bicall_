@@ -24,7 +24,7 @@ const TelaSerie = () => {
         <Text style={styles.titulo}>BIOMETRIC CALL</Text>
       </View>
       <View style={styles.divBtns}>
-        <TouchableOpacity style={styles.btns} onPress={() => navigation.navigate('TelaPrincipal')}>
+        <TouchableOpacity style={styles.btns} onPress={() => navigation.navigate('telaDados')}> 
          
           <Text style={styles.txtButton}>1º ano</Text>
         </TouchableOpacity>

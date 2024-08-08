@@ -51,6 +51,15 @@ const TelaPrincipal = () => {
           <Text style={styles.txtButton}>Verificar Chamada</Text>
         </TouchableOpacity>
 
+        <TouchableOpacity style={styles.btns} onPress={() => navigation.navigate('tela dados')}>
+          <Image
+            source={require('../assets/imgs/verImg.png')}
+            style={styles.image}
+          />
+          <Text style={styles.txtButton}>TelaDados</Text>
+        </TouchableOpacity>
+
+
         <TouchableOpacity style={styles.btns} onPress={() => navigation.navigate('ApagarAluno')}>
           <Image
             source={require('../assets/imgs/delImg.png')}
