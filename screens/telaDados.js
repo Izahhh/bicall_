@@ -9,7 +9,7 @@ const TelaDados = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get('http://192.168.0.161:3000/dados'); // Substitua pelo IP local do servidor
+        const response = await axios.get('http://10.67.168.156:3001/dados'); // Substitua pelo IP local do servidor
         setData(response.data);
       } catch (err) {
         setError(err.message);
