@@ -1,47 +1,55 @@
-import React, { useEffect } from "react";
-import { StyleSheet, View, Text, Image, TouchableOpacity } from "react-native";
+import React, { useEffect, useState } from "react";
+import { StyleSheet, View, Text, Image, TouchableOpacity, KeyboardAvoidingView, Platform } from "react-native";
 import * as Font from 'expo-font';
-import { Color, FontSize, FontFamily } from "../GlobalStyles";
+import { Color, FontFamily } from "../GlobalStyles";
 import { useNavigation } from '@react-navigation/native';
 
 const TelaCurso = () => {
   const navigation = useNavigation();
+  const [fontLoaded, setFontLoaded] = useState(false);
 
   useEffect(() => {
     const loadFont = async () => {
       await Font.loadAsync({
         'Baloo': require('../assets/Fonts/Baloo.ttf'),
       });
+      setFontLoaded(true);
     };
     loadFont();
   }, []);
 
-  return (
-    <View style={styles.telaprincipal}>
-      <View style={styles.banner}>
-        
+  if (!fontLoaded) {
+    return null; // or a loading spinner
+  }
 
-        <Text style={styles.titulo}>BIOMETRIC CALL</Text>
+  return (
+    <KeyboardAvoidingView
+      style={styles.telaprincipal}
+      behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+    >
+      <View style={styles.banner}>
+        <Image
+          style={styles.logo}
+          contentFit="cover"
+          source={require("../assets/imgs/logo.png")}
+        />
+        <Text style={styles.titulo}>B I O M E T R I C  C A L L </Text>
       </View>
+      <Text style={styles.selecione}>Selecione o curso</Text>
+
       <View style={styles.divBtns}>
         <TouchableOpacity style={styles.btns} onPress={() => navigation.navigate('telaSerie')}>
-         
           <Text style={styles.txtButton}>Administração</Text>
         </TouchableOpacity>
-
         <TouchableOpacity style={styles.btns} onPress={() => navigation.navigate('telaSerie')}>
-         
           <Text style={styles.txtButton}>Desenvolvimento de Sistemas</Text>
         </TouchableOpacity>
-        
         <TouchableOpacity style={styles.btns} onPress={() => navigation.navigate('telaSerie')}>
-        
           <Text style={styles.txtButton}>Logística</Text>
         </TouchableOpacity>
-
-        
       </View>
-    </View>
+      <View style={styles.footer} />
+    </KeyboardAvoidingView>
   );
 };
 
@@ -56,6 +64,11 @@ const styles = StyleSheet.create({
     height: 30,
     marginRight: 20,
   },
+  content: {
+    alignItems: "center",
+    justifyContent: "center",
+    flex: 1,
+  },
   btns: {
     backgroundColor: Color.colorDeepskyblue,
     borderRadius: 10,
@@ -64,7 +77,17 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     flexDirection: "row",
     justifyContent: "center",
-    marginBottom: 30
+    marginBottom: 20,
+  },
+  selecione: {
+    fontSize: 25,
+    color: Color.colorBlack,
+    fontFamily: 'Cambay-Bold',
+    fontWeight: "600",
+    marginBottom: 40, // espacamento entre o texto e os btns
+    height: 40,
+    marginTop:-50,
+    marginLeft:-130,
   },
   txtButton: {
     color: "white",
@@ -74,24 +97,36 @@ const styles = StyleSheet.create({
     alignItems: "center",
     marginTop: 30,
     flexDirection: "row",
+    justifyContent: 'flex-start',
+    paddingLeft: 0,
+    marginLeft: 30, // MOVER LOGO E TITULO PARA A ESQUERDA
   },
   logo: {
-    width: 60,
-    height: 60,
-    marginTop: 10,
-    marginRight: 10
+    width: 41,
+    height: 57,
+    marginTop: -120,
+    marginRight: 10,
   },
-  titulo: {
-    
-    fontSize: 30,
+  titulo: {  //biometric call
+    fontSize: 20,
     color: "#FFA404",
-    fontFamily: 'Baloo',
-    fontWeight:'bold'
+    fontFamily: FontFamily.beVietnamProSemiBold,
+    fontWeight: 'bold',
+    marginLeft: 2, // Distancia entre o texto e a logo
+    marginTop: 40, // Ajustar o texto para baixo ou mais pra cima
+    marginBottom:170,
   },
   divBtns: {
     width: '80%',
     alignItems: 'center',
-    marginTop: 150
+    marginTop: 20, // espaçamento 
+  },
+  footer: {
+    backgroundColor: Color.colorOrange,
+    width: "200%",
+    height: 65,
+    position: "absolute",
+    bottom: -3,
   },
 });
 

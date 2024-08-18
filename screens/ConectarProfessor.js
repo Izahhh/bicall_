@@ -1,5 +1,18 @@
 import React, { useState, useEffect } from "react";
-import { Text, StyleSheet, View, TextInput, TouchableOpacity, Alert } from "react-native";
+import {
+  Text,
+  StyleSheet,
+  View,
+  TextInput,
+  TouchableOpacity,
+  Alert,
+  KeyboardAvoidingView,
+  Platform,
+  ScrollView,
+  Keyboard,
+  TouchableWithoutFeedback,
+  Dimensions
+} from "react-native";
 import { Image } from "expo-image";
 import * as Font from 'expo-font';
 import { useNavigation } from '@react-navigation/native';
@@ -25,7 +38,7 @@ const ConectarProfessor = () => {
 
   const handleLogin = () => {
     if (login.trim() === "") {
-      Alert.alert("Atenção", "Por favor, preencha o campo de login.");
+      Alert.alert("ATENÇÃO", "Por favor, preencha o campo de login.");
       return;
     }
     if (senha.trim() === "") {
@@ -40,81 +53,101 @@ const ConectarProfessor = () => {
   };
 
   return (
-    <View style={styles.cadprofessor}>
-      <View style={styles.banner}>
-        <Image
-          style={styles.logo}
-          contentFit="cover"
-          source={require("../assets/imgs/logo.png")}
-        />
-        <Text style={styles.titulo}>BIOMETRIC CALL</Text>
-      </View>
-      <View style={styles.content}>
-        {fontLoaded && (
-          <Text style={styles.conectarSuaConta}>Conecte-se</Text>
-        )}
-        <View style={[styles.txtbox, styles.txtboxSpacing]}>
-          <TextInput
-            style={styles.txtInput}
-            placeholder="Login"
-            value={login}
-            onChangeText={setLogin}
-          />
-        </View>
-        <View style={[styles.txtbox, styles.txtboxSpacing]}>
-          <TextInput
-            style={styles.txtInput}
-            placeholder="Senha"
-            secureTextEntry={true}
-            value={senha}
-            onChangeText={setSenha}
-          />
-        </View>
-        
-        <TouchableOpacity style={styles.btnContinuar} onPress={handleLogin}>
-          <View style={styles.btnContinuarBackground} />
-          <Text style={styles.conectar}>Conectar</Text>
-        </TouchableOpacity>
-        <Text style={styles.noContaContainer}>
-          <Text style={styles.noConta}>Não tem conta?</Text>
-          <TouchableOpacity onPress={handleCadastro}>
-            <Text style={styles.cadastreSe}> Cadastre-se!</Text>
-          </TouchableOpacity>
-        </Text>
-      </View>
-      <View style={styles.footer} />
-    </View>
+    <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+      <KeyboardAvoidingView
+        style={styles.container}
+        behavior={Platform.OS === "ios" ? "padding" : "height"}
+        keyboardVerticalOffset={Platform.OS === "ios" ? 100 : 0}
+      >
+        <ScrollView
+          contentContainerStyle={styles.scrollContainer}
+          keyboardShouldPersistTaps="handled"
+          showsVerticalScrollIndicator={false}
+        >
+          <View style={styles.banner}>
+            <Image
+              style={styles.logo}
+              contentFit="cover"
+              source={require("../assets/imgs/logo.png")}
+            />
+            <Text style={styles.titulo}>B I O M E T R I C  C A L L</Text>
+          </View>
+          <View style={styles.content}>
+            {fontLoaded && (
+              <Text style={styles.conectarSuaConta}>Conecte-se</Text>
+            )}
+            <View style={[styles.txtbox, styles.txtboxSpacing]}>
+              <TextInput
+                style={styles.txtInput}
+                placeholder="E-mail"
+                value={login}
+                onChangeText={setLogin}
+              />
+            </View>
+            <View style={[styles.txtbox, styles.txtboxSpacing]}>
+              <TextInput
+                style={styles.txtInput}
+                placeholder="Senha"
+                secureTextEntry={true}
+                value={senha}
+                onChangeText={setSenha}
+              />
+            </View>
+            
+            <TouchableOpacity style={styles.btnContinuar} onPress={handleLogin}>
+              <View style={styles.btnContinuarBackground} />
+              <Text style={styles.conectar}>Conectar</Text>
+            </TouchableOpacity>
+            <Text style={styles.noContaContainer}>
+              <Text style={styles.noConta}> Não tem conta?</Text>
+              <TouchableOpacity onPress={handleCadastro}>
+                <Text style={styles.cadastreSe}> Cadastre-se!</Text>
+              </TouchableOpacity>
+            </Text>
+          </View>
+          <View style={styles.footer} />
+        </ScrollView>
+      </KeyboardAvoidingView>
+    </TouchableWithoutFeedback>
   );
 };
 
 const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: Color.colorWhite,
+  },
+  scrollContainer: {
+    flexGrow: 1,
+    justifyContent: "center",
+    alignItems: "center",
+    paddingBottom: Dimensions.get('window').height * 0.1, 
+  },
   txtboxSpacing: {
     marginVertical: 8,
-  },
-  cadprofessor: {
-    flex: 1,
-    width: "100%",
-    height: "100%",
-    backgroundColor: Color.colorWhite,
-    alignItems: "center",
   },
   banner: {
     alignItems: "center",
     flexDirection: "row",
     marginTop: 50,
-    marginBottom: -220,
+    marginBottom: -90,
+    justifyContent: 'flex-start',
+    paddingLeft: 0,
+    marginLeft: -30, // MOVER LOGO E TITULO PARA A ESQUERDA
   },
   logo: {
-    width: 40,
-    height: 40,
+    width: 41,
+    height: 57,
     marginTop: 10,
     marginRight: 10,
   },
   titulo: {
-    fontSize: 30,
+    fontSize: 20,
     color: "#FFA404",
     fontFamily: FontFamily.beVietnamProSemiBold,
     fontWeight: 'bold',
+    marginLeft: 2, // Distancia entre o texto e a logo
+    marginTop: 35, // Ajustar o texto para baixo ou mais pra cima
   },
   content: {
     alignItems: "center",
@@ -154,7 +187,7 @@ const styles = StyleSheet.create({
   btnContinuarBackground: {
     backgroundColor: Color.colorDeepskyblue,
     borderRadius: Border.br_xl,
-    width: 305,
+    width: 296,
     height: 30,
     textAlign: 'center',
   },
@@ -163,7 +196,7 @@ const styles = StyleSheet.create({
     color: Color.colorWhite,
     fontFamily: 'Cambay-Bold',
     fontWeight: "700",
-    fontSize: FontSize.size_base,
+    fontSize: 13,
   },
   noContaContainer: {
     fontSize: FontSize.size_sm,

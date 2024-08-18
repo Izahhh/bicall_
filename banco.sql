@@ -9,7 +9,7 @@ id int auto_increment primary key ,
   cpf char(11),
   datanasc date,
   endereco varchar(150),
-  telefone varchar(20)
+  telefone varchar(20)npm
 ) ;
  
 CREATE TABLE tb_professores (
