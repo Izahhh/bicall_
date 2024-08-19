@@ -35,6 +35,12 @@ const TelaCurso = () => {
         />
         <Text style={styles.titulo}>B I O M E T R I C  C A L L </Text>
       </View>
+      <TouchableOpacity style={styles.infoIconContainer} onPress={() => showAlert('Ajuda!', 'Insira seu e-mail, CPF e senha para se conectar. Caso não tenha uma conta, clique em "Cadastre-se" para criar uma nova.')}>
+        <Image
+          source={require('../assets/imgs/voltar.png')} 
+          style={styles.voltar}
+        />
+      </TouchableOpacity>
       <Text style={styles.selecione}>Selecione o curso</Text>
 
       <View style={styles.divBtns}>
@@ -100,6 +106,12 @@ const styles = StyleSheet.create({
     justifyContent: 'flex-start',
     paddingLeft: 0,
     marginLeft: -50, // MOVER LOGO E TITULO PARA A ESQUERDA
+  },
+  logo: {
+    width: 41,
+    height: 57,
+    marginTop: -120,
+    marginRight: 10,
   },
   logo: {
     width: 41,
