@@ -19,7 +19,7 @@ const TelaCurso = () => {
   }, []);
 
   if (!fontLoaded) {
-    return null; // or a loading spinner
+    return null; 
   }
 
   return (
@@ -99,7 +99,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: 'flex-start',
     paddingLeft: 0,
-    marginLeft: 30, // MOVER LOGO E TITULO PARA A ESQUERDA
+    marginLeft: -50, // MOVER LOGO E TITULO PARA A ESQUERDA
   },
   logo: {
     width: 41,
