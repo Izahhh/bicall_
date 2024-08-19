@@ -61,13 +61,7 @@ const TelaPrincipal = () => {
           <Text style={styles.txtButton}>Verificar Chamada</Text>
         </TouchableOpacity>
 
-        <TouchableOpacity style={styles.btns} onPress={() => navigation.navigate('tela dados')}>
-          <Image
-            source={require('../assets/imgs/verImg.png')}
-            style={styles.image}
-          />
-          <Text style={styles.txtButton}>TelaDados</Text>
-        </TouchableOpacity>
+  
 
         <TouchableOpacity style={styles.btns} onPress={() => navigation.navigate('ApagarAluno')}>
           <Image
@@ -78,12 +72,7 @@ const TelaPrincipal = () => {
         </TouchableOpacity>
       </View>
 
-      <TouchableOpacity style={styles.infoIconContainer} onPress={() => alert('Informações')}>
-        <Image
-          source={require('../assets/imgs/info.png')}
-          style={styles.infoIcon}
-        />
-      </TouchableOpacity>
+     
 
       <View style={styles.footer} />
     </KeyboardAvoidingView>
@@ -117,13 +106,14 @@ const styles = StyleSheet.create({
   },
   banner: {
     alignItems: "center",
-    marginTop: 30,
+    marginTop: 90,
     flexDirection: "row",
   },
   logo: {
     width: 41,
     height: 57,
     marginRight: 10,
+    marginTop:-35,
   },
   titulo: {
     fontSize: 20,
@@ -131,7 +121,7 @@ const styles = StyleSheet.create({
     fontFamily: FontFamily.beVietnamProSemiBold,
     fontWeight: 'bold',
     marginTop: 35,
-    marginBottom: 70, // Ajustado para dar espaço para o footer
+    marginBottom: 60, 
   },
   divBtns: {
     width: '80%',
@@ -148,9 +138,9 @@ const styles = StyleSheet.create({
   },
   infoIconContainer: {
     position: 'absolute',
-    bottom: 75, // Ajuste para garantir que o ícone não sobreponha o footer
+    bottom: 4, // Ajuste para garantir que o ícone não sobreponha o footer
     right: 10,
-    padding: 10,
+    padding:10,
     zIndex: 2,
   },
   infoIcon: {
