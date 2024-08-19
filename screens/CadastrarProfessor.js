@@ -8,6 +8,7 @@ const ConectarProfessor = () => {
   const navigation = useNavigation();
   const [fontLoaded, setFontLoaded] = useState(false);
   const [cpf, setCpf] = useState(""); 
+  
 
   useEffect(() => {
     async function loadFont() {

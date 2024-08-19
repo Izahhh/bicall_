@@ -1,19 +1,5 @@
 import React, { useState, useEffect } from "react";
-import {
-  Text,
-  StyleSheet,
-  View,
-  TextInput,
-  TouchableOpacity,
-  Alert,
-  KeyboardAvoidingView,
-  Platform,
-  ScrollView,
-  Keyboard,
-  TouchableWithoutFeedback,
-  Dimensions
-} from "react-native";
-import { Image } from "expo-image";
+import { Text, StyleSheet, View, TextInput, TouchableOpacity, Modal, KeyboardAvoidingView, Platform, ScrollView, Keyboard, TouchableWithoutFeedback, Dimensions, Image } from "react-native";
 import * as Font from 'expo-font';
 import { useNavigation } from '@react-navigation/native';
 import { Padding, FontSize, Color, FontFamily, Border } from "../GlobalStyles";
@@ -23,6 +9,8 @@ const ConectarProfessor = () => {
   const [fontLoaded, setFontLoaded] = useState(false);
   const [login, setLogin] = useState("");
   const [senha, setSenha] = useState("");
+  const [modalVisible, setModalVisible] = useState(false);
+  const [modalMessage, setModalMessage] = useState("");
 
   useEffect(() => {
     async function loadFont() {
@@ -38,11 +26,13 @@ const ConectarProfessor = () => {
 
   const handleLogin = () => {
     if (login.trim() === "") {
-      Alert.alert("ATENÇÃO", "Por favor, preencha o campo de login.");
+      setModalMessage("Por favor, preencha o campo de login.");
+      setModalVisible(true);
       return;
     }
     if (senha.trim() === "") {
-      Alert.alert("Atenção", "Por favor, preencha o campo de senha.");
+      setModalMessage("Por favor, preencha o campo de senha.");
+      setModalVisible(true);
       return;
     }
     navigation.navigate('telaCurso');
@@ -107,6 +97,42 @@ const ConectarProfessor = () => {
           </View>
           <View style={styles.footer} />
         </ScrollView>
+
+        {/* Ícone de Informação */}
+        <TouchableOpacity
+          style={styles.infoIconContainer}
+          onPress={() => {
+            setModalMessage('Insira seu e-mail, CPF e senha para se conectar. Caso não tenha uma conta, clique em "Cadastre-se" para criar uma nova.');
+            setModalVisible(true);
+          }}
+        >
+          <Image
+            source={require('../assets/imgs/info.png')}
+            style={styles.infoIcon}
+          />
+        </TouchableOpacity>
+
+        {/* Modal de Alerta Personalizado */}
+        <Modal
+          animationType="fade"
+          transparent={true}
+          visible={modalVisible}
+          onRequestClose={() => setModalVisible(false)}
+        >
+          <View style={styles.modalOverlay}>
+            <View style={styles.modalContainer}>
+              <Text style={styles.modalTitle}>Atenção</Text>
+              <Text style={styles.modalMessage}>{modalMessage}</Text>
+              <TouchableOpacity
+                style={styles.modalButton}
+                onPress={() => setModalVisible(false)}
+              >
+                <Text style={styles.modalButtonText}>OK</Text>
+              </TouchableOpacity>
+            </View>
+          </View>
+        </Modal>
+
       </KeyboardAvoidingView>
     </TouchableWithoutFeedback>
   );
@@ -133,7 +159,7 @@ const styles = StyleSheet.create({
     marginBottom: -90,
     justifyContent: 'flex-start',
     paddingLeft: 0,
-    marginLeft: -30, // MOVER LOGO E TITULO PARA A ESQUERDA
+    marginLeft: -30,
   },
   logo: {
     width: 41,
@@ -146,8 +172,8 @@ const styles = StyleSheet.create({
     color: "#FFA404",
     fontFamily: FontFamily.beVietnamProSemiBold,
     fontWeight: 'bold',
-    marginLeft: 2, // Distancia entre o texto e a logo
-    marginTop: 35, // Ajustar o texto para baixo ou mais pra cima
+    marginLeft: 2,
+    marginTop: 35,
   },
   content: {
     alignItems: "center",
@@ -222,6 +248,57 @@ const styles = StyleSheet.create({
     position: "absolute",
     bottom: 0,
   },
+  infoIconContainer: {
+    position: 'absolute',
+    bottom: 10, // ajuste para cima ou para baixo
+    right: 10, // ajustar para direita
+    padding: 10,
+    zIndex: 2, //deixa esse icone em cima do bloco amarelo
+
+  },
+  infoIcon: {
+    width: 30,
+    height: 30,
+   
+  },
+  modalOverlay: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: 'rgba(0, 0, 0, 0.5)',
+  },
+  modalContainer: {
+    width: 300,
+    padding: 20,
+    backgroundColor: 'white',
+    borderRadius: 10,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  modalTitle: {
+    fontSize: 18,
+    fontWeight: 'bold',
+    color: Color.colorBlack,
+    marginBottom: 
+10,
+},
+modalMessage: {
+fontSize: 16,
+color: Color.colorBlack,
+marginBottom: 20,
+textAlign: 'center',
+},
+modalButton: {
+backgroundColor: Color.colorDeepskyblue,
+borderRadius: 5,
+paddingVertical: 10,
+paddingHorizontal: 20,
+},
+modalButtonText: {
+color: 'white',
+fontSize: 16,
+fontWeight: 'bold',
+},
 });
 
 export default ConectarProfessor;

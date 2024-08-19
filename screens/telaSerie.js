@@ -1,47 +1,64 @@
-import React, { useEffect } from "react";
-import { StyleSheet, View, Text, Image, TouchableOpacity } from "react-native";
+import React, { useEffect, useState } from "react";
+import { StyleSheet, View, Text, Image, TouchableOpacity, KeyboardAvoidingView, Platform } from "react-native";
 import * as Font from 'expo-font';
-import { Color, FontSize, FontFamily } from "../GlobalStyles";
+import { Color, FontFamily } from "../GlobalStyles";
 import { useNavigation } from '@react-navigation/native';
 
-const TelaSerie = () => {
+const TelaCurso = () => {
   const navigation = useNavigation();
+  const [fontLoaded, setFontLoaded] = useState(false);
 
   useEffect(() => {
     const loadFont = async () => {
       await Font.loadAsync({
         'Baloo': require('../assets/Fonts/Baloo.ttf'),
       });
+      setFontLoaded(true);
     };
     loadFont();
   }, []);
 
-  return (
-    <View style={styles.telaprincipal}>
-      <View style={styles.banner}>
-        
+  if (!fontLoaded) {
+    return null; 
+  }
 
-        <Text style={styles.titulo}>BIOMETRIC CALL</Text>
+  return (
+    <KeyboardAvoidingView
+      style={styles.telaprincipal}
+      behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+    >
+      <View style={styles.banner}>
+        <Image
+          style={styles.logo}
+          contentFit="cover"
+          source={require("../assets/imgs/logo.png")}
+        />
+        <Text style={styles.titulo}>B I C A L L </Text>
       </View>
+
+      <TouchableOpacity style={styles.voltarIconContainer} onPress={() => navigation.goBack()}>
+        <Image
+          source={require('../assets/imgs/voltar.png')} 
+          style={styles.voltar}
+        />
+      </TouchableOpacity>
+
+      <Text style={styles.selecione}>Selecione a série</Text>
+
       <View style={styles.divBtns}>
-        <TouchableOpacity style={styles.btns} onPress={() => navigation.navigate('telaDados')}> 
-         
+        <TouchableOpacity style={styles.btns} onPress={() => navigation.navigate('telaSerie')}>
           <Text style={styles.txtButton}>1º ano</Text>
         </TouchableOpacity>
-
-        <TouchableOpacity style={styles.btns} onPress={() => navigation.navigate('TelaPrincipal')}>
-         
+        <TouchableOpacity style={styles.btns} onPress={() => navigation.navigate('telaSerie')}>
           <Text style={styles.txtButton}>2º ano</Text>
         </TouchableOpacity>
-        
-        <TouchableOpacity style={styles.btns} onPress={() => navigation.navigate('TelaPrincipal')}>
-        
+        <TouchableOpacity style={styles.btns} onPress={() => navigation.navigate('telaSerie')}>
           <Text style={styles.txtButton}>3º ano</Text>
         </TouchableOpacity>
-
-        
       </View>
-    </View>
+      
+      <View style={styles.footer} />
+    </KeyboardAvoidingView>
   );
 };
 
@@ -51,20 +68,34 @@ const styles = StyleSheet.create({
     backgroundColor: 'white',
     alignItems: "center",
   },
-  image: {
-    width: 30,
-    height: 30,
-    marginRight: 20,
+  voltarIconContainer: {
+    position: 'absolute',
+    top: 150, 
+    left: 25, 
+    zIndex: 2,
+  },
+  voltar: {
+    width: 20,
+    height: 20,
+
+
   },
   btns: {
     backgroundColor: Color.colorDeepskyblue,
     borderRadius: 10,
-    width: '110%',
+    width: '100%',
     height: 60,
     alignItems: 'center',
-    flexDirection: "row",
     justifyContent: "center",
-    marginBottom: 30
+    marginBottom: 20,
+  },
+  selecione: {
+    fontSize: 25,
+    color: Color.colorBlack,
+    fontFamily: 'Cambay-Bold',
+    fontWeight: "600",
+    marginBottom: 40,
+    marginTop: -45,
   },
   txtButton: {
     color: "white",
@@ -72,27 +103,39 @@ const styles = StyleSheet.create({
   },
   banner: {
     alignItems: "center",
-    marginTop: 30,
+    marginTop: 60,
     flexDirection: "row",
+    justifyContent: 'flex-start',
+    paddingLeft: 45,
+    marginLeft: -55,
   },
   logo: {
-    width: 60,
-    height: 60,
-    marginTop: 10,
-    marginRight: 10
+    width: 41,
+    height: 57,
+    marginTop: -145,
+    marginRight: 10,
   },
   titulo: {
-    
-    fontSize: 30,
+    fontSize: 20,
     color: "#FFA404",
-    fontFamily: 'Baloo',
-    fontWeight:'bold'
+    fontFamily: FontFamily.beVietnamProSemiBold,
+    fontWeight: 'bold',
+    marginLeft: 1,
+    marginTop: 35,
+    marginBottom: 170,
   },
   divBtns: {
     width: '80%',
     alignItems: 'center',
-    marginTop: 150
+    marginTop: 20,
+  },
+  footer: {
+    backgroundColor: Color.colorOrange,
+    width: "200%",
+    height: 65,
+    position: "absolute",
+    bottom: -3,
   },
 });
 
-export default TelaSerie;
+export default TelaCurso;
