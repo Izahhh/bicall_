@@ -33,6 +33,7 @@
     "react-native-elements": "^3.4.3",
     "react-native-gesture-handler": "~2.16.1",
     "react-native-keyboard-aware-scroll-view": "^0.9.5",
+    "react-native-masked-text": "^1.12.5",
     "react-native-modal": "*",
     "react-native-pager-view": "6.3.0",
     "react-native-paper": "4.9.2",
