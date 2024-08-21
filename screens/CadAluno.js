@@ -4,7 +4,6 @@ import { TextInputMask } from "react-native-masked-text";
 import { useNavigation } from '@react-navigation/native';
 import Icon from 'react-native-vector-icons/FontAwesome'; 
 
-
 const CadAluno = () => {
   const [nome, setNome] = useState("");
   const [cpf, setCpf] = useState("");
@@ -100,7 +99,7 @@ const CadAluno = () => {
           {errorCpf ? <Text style={styles.errorMessage}>{errorCpf}</Text> : null}
           <TextInputMask
             type={'cpf'}
-            style={[styles.txtCPF, { borderColor: errorCpf ? 'red' : '#40A2E3' }]}
+            style={[styles.input, { borderColor: errorCpf ? 'red' : '#40A2E3' }]}
             placeholder="CPF"
             placeholderTextColor="#000"
             value={cpf}
@@ -114,6 +113,7 @@ const CadAluno = () => {
             value={cep}
             onChangeText={(text) => setCep(text)}
             onBlur={buscarCEP}
+            keyboardType="numeric"
           />
 
           <View style={styles.divEndNum}>
@@ -128,7 +128,7 @@ const CadAluno = () => {
             {errorNum ? <Text style={styles.errorMessage}>{errorNum}</Text> : null}
             <TextInput
               style={[styles.inputNum, { borderColor: errorNum ? 'red' : '#40A2E3' }]}
-              placeholder="Número"
+              placeholder="Nº"
               placeholderTextColor="#000"
               value={numEnd}
               onChangeText={setNumEnd}
@@ -182,7 +182,7 @@ const styles = StyleSheet.create({
   subTi: {
     fontSize: 25,
     color: '#FFA404',
-    marginBottom:0,
+    marginBottom: 0,
     textAlign: 'center',
     marginTop: -7,
   },
@@ -200,7 +200,7 @@ const styles = StyleSheet.create({
   voltarIconContainer: {
     position: 'absolute',
     top: 130, // ajustar altura
-    left:10,
+    left: 10,
     zIndex: 2,
   },
   voltar: {
@@ -237,17 +237,6 @@ const styles = StyleSheet.create({
     fontSize: 16,
     borderColor: '#40A2E3',
     borderWidth: 1,
-  },
-  txtCPF: {
-    flex: 3,
-    height: 50,
-    backgroundColor: '#FFF',
-    borderRadius: 25,
-    paddingLeft: 20,
-    marginBottom: 20,
-    fontSize: 16,
-    borderColor: '#40A2E3',
-    borderWidth: 10,
   },
   inputNum: {
     flex: 1,

@@ -5,6 +5,7 @@ import { Color, FontFamily } from "../GlobalStyles";
 import { useNavigation } from '@react-navigation/native';
 
 const TelaPrincipal = () => {
+
   const navigation = useNavigation();
   const [fontLoaded, setFontLoaded] = useState(false);
 
@@ -23,6 +24,8 @@ const TelaPrincipal = () => {
   }
 
   return (
+
+    
     <KeyboardAvoidingView
       style={styles.telaprincipal}
       behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
@@ -61,8 +64,6 @@ const TelaPrincipal = () => {
           <Text style={styles.txtButton}>Verificar Chamada</Text>
         </TouchableOpacity>
 
-  
-
         <TouchableOpacity style={styles.btns} onPress={() => navigation.navigate('ApagarAluno')}>
           <Image
             source={require('../assets/imgs/delImg.png')}
@@ -71,8 +72,6 @@ const TelaPrincipal = () => {
           <Text style={styles.txtButton}>Apagar Aluno</Text>
         </TouchableOpacity>
       </View>
-
-     
 
       <View style={styles.footer} />
     </KeyboardAvoidingView>
@@ -93,7 +92,7 @@ const styles = StyleSheet.create({
   btns: {
     backgroundColor: Color.colorDeepskyblue,
     borderRadius: 10,
-    width: '110%', // Largura restaurada como estava antes
+    width: '110%',
     height: 60,
     alignItems: 'center',
     flexDirection: "row",
@@ -113,7 +112,7 @@ const styles = StyleSheet.create({
     width: 41,
     height: 57,
     marginRight: 10,
-    marginTop:-35,
+    marginTop: -35,
   },
   titulo: {
     fontSize: 20,
@@ -121,7 +120,7 @@ const styles = StyleSheet.create({
     fontFamily: FontFamily.beVietnamProSemiBold,
     fontWeight: 'bold',
     marginTop: 35,
-    marginBottom: 60, 
+    marginBottom: 60,
   },
   divBtns: {
     width: '80%',

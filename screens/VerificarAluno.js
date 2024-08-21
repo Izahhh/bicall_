@@ -1,30 +1,16 @@
 import React from 'react';
-import { Text, SafeAreaView, StyleSheet, View, Image, ScrollView } from 'react-native';
+import { Text, SafeAreaView, TouchableOpacity, StyleSheet, View, Image, ScrollView } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
+import { useNavigation } from '@react-navigation/native';
 
-// Um componente pode receber dados através de propriedades (props), permitindo criar componentes reutilizáveis e passe dados específicos para eles.
+// Dados fictícios para a tabela
 const orders = [
-  { nome: 'Betty Sheldon', rm: '#1213', presenca: false },
+  { nome: 'Ana Oliveira', rm: '#1213', presenca: false },
   { nome: 'Francisca Austin', rm: '#1213', presenca: false },
-  { nome: 'Oscar Clausing', rm: '#1213', presenca: true },
-  { nome: 'Cynthia Back', rm: '#1213', presenca: true },
-  { nome: 'Pauline Brown', rm: '#1213', presenca: false },
-  { nome: 'Jennifer Walters', rm: '#1213', presenca: false },
-  { nome: 'Betty Sheldon', rm: '#1213', presenca: false },
-  { nome: 'Francisca Austin', rm: '#1213', presenca: false },
-  { nome: 'Oscar Clausing', rm: '#1213', presenca: true },
-  { nome: 'Cynthia Back', rm: '#1213', presenca: true },
-  { nome: 'Pauline Brown', rm: '#1213', presenca: false },
-  { nome: 'Jennifer Walters', rm: '#1213', presenca: false },
-  { nome: 'Betty Sheldon', rm: '#1213', presenca: false },
-  { nome: 'Francisca Austin', rm: '#1213', presenca: false },
-  { nome: 'Oscar Clausing', rm: '#1213', presenca: true },
-  { nome: 'Cynthia Back', rm: '#1213', presenca: true },
-  { nome: 'Pauline Brown', rm: '#1213', presenca: false },
-  { nome: 'Jennifer Walters', rm: '#1213', presenca: false },
+  { nome: 'Oscar Santos', rm: '#1213', presenca: true },
 ];
 
-// Componente que recebe um objeto order como uma propriedade.
+// Componente que representa uma linha da tabela
 const TableRow = ({ order }) => (
   <View style={styles.tableRow}>
     <Text style={[styles.tableCell, styles.cellName]}>{order.nome}</Text>
@@ -41,16 +27,24 @@ const TableRow = ({ order }) => (
 
 // Componente principal do aplicativo
 export default function App() {
+  const navigation = useNavigation(); // Mover useNavigation para dentro do componente
+
   return (
     <SafeAreaView style={styles.container}>
       <ScrollView contentContainerStyle={styles.scrollViewContainer}>
         {/* Título */}
         <View style={styles.banner}>
           <Image
-            source={require('../assets/imgs/logotipo.png')}
+            source={require('../assets/imgs/lista.png')}
             style={styles.image}
           />
-          <Text style={styles.titulo}>Cadastrar Aluno</Text>
+          <Text style={styles.titulo}>Lista de Presença</Text>
+          <TouchableOpacity style={styles.voltarIconContainer} onPress={() => navigation.goBack()}>
+            <Image
+              source={require('../assets/imgs/voltar.png')} 
+              style={styles.voltar}
+            />
+          </TouchableOpacity>
         </View>
         {/* Tabela */}
         <View style={styles.table}>
@@ -82,16 +76,20 @@ const styles = StyleSheet.create({
   banner: {
     alignItems: 'center',
     marginBottom: 20,
-    flexDirection: 'row'
+    flexDirection: 'row',
   },
   titulo: {
-    fontSize: 24,
-    fontWeight: 'bold',
-    color: '#FFA500',
+    fontSize: 28,
+    color: '#000', // Atualize com a cor definida em GlobalStyles
+    fontFamily: 'Cambay-Bold',
+    fontWeight: "600",
+    marginBottom: 55,
+    top: 60,
+    marginLeft: -10,
   },
   table: {
     width: '100%',
-    marginTop: 20,
+    marginTop: 62,
     borderWidth: 1,
     borderColor: '#ddd',
     borderRadius: 10,
@@ -136,7 +134,29 @@ const styles = StyleSheet.create({
   image: {
     width: 30,
     height: 30,
-    marginRight: 20,
+    top: 65,
+    marginLeft: 245,
+    position: 'absolute',
+  },
+  infoIconContainer: {
+    position: 'absolute',
+    bottom: 8,
+    right: 10,
+    padding: 10,
+    zIndex: 2,
+  },
+  infoIcon: {
+    width: 30,
+    height: 30,
+  },
+  voltarIconContainer: {
+    position: 'absolute',
+    top: 130, // Ajustar altura
+    left: -50,
+    zIndex: 2,
+  },
+  voltar: {
+    width: 20,
+    height: 20,
   },
 });
-
