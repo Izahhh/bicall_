@@ -1,7 +1,19 @@
 import React, { useState, useEffect } from "react";
-import { Text, StyleSheet, View, TextInput, TouchableOpacity, Modal, KeyboardAvoidingView, Platform, ScrollView, Keyboard, TouchableWithoutFeedback, Dimensions, Image } from "react-native";
+import {
+  Text,
+  StyleSheet,
+  View,
+  TextInput,
+  TouchableOpacity,
+  Modal,
+  Keyboard,
+  TouchableWithoutFeedback,
+  SafeAreaView,
+  Image, 
+} from "react-native";
 import * as Font from 'expo-font';
 import { useNavigation } from '@react-navigation/native';
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import { Padding, FontSize, Color, FontFamily, Border } from "../GlobalStyles";
 
 const ConectarProfessor = () => {
@@ -39,25 +51,19 @@ const ConectarProfessor = () => {
   };
 
   const handleCadastro = () => {
-    navigation.navigate('CadastrarProfessor'); 
+    navigation.navigate('CadastrarProfessor');
   };
 
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-      <KeyboardAvoidingView
-        style={styles.container}
-        behavior={Platform.OS === "ios" ? "padding" : "height"}
-        keyboardVerticalOffset={Platform.OS === "ios" ? 100 : 0}
-      >
-        <ScrollView
+      <SafeAreaView style={styles.container}>
+        <KeyboardAwareScrollView
           contentContainerStyle={styles.scrollContainer}
-          keyboardShouldPersistTaps="handled"
           showsVerticalScrollIndicator={false}
         >
           <View style={styles.banner}>
             <Image
               style={styles.logo}
-              contentFit="cover"
               source={require("../assets/imgs/logo.png")}
             />
             <Text style={styles.titulo}>B I O M E T R I C  C A L L</Text>
@@ -83,7 +89,6 @@ const ConectarProfessor = () => {
                 onChangeText={setSenha}
               />
             </View>
-            
             <TouchableOpacity style={styles.btnContinuar} onPress={handleLogin}>
               <View style={styles.btnContinuarBackground} />
               <Text style={styles.conectar}>Conectar</Text>
@@ -95,45 +100,45 @@ const ConectarProfessor = () => {
               </TouchableOpacity>
             </Text>
           </View>
+
           <View style={styles.footer} />
-        </ScrollView>
 
-        {/* Ícone de Informação */}
-        <TouchableOpacity
-          style={styles.infoIconContainer}
-          onPress={() => {
-            setModalMessage('Insira seu e-mail, CPF e senha para se conectar. Caso não tenha uma conta, clique em "Cadastre-se" para criar uma nova.');
-            setModalVisible(true);
-          }}
-        >
-          <Image
-            source={require('../assets/imgs/info.png')}
-            style={styles.infoIcon}
-          />
-        </TouchableOpacity>
+          {/* Ícone de Informação */}
+          <TouchableOpacity
+            style={styles.infoIconContainer}
+            onPress={() => {
+              setModalMessage('Insira seu e-mail, CPF e senha para se conectar. Caso não tenha uma conta, clique em "Cadastre-se" para criar uma nova.');
+              setModalVisible(true);
+            }}
+          >
+            <Image
+              source={require('../assets/imgs/info.png')}
+              style={styles.infoIcon}
+            />
+          </TouchableOpacity>
 
-        {/* Modal de Alerta Personalizado */}
-        <Modal
-          animationType="fade"
-          transparent={true}
-          visible={modalVisible}
-          onRequestClose={() => setModalVisible(false)}
-        >
-          <View style={styles.modalOverlay}>
-            <View style={styles.modalContainer}>
-              <Text style={styles.modalTitle}>Atenção</Text>
-              <Text style={styles.modalMessage}>{modalMessage}</Text>
-              <TouchableOpacity
-                style={styles.modalButton}
-                onPress={() => setModalVisible(false)}
-              >
-                <Text style={styles.modalButtonText}>OK</Text>
-              </TouchableOpacity>
+          {/* Modal de Alerta Personalizado */}
+          <Modal
+            animationType="fade"
+            transparent={true}
+            visible={modalVisible}
+            onRequestClose={() => setModalVisible(false)}
+          >
+            <View style={styles.modalOverlay}>
+              <View style={styles.modalContainer}>
+                <Text style={styles.modalTitle}>Atenção</Text>
+                <Text style={styles.modalMessage}>{modalMessage}</Text>
+                <TouchableOpacity
+                  style={styles.modalButton}
+                  onPress={() => setModalVisible(false)}
+                >
+                  <Text style={styles.modalButtonText}>OK</Text>
+                </TouchableOpacity>
+              </View>
             </View>
-          </View>
-        </Modal>
-
-      </KeyboardAvoidingView>
+          </Modal>
+        </KeyboardAwareScrollView>
+      </SafeAreaView>
     </TouchableWithoutFeedback>
   );
 };
@@ -143,11 +148,19 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: Color.colorWhite,
   },
+  inner: {
+    flex: 1,
+  },
+  scrollView: {
+    flex: 1,
+    paddingBottom: 0, // Espaço para o footer
+    position: 'absolute'
+
+  },
   scrollContainer: {
-    flexGrow: 1,
+    flexGrow: 5,
     justifyContent: "center",
     alignItems: "center",
-    paddingBottom: Dimensions.get('window').height * 0.1, 
   },
   txtboxSpacing: {
     marginVertical: 8,
@@ -156,7 +169,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     flexDirection: "row",
     marginTop: 50,
-    marginBottom: -90,
+    marginBottom: 20,
     justifyContent: 'flex-start',
     paddingLeft: 0,
     marginLeft: -30,
@@ -179,6 +192,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
     flex: 1,
+    paddingBottom: 80, // Espaço para o footer
   },
   conectarSuaConta: {
     fontSize: 27,
@@ -250,55 +264,48 @@ const styles = StyleSheet.create({
   },
   infoIconContainer: {
     position: 'absolute',
-    bottom: 10, // ajuste para cima ou para baixo
-    right: 10, // ajustar para direita
+    bottom: 10, // Ajuste para cima ou para baixo
+    right: 10, // Ajustar para direita
     padding: 10,
-    zIndex: 2, //deixa esse icone em cima do bloco amarelo
-
+    zIndex: 2, // Deixa esse ícone em cima do bloco amarelo
   },
   infoIcon: {
     width: 30,
     height: 30,
-   
   },
   modalOverlay: {
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: 'rgba(0, 0, 0, 0.5)',
+    backgroundColor: 'rgba(0,0,0,0.5)',
   },
   modalContainer: {
-    width: 300,
-    padding: 20,
     backgroundColor: 'white',
+    padding: 20,
     borderRadius: 10,
+    width: '80%',
+    maxWidth: 300,
     alignItems: 'center',
-    justifyContent: 'center',
   },
   modalTitle: {
     fontSize: 18,
     fontWeight: 'bold',
-    color: Color.colorBlack,
-    marginBottom: 
-10,
-},
-modalMessage: {
-fontSize: 16,
-color: Color.colorBlack,
-marginBottom: 20,
-textAlign: 'center',
-},
-modalButton: {
-backgroundColor: Color.colorDeepskyblue,
-borderRadius: 5,
-paddingVertical: 10,
-paddingHorizontal: 20,
-},
-modalButtonText: {
-color: 'white',
-fontSize: 16,
-fontWeight: 'bold',
-},
+    marginBottom: 10,
+  },
+  modalMessage: {
+    fontSize: 16,
+    textAlign: 'center',
+    marginBottom: 20,
+  },
+  modalButton: {
+    backgroundColor: Color.colorDeepskyblue,
+    padding: 10,
+    borderRadius: 5,
+  },
+  modalButtonText: {
+    color: 'white',
+    fontWeight: 'bold',
+  },
 });
 
 export default ConectarProfessor;

@@ -1,15 +1,12 @@
 import React, { useState } from "react";
-import { StyleSheet, View, Text, TouchableOpacity, TextInput, Image, SafeAreaView } from "react-native";
+import { StyleSheet, View, Text, TouchableOpacity, TextInput, Image, KeyboardAvoidingView, Platform, ScrollView, SafeAreaView } from "react-native";
 import { useNavigation } from '@react-navigation/native';
-import { Padding, FontSize, Color, FontFamily, Border } from "../GlobalStyles";
 
-const CadAluno = () => {
+const AtualizarAluno = () => {
   const [nome, setNome] = useState("");
   const [codigo, setCodigo] = useState("");
   const [errorNome, setErrorNome] = useState("");
   const [errorCodigo, setErrorCodigo] = useState("");
-  const [fontLoaded, setFontLoaded] = useState(false);
-
   const navigation = useNavigation();
 
   const validar = () => {
@@ -30,86 +27,94 @@ const CadAluno = () => {
 
   const salvar = () => {
     if (validar()) {
-      const data = {
-        nome: nome,
-        codigo: codigo
-      };
-      // Substitua esta chamada com a chamada para o serviço apropriado
-      usuarioService.cadastrarAluno(data)
-        .then(response => {
-          // Lógica de tratamento da resposta
-        })
-        .catch(error => {
-          // Lógica de tratamento de erro
-        });
+      // Navegar para a tela CadastrarAluno
+      navigation.navigate('CadAluno');
     }
   };
 
   return (
-    <View style={styles.cadaluno}>
-      <SafeAreaView style={styles.banner}>
-        <Text style={styles.titulo}>   A T U A L I Z A R </Text>
-        <Text style={styles.subTit}>    A L U N O </Text>
+    <View style={styles.container}>
+      <KeyboardAvoidingView
+        style={styles.keyboardAvoidingView}
+        behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+        keyboardVerticalOffset={Platform.OS === 'ios' ? 64 : 0}
+      >
+        <ScrollView
+          contentContainerStyle={styles.scrollView}
+          keyboardShouldPersistTaps='handled'
+        >
+          <SafeAreaView style={styles.banner}>
+            <Text style={styles.titulo}>   A T U A L I Z A R </Text>
+            <Text style={styles.subTit}>    A L U N O </Text>
 
-        <TouchableOpacity style={styles.voltarIconContainer} onPress={() => navigation.goBack()}>
-        <Image
-          source={require('../assets/imgs/voltar.png')} 
-          style={styles.voltar}
-        />
-      </TouchableOpacity>
+            <TouchableOpacity style={styles.voltarIconContainer} onPress={() => navigation.goBack()}>
+              <Image
+                source={require('../assets/imgs/voltar.png')} 
+                style={styles.voltar}
+              />
+            </TouchableOpacity>
 
-        <Image
-           source={require('../assets/imgs/iconatualizar.png')}
-          style={styles.image}
-        />
-      </SafeAreaView>
+            <Image
+              source={require('../assets/imgs/iconatualizar.png')}
+              style={styles.image}
+            />
+          </SafeAreaView>
 
-      <SafeAreaView style={styles.form}>
-        <TextInput
-          style={[styles.input, { borderColor: errorNome ? 'red' : '#40A2E3' }]}
-          placeholder="Nome Completo "
-          placeholderTextColor="#000"
-          value={nome}
-          onChangeText={setNome}
-        />
-        {errorNome ? <Text style={styles.errorMessage}>{errorNome}</Text> : null}
+          <View style={styles.form}>
+            <TextInput
+              style={[styles.input, { borderColor: errorNome ? 'red' : '#40A2E3' }]}
+              placeholder="Nome Completo "
+              placeholderTextColor="#000"
+              value={nome}
+              onChangeText={setNome}
+            />
+            {errorNome ? <Text style={styles.errorMessage}>{errorNome}</Text> : null}
 
-        <TextInput
-          style={[styles.input, { borderColor: errorCodigo ? 'red' : '#40A2E3' }]}
-          placeholder="Código do Aluno (a)"
-          placeholderTextColor="#000"
-          value={codigo}
-          onChangeText={setCodigo}
-        />
-        {errorCodigo ? <Text style={styles.errorMessage}>{errorCodigo}</Text> : null}
-      </SafeAreaView>
+            <TextInput
+              style={[styles.input, { borderColor: errorCodigo ? 'red' : '#40A2E3' }]}
+              placeholder="Código do Aluno (a)"
+              placeholderTextColor="#000"
+              value={codigo}
+              onChangeText={setCodigo}
+              keyboardType="numeric"
+            />
+            {errorCodigo ? <Text style={styles.errorMessage}>{errorCodigo}</Text> : null}
+          </View>
 
-      <TouchableOpacity style={styles.btnCon} onPress={salvar}>
-        <Text style={styles.txtCon}>Continuar</Text>
-      </TouchableOpacity>
+          <TouchableOpacity style={styles.btnCon} onPress={salvar}>
+            <Text style={styles.txtCon}>Continuar</Text>
+          </TouchableOpacity>
+        </ScrollView>
+      </KeyboardAvoidingView>
       <View style={styles.footer} />
-
     </View>
   );
 };
 
 const styles = StyleSheet.create({
-  cadaluno: {
+  container: {
     flex: 1,
     backgroundColor: '#fff',
+  },
+  keyboardAvoidingView: {
+    flex: 1,
+  },
+  scrollView: {
+    flexGrow: 1,
     padding: 20,
+    paddingBottom: 60, // Espaço para o footer
   },
   banner: {
     alignItems: 'center',
     marginBottom: 20,
   },
   image: {
-    marginTop:40,
-    width:207,
+    marginTop: 40,
+    width: 207,
     height: 244,
   },
   titulo: {
-    marginTop:65,
+    marginTop: 65,
     fontSize: 30,
     color: '#FFA404',
     marginBottom: 20,
@@ -125,6 +130,7 @@ const styles = StyleSheet.create({
   form: {
     flex: 1,
     justifyContent: 'center',
+    marginBottom: 20, // Espaço acima do botão
   },
   input: {
     height: 50,
@@ -142,8 +148,7 @@ const styles = StyleSheet.create({
     borderRadius: 25,
     justifyContent: 'center',
     alignItems: 'center',
-    marginBottom:50,
-    top:-40,
+    marginBottom: 10, // Espaço acima do footer
   },
   txtCon: {
     color: '#FFF',
@@ -154,17 +159,6 @@ const styles = StyleSheet.create({
     color: 'red',
     fontSize: 12,
     marginLeft: 10,
-  },
-  infoIconContainer: {
-    position: 'absolute',
-    bottom: 8,
-    right: 10,
-    padding: 10,
-    zIndex: 2,
-  },
-  infoIcon: {
-    width: 30,
-    height: 30,
   },
   voltarIconContainer: {
     position: 'absolute',
@@ -177,12 +171,12 @@ const styles = StyleSheet.create({
     height: 20,
   },
   footer: {
-    backgroundColor: Color.colorOrange,
-    width: "400%",
+    backgroundColor: '#FFA404',
+    width: "100%",
     height: 35,
-    position: "absolute",
+    position: "relative",
     bottom: 0,
   },
 });
 
-export default CadAluno;
+export default AtualizarAluno;
