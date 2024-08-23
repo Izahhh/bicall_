@@ -96,7 +96,7 @@ const ConectarProfessor = () => {
             <Text style={styles.noContaContainer}>
               <Text style={styles.noConta}> Não tem conta?</Text>
               <TouchableOpacity onPress={handleCadastro}>
-                <Text style={styles.cadastreSe}> Cadastre-se!</Text>
+                <Text style={styles.cadastreSe}>  Cadastre-se!</Text>
               </TouchableOpacity>
             </Text>
           </View>
@@ -259,7 +259,7 @@ const styles = StyleSheet.create({
     backgroundColor: Color.colorOrange,
     width: "100%",
     height: 65,
-    position: "absolute",
+    position: "relative",
     bottom: 0,
   },
   infoIconContainer: {

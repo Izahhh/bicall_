@@ -3,11 +3,19 @@ import { Text, SafeAreaView, TouchableOpacity, StyleSheet, View, Image, ScrollVi
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { useNavigation } from '@react-navigation/native';
 
-// Dados fictícios para a tabela
 const orders = [
   { nome: 'Ana Oliveira', rm: '#1213', presenca: false },
-  { nome: 'Francisca Austin', rm: '#1213', presenca: false },
-  { nome: 'Oscar Santos', rm: '#1213', presenca: true },
+  { nome: 'Ana Souza Fernandes', rm: '#2585', presenca: false },
+  { nome: 'Beatriz Santos', rm: '#5547', presenca: false },
+  { nome: 'Carlos Santana', rm: '#4755', presenca: true },
+  { nome: 'Daniela Souza', rm: '#2522', presenca: true },
+  { nome: 'Danilo Oliveira', rm: '#4757', presenca: true },
+  { nome: 'Fransisco Silva', rm: '#7444', presenca: false },
+  { nome: 'Gabriel Barbosa', rm: '#4445', presenca: true },
+  { nome: 'Henrique Pereira', rm: '#4222', presenca: true },
+  { nome: 'Isaias Matos', rm: '#2212', presenca: true },
+  { nome: 'Joana Freitas', rm: '#3256', presenca: false },
+  { nome: 'Larissa Almeida', rm: '#1258', presenca: false },
 ];
 
 // Componente que representa uma linha da tabela
@@ -85,7 +93,7 @@ const styles = StyleSheet.create({
     fontWeight: "600",
     marginBottom: 55,
     top: 60,
-    marginLeft: -10,
+    marginLeft: -16, // Ajustado para mover para a direita
   },
   table: {
     width: '100%',
@@ -135,7 +143,7 @@ const styles = StyleSheet.create({
     width: 30,
     height: 30,
     top: 65,
-    marginLeft: 245,
+    marginLeft: 240, // Ajustado para mover para a direita
     position: 'absolute',
   },
   infoIconContainer: {
@@ -152,7 +160,7 @@ const styles = StyleSheet.create({
   voltarIconContainer: {
     position: 'absolute',
     top: 130, // Ajustar altura
-    left: -50,
+    left: -50, // Ajustado para mover para a direita
     zIndex: 2,
   },
   voltar: {

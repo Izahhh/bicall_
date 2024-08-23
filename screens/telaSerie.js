@@ -33,7 +33,7 @@ const TelaCurso = () => {
           contentFit="cover"
           source={require("../assets/imgs/logo.png")}
         />
-        <Text style={styles.titulo}>B I C A L L </Text>
+        <Text style={styles.titulo}>   B I C A L L </Text>
       </View>
 
       <TouchableOpacity style={styles.voltarIconContainer} onPress={() => navigation.goBack()}>
@@ -46,13 +46,13 @@ const TelaCurso = () => {
       <Text style={styles.selecione}>Selecione a série</Text>
 
       <View style={styles.divBtns}>
-        <TouchableOpacity style={styles.btns} onPress={() => navigation.navigate('telaSerie')}>
+        <TouchableOpacity style={styles.btns} onPress={() => navigation.navigate('TelaPrincipal')}>
           <Text style={styles.txtButton}>1º ano</Text>
         </TouchableOpacity>
-        <TouchableOpacity style={styles.btns} onPress={() => navigation.navigate('telaSerie')}>
+        <TouchableOpacity style={styles.btns} onPress={() => navigation.navigate('TelaPrincipal')}>
           <Text style={styles.txtButton}>2º ano</Text>
         </TouchableOpacity>
-        <TouchableOpacity style={styles.btns} onPress={() => navigation.navigate('telaSerie')}>
+        <TouchableOpacity style={styles.btns} onPress={() => navigation.navigate('TelaPrincipal')}>
           <Text style={styles.txtButton}>3º ano</Text>
         </TouchableOpacity>
       </View>
@@ -77,8 +77,6 @@ const styles = StyleSheet.create({
   voltar: {
     width: 20,
     height: 20,
-
-
   },
   btns: {
     backgroundColor: Color.colorDeepskyblue,
@@ -90,12 +88,12 @@ const styles = StyleSheet.create({
     marginBottom: 20,
   },
   selecione: {
-    fontSize: 25,
+    fontSize: 30,
     color: Color.colorBlack,
     fontFamily: 'Cambay-Bold',
     fontWeight: "600",
     marginBottom: 40,
-    marginTop: -45,
+    marginTop: 90,
   },
   txtButton: {
     color: "white",
@@ -104,25 +102,21 @@ const styles = StyleSheet.create({
   banner: {
     alignItems: "center",
     marginTop: 60,
-    flexDirection: "row",
-    justifyContent: 'flex-start',
+    justifyContent: 'center',
     paddingLeft: 45,
     marginLeft: -55,
   },
   logo: {
     width: 41,
     height: 57,
-    marginTop: -145,
-    marginRight: 10,
+    marginBottom: 10, // Adjust this to control spacing between logo and title
   },
   titulo: {
-    fontSize: 20,
+    fontSize: 25,
     color: "#FFA404",
     fontFamily: FontFamily.beVietnamProSemiBold,
     fontWeight: 'bold',
-    marginLeft: 1,
-    marginTop: 35,
-    marginBottom: 170,
+    marginTop: 10, // Adjust this to control spacing between logo and title
   },
   divBtns: {
     width: '80%',

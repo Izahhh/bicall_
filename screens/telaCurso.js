@@ -4,7 +4,7 @@ import * as Font from 'expo-font';
 import { Color, FontFamily } from "../GlobalStyles";
 import { useNavigation } from '@react-navigation/native';
 
-const TelaPrincipal = () => {
+const TelaCurso = () => {
   const navigation = useNavigation();
   const [fontLoaded, setFontLoaded] = useState(false);
 
@@ -31,9 +31,9 @@ const TelaPrincipal = () => {
         <Image
           style={styles.logo}
           contentFit="cover"
-          source={require("../assets/imgs/logotipo.png")}
+          source={require("../assets/imgs/logo.png")}
         />
-        <Text style={styles.titulo}>B I C A L L </Text>
+        <Text style={styles.titulo}>   B I C A L L </Text>
       </View>
 
       <TouchableOpacity style={styles.voltarIconContainer} onPress={() => navigation.goBack()}>
@@ -43,43 +43,21 @@ const TelaPrincipal = () => {
         />
       </TouchableOpacity>
 
+      <Text style={styles.selecione}>Selecione o curso</Text>
+
       <View style={styles.divBtns}>
-        <TouchableOpacity style={styles.btns} onPress={() => navigation.navigate('CadAluno')}>
-          <Image
-            source={require('../assets/imgs/cadImg.png')}
-            style={styles.image}
-          />
-          <Text style={styles.txtButton}>Cadastrar Aluno</Text>
+        <TouchableOpacity style={styles.btns} onPress={() => navigation.navigate('telaSerie')}>
+          <Text style={styles.txtButton}>Administração</Text>
         </TouchableOpacity>
-
-        <TouchableOpacity style={styles.btns} onPress={() => navigation.navigate('AtualizarAluno')}>
-          <Image
-            source={require('../assets/imgs/upImg.png')}
-            style={styles.image}
-          />
-          <Text style={styles.txtButton}>Atualizar Aluno</Text>
+        <TouchableOpacity style={styles.btns} onPress={() => navigation.navigate('telaSerie')}>
+          <Text style={styles.txtButton}>Desenvolvimento De Sistemas</Text>
         </TouchableOpacity>
-        
-        <TouchableOpacity style={styles.btns} onPress={() => navigation.navigate('VerificarAluno')}>
-          <Image
-            source={require('../assets/imgs/verImg.png')}
-            style={styles.image}
-          />
-          <Text style={styles.txtButton}>Verificar Chamada</Text>
-        </TouchableOpacity>
-
-        <TouchableOpacity style={styles.btns} onPress={() => navigation.navigate('ApagarAluno')}>
-          <Image
-            source={require('../assets/imgs/delImg.png')}
-            style={styles.image}
-          />
-          <Text style={styles.txtButton}>Apagar Aluno</Text>
+        <TouchableOpacity style={styles.btns} onPress={() => navigation.navigate('telaSerie')}>
+          <Text style={styles.txtButton}>Logística</Text>
         </TouchableOpacity>
       </View>
-
+      
       <View style={styles.footer} />
-
-     
     </KeyboardAvoidingView>
   );
 };
@@ -90,20 +68,32 @@ const styles = StyleSheet.create({
     backgroundColor: 'white',
     alignItems: "center",
   },
-  image: {
-    width: 30,
-    height: 30,
-    marginRight: 20,
+  voltarIconContainer: {
+    position: 'absolute',
+    top: 150, 
+    left: 25, 
+    zIndex: 2,
+  },
+  voltar: {
+    width: 20,
+    height: 20,
   },
   btns: {
     backgroundColor: Color.colorDeepskyblue,
     borderRadius: 10,
-    width: '110%',
+    width: '100%',
     height: 60,
     alignItems: 'center',
-    flexDirection: "row",
     justifyContent: "center",
-    marginBottom: 30,
+    marginBottom: 20,
+  },
+  selecione: {
+    fontSize: 30,
+    color: Color.colorBlack,
+    fontFamily: 'Cambay-Bold',
+    fontWeight: "600",
+    marginBottom: 40,
+    marginTop: 90,
   },
   txtButton: {
     color: "white",
@@ -111,57 +101,35 @@ const styles = StyleSheet.create({
   },
   banner: {
     alignItems: "center",
-    marginTop: 90,
-    flexDirection: "row",
+    marginTop: 60,
+    justifyContent: 'center',
+    paddingLeft: 45,
+    marginLeft: -55,
   },
   logo: {
     width: 41,
     height: 57,
-    marginRight: 10,
-    marginTop: -35,
+    marginBottom: 10, // Adjust this to control spacing between logo and title
   },
   titulo: {
-    fontSize: 20,
+    fontSize: 25,
     color: "#FFA404",
     fontFamily: FontFamily.beVietnamProSemiBold,
     fontWeight: 'bold',
-    marginTop: 35,
-    marginBottom: 60,
+    marginTop: 10, // Adjust this to control spacing between logo and title
   },
   divBtns: {
     width: '80%',
     alignItems: 'center',
-    marginTop: 70,
+    marginTop: 20,
   },
   footer: {
     backgroundColor: Color.colorOrange,
-    width: "100%",
+    width: "200%",
     height: 65,
     position: "absolute",
-    bottom: 0,
-    left: 0,
-  },
-  infoIconContainer: {
-    position: 'absolute',
-    bottom: 8,
-    right: 10,
-    padding: 10,
-    zIndex: 2,
-  },
-  infoIcon: {
-    width: 30,
-    height: 30,
-  },
-  voltarIconContainer: {
-    position: 'absolute',
-    top: 50, // Ajuste conforme necessário
-    left: 20,
-    zIndex: 2,
-  },
-  voltar: {
-    width: 20,
-    height: 20,
+    bottom: -3,
   },
 });
 
-export default TelaPrincipal;
+export default TelaCurso;

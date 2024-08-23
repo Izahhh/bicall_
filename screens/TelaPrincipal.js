@@ -24,8 +24,6 @@ const TelaPrincipal = () => {
   }
 
   return (
-
-    
     <KeyboardAvoidingView
       style={styles.telaprincipal}
       behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
@@ -36,8 +34,14 @@ const TelaPrincipal = () => {
           contentFit="cover"
           source={require("../assets/imgs/logotipo.png")}
         />
-        <Text style={styles.titulo}>B I C A L L </Text>
+        <Text style={styles.titulo}>   B I C A L L</Text>
       </View>
+      <TouchableOpacity style={styles.voltarIconContainer} onPress={() => navigation.goBack()}>
+        <Image
+          source={require('../assets/imgs/voltar.png')} 
+          style={styles.voltar}
+        />
+      </TouchableOpacity>
 
       <View style={styles.divBtns}>
         <TouchableOpacity style={styles.btns} onPress={() => navigation.navigate('CadAluno')}>
@@ -83,11 +87,22 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: 'white',
     alignItems: "center",
+    top:50
   },
   image: {
     width: 30,
     height: 30,
     marginRight: 20,
+  },
+  voltarIconContainer: {
+    position: 'absolute',
+    top: 40, 
+    left: 25, 
+    zIndex: 2,
+  },
+  voltar: {
+    width: 20,
+    height: 20,
   },
   btns: {
     backgroundColor: Color.colorDeepskyblue,
@@ -97,47 +112,47 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     flexDirection: "row",
     justifyContent: "center",
-    marginBottom: 30,
+    marginBottom: 20, // Ajustado para ficar mais harmônico
   },
   txtButton: {
     color: "white",
-    fontSize: 20,
+    fontSize: 18, // Ajustado para manter a harmonia
   },
   banner: {
     alignItems: "center",
-    marginTop: 90,
-    flexDirection: "row",
+    marginTop: 20, // Ajuste do espaço superior
+    marginBottom: 40, // Ajuste do espaço inferior
+    flexDirection: "column",
   },
   logo: {
-    width: 41,
-    height: 57,
-    marginRight: 10,
-    marginTop: -35,
+    width: '35%', // Tamanho ajustado para maior harmonização
+    height: undefined,
+    aspectRatio: 1, // Mantém a proporção da imagem
+    resizeMode: 'contain',
   },
   titulo: {
-    fontSize: 20,
+    fontSize: 30, 
     color: "#FFA404",
     fontFamily: FontFamily.beVietnamProSemiBold,
     fontWeight: 'bold',
-    marginTop: 35,
-    marginBottom: 60,
+    marginTop: 10,
   },
   divBtns: {
     width: '80%',
     alignItems: 'center',
-    marginTop: 20,
+    marginTop: 30,
   },
   footer: {
     backgroundColor: Color.colorOrange,
     width: "100%",
-    height: 65,
+    height: 80,
     position: "absolute",
     bottom: 0,
     left: 0,
   },
   infoIconContainer: {
     position: 'absolute',
-    bottom: 4, // Ajuste para garantir que o ícone não sobreponha o footer
+    bottom: 4,
     right: 10,
     padding:10,
     zIndex: 2,
