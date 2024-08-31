@@ -14,7 +14,6 @@ import {
 import * as Font from 'expo-font';
 import { useNavigation } from '@react-navigation/native';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
-import { Padding, FontSize, Color, FontFamily, Border } from "../GlobalStyles";
 
 const ConectarProfessor = () => {
   const navigation = useNavigation();
@@ -57,87 +56,71 @@ const ConectarProfessor = () => {
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
       <SafeAreaView style={styles.container}>
+      <View style={styles.imgCentro}>
+      <Text style={styles.title}>Seja bem-vindo!</Text>
+      <Image source={require('../assets/imgs/hello.png')} style={styles.imgInicial} /></View>
         <KeyboardAwareScrollView
           contentContainerStyle={styles.scrollContainer}
           showsVerticalScrollIndicator={false}
         >
-          <View style={styles.banner}>
-            <Image
-              style={styles.logo}
-              source={require("../assets/imgs/logo.png")}
-            />
-            <Text style={styles.titulo}>B I O M E T R I C  C A L L</Text>
-          </View>
+
           <View style={styles.content}>
-            {fontLoaded && (
-              <Text style={styles.conectarSuaConta}>Conecte-se</Text>
-            )}
-            <View style={[styles.txtbox, styles.txtboxSpacing]}>
+            
+            <View style={[styles.inputBox, styles.inputBoxSpacing]}>
               <TextInput
-                style={styles.txtInput}
+                style={styles.input}
                 placeholder="E-mail"
                 value={login}
                 onChangeText={setLogin}
               />
             </View>
-            <View style={[styles.txtbox, styles.txtboxSpacing]}>
+            <View style={[styles.inputBox, styles.inputBoxSpacing]}>
               <TextInput
-                style={styles.txtInput}
+                style={styles.input}
                 placeholder="Senha"
                 secureTextEntry={true}
                 value={senha}
                 onChangeText={setSenha}
               />
             </View>
-            <TouchableOpacity style={styles.btnContinuar} onPress={handleLogin}>
-              <View style={styles.btnContinuarBackground} />
-              <Text style={styles.conectar}>Conectar</Text>
+            <TouchableOpacity style={styles.btnSignIn} onPress={handleLogin}>
+              <Text style={styles.btnText}>Conectar</Text>
             </TouchableOpacity>
-            <Text style={styles.noContaContainer}>
-              <Text style={styles.noConta}> Não tem conta?</Text>
-              <TouchableOpacity onPress={handleCadastro}>
-                <Text style={styles.cadastreSe}>  Cadastre-se!</Text>
-              </TouchableOpacity>
-            </Text>
-          </View>
-
-          <View style={styles.footer} />
-
-          {/* Ícone de Informação */}
-          <TouchableOpacity
-            style={styles.infoIconContainer}
-            onPress={() => {
-              setModalMessage('Insira seu e-mail, CPF e senha para se conectar. Caso não tenha uma conta, clique em "Cadastre-se" para criar uma nova.');
-              setModalVisible(true);
-            }}
-          >
-            <Image
-              source={require('../assets/imgs/info.png')}
-              style={styles.infoIcon}
-            />
-          </TouchableOpacity>
-
-          {/* Modal de Alerta Personalizado */}
-          <Modal
-            animationType="fade"
-            transparent={true}
-            visible={modalVisible}
-            onRequestClose={() => setModalVisible(false)}
-          >
-            <View style={styles.modalOverlay}>
-              <View style={styles.modalContainer}>
-                <Text style={styles.modalTitle}>Atenção</Text>
-                <Text style={styles.modalMessage}>{modalMessage}</Text>
-                <TouchableOpacity
-                  style={styles.modalButton}
-                  onPress={() => setModalVisible(false)}
-                >
-                  <Text style={styles.modalButtonText}>OK</Text>
-                </TouchableOpacity>
-              </View>
+            <Text style={styles.orText}>OR</Text>
+            <View style={styles.socialIconsContainer}>
+              {/* Substitua os ícones abaixo pelos seus ícones reais */}
+              <Image source={require('../assets/imgs/googleIcon.webp')} style={styles.socialIcon} />
+              <Image source={require('../assets/imgs/microsoft.webp')} style={styles.socialIcon} />
             </View>
-          </Modal>
+          </View>
+          <View style={styles.signUpContainer}>
+  <Text style={styles.signUpText}>Não possui conta?</Text>
+  <TouchableOpacity onPress={handleCadastro}>
+    <Text style={styles.signUpButton}>Cadastre-se</Text>
+  </TouchableOpacity>
+</View>
         </KeyboardAwareScrollView>
+
+        {/* Modal de Alerta Personalizado */}
+        <Modal
+          animationType="fade"
+          transparent={true}
+          visible={modalVisible}
+          onRequestClose={() => setModalVisible(false)}
+        >
+          <View style={styles.modalOverlay}>
+            <View style={styles.modalContainer}>
+              <Text style={styles.modalTitle}>Attention</Text>
+              <Text style={styles.modalMessage}>{modalMessage}</Text>
+              <TouchableOpacity
+                style={styles.modalButton}
+                onPress={() => setModalVisible(false)}
+              >
+                <Text style={styles.modalButtonText}>OK</Text>
+              </TouchableOpacity>
+            </View>
+          </View>
+        </Modal>
       </SafeAreaView>
     </TouchableWithoutFeedback>
   );
@@ -146,132 +129,88 @@ const ConectarProfessor = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: Color.colorWhite,
+    backgroundColor: "#2196F3", // Fundo preto como na imagem
   },
-  inner: {
-    flex: 1,
-  },
-  scrollView: {
-    flex: 1,
-    paddingBottom: 0, // Espaço para o footer
-    position: 'absolute'
 
+  imgCentro:{
+    alignItems: "center",
   },
+
+  imgInicial:{
+    width:200,
+    height:200,
+  },
+
   scrollContainer: {
-    flexGrow: 5,
+    flexGrow: 1,
     justifyContent: "center",
     alignItems: "center",
-  },
-  txtboxSpacing: {
-    marginVertical: 8,
-  },
-  banner: {
-    alignItems: "center",
-    flexDirection: "row",
-    marginTop: 50,
-    marginBottom: 20,
-    justifyContent: 'flex-start',
-    paddingLeft: 0,
-    marginLeft: -30,
-  },
-  logo: {
-    width: 41,
-    height: 57,
-    marginTop: 10,
-    marginRight: 10,
-  },
-  titulo: {
-    fontSize: 20,
-    color: "#FFA404",
-    fontFamily: FontFamily.beVietnamProSemiBold,
-    fontWeight: 'bold',
-    marginLeft: 2,
-    marginTop: 35,
   },
   content: {
+  
+    borderRadius: 30,
+    padding: 20,
     alignItems: "center",
-    justifyContent: "center",
-    flex: 1,
-    paddingBottom: 80, // Espaço para o footer
+    width: '90%',
   },
-  conectarSuaConta: {
-    fontSize: 27,
-    color: Color.colorBlack,
-    fontFamily: 'Cambay-Bold',
-    fontWeight: "600",
-    textAlign: "left",
-    marginBottom: 55,
+  title: {
+    fontSize: 28,
+    color: "#FFF", // Branco para o texto de boas-vindas
+    marginTop: 80,
+    fontWeight:'bold'
   },
-  txtbox: {
-    width: 291,
-    height: 35,
-    borderWidth: 1,
-    borderColor: Color.colorDeepskyblue,
-    borderRadius: Border.br_xl,
-    padding: Padding.p_3xs,
-    justifyContent: "center",
-    backgroundColor: Color.colorWhite,
-  },
-  txtInput: {
-    fontFamily: FontFamily.beVietnamProRegular,
-    color: Color.colorDimgray,
-    fontSize: FontSize.size_base,
-    textAlign: 'center',
-    fontSize: 10,
-  },
-  btnContinuar: {
-    marginTop: 20,
-    alignItems: "center",
-    justifyContent: "center",
-  },
-  btnContinuarBackground: {
-    backgroundColor: Color.colorDeepskyblue,
-    borderRadius: Border.br_xl,
-    width: 296,
-    height: 30,
-    textAlign: 'center',
-  },
-  conectar: {
-    position: "absolute",
-    color: Color.colorWhite,
-    fontFamily: 'Cambay-Bold',
-    fontWeight: "700",
-    fontSize: 13,
-  },
-  noContaContainer: {
-    fontSize: FontSize.size_sm,
-    textAlign: "center",
-    marginTop: 20,
-  },
-  noConta: {
-    color: Color.colorBlack,
-    fontFamily: 'Inter-VariableFont_slnt,wght',
-  },
-  cadastreSe: {
-    color: Color.colorSlateblue,
-    fontFamily: 'Inter-VariableFont_slnt,wght',
-    fontWeight: "700",
-    fontWeight: 'bold',
-    marginBottom: -3,
-    marginTop: 20,
-  },
-  footer: {
-    backgroundColor: Color.colorOrange,
-    width: "100%",
-    height: 65,
-    position: "relative",
-    bottom: 0,
-  },
-  infoIconContainer: {
-    position: 'absolute',
-    bottom: 10, // Ajuste para cima ou para baixo
-    right: 10, // Ajustar para direita
+  inputBox: {
+    width: '100%',
+    backgroundColor: "#FFF", // Campo de entrada branco
+    borderRadius: 10,
     padding: 10,
-    zIndex: 2, // Deixa esse ícone em cima do bloco amarelo
+    marginBottom: 15,
   },
-  infoIcon: {
-    width: 30,
-    height: 30,
+  input: {
+    fontSize: 16,
+    color: "#000", // Texto preto nos campos de entrada
+  },
+  btnSignIn: {
+    backgroundColor: "#fff", // Verde mais escuro para o botão
+    borderRadius: 10,
+    padding: 10,
+    alignItems: "center",
+    width: '100%',
+    marginTop: 10,
+  },
+  btnText: {
+    color: "#2196F3", // Texto branco no botão
+    fontSize: 18,
+    fontWeight:'bold'
+  },
+  orText: {
+    color: "#FFF", // Texto branco para o "OR"
+    marginTop: 20,
+    marginBottom: 10,
+  },
+  socialIconsContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    width: '60%',
+  },
+  socialIcon: {
+    width: 40,
+    height: 40,
+  },
+ signUpContainer: {
+    marginTop: 20,
+    flexDirection: 'row', // Dispor os itens lado a lado
+    alignItems: 'center', // Alinhar verticalmente
+  },
+  signUpText: {
+    color: "#FFF", // Texto branco para "Não possui conta?"
+    fontSize: 16,
+  },
+  signUpButton: {
+    color: "#FFF", // Texto branco para "Cadastre-se"
+    fontSize: 16,
+    marginLeft: 10, // Espaçamento entre o texto e o botão
+    fontWeight: 'bold',
   },
   modalOverlay: {
     flex: 1,
@@ -298,7 +237,7 @@ const styles = StyleSheet.create({
     marginBottom: 20,
   },
   modalButton: {
-    backgroundColor: Color.colorDeepskyblue,
+    backgroundColor: "#24A869",
     padding: 10,
     borderRadius: 5,
   },

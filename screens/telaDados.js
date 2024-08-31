@@ -9,7 +9,7 @@ const TelaDados = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get('http://192.168.1.11:3001/dados'); // Substitua pelo IP da maquina e do servidor mysql
+        const response = await axios.get('http://192.168.0.17:3001/dados'); // Substitua pelo IP da maquina e do servidor mysql
         setData(response.data);
       } catch (err) {
         setError(err.message);

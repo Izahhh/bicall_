@@ -1,13 +1,13 @@
 const express = require('express');
 const mysql = require('mysql2');
 const app = express();
-const port = 3001;
+const port = 3306;
 
 // Configuração da conexão com o banco de dados
 const db = mysql.createConnection({
   host: 'localhost',
   user: 'root',
-  password: 'root2023', //senha servidor banco
+  password: '23082006', //senha servidor banco
   database: 'tcc'
 });
 
@@ -21,7 +21,7 @@ db.connect(err => {
 });
 
 // Rota para obter dados de alunos
-app.get('/dados', (req, res) => {
+app.post('/dados', (req, res) => {
   db.query('SELECT * FROM tb_alunos', (err, results) => {
     if (err) {
       res.status(500).send('Erro ao buscar dados');
