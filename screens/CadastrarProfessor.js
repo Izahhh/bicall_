@@ -63,17 +63,11 @@ const ConectarProfessor = () => {
         showsVerticalScrollIndicator={false}
       >
         <View style={styles.banner}>
-          <Image
-            style={styles.logo}
-            contentFit="cover"
-            source={require("../assets/imgs/logo.png")}
-          />
-          <Text style={styles.titulo}>B I O M E T R I C  C A L L</Text>
+          
         </View>
-        <View style={styles.content}>
-          {fontLoaded && (
-            <Text style={styles.conectarSuaConta}>Crie sua conta</Text>
-          )}
+        
+            <View style={styles.con}><Text style={styles.titulo}>Cadastre-se</Text></View>
+            <View style={styles.content}>
           <View style={[styles.txtbox, styles.txtboxSpacing]}>
             <TextInput style={styles.txtInput} placeholder="E-mail" />
           </View>
@@ -95,15 +89,16 @@ const ConectarProfessor = () => {
           </View>
           <TouchableOpacity style={styles.btnContinuar} onPress={() => showAlert('Atenção!', 'Insira suas credenciais para acessar.')}>
             <View style={styles.btnContinuarBackground} />
-            <Text style={styles.conectar}>Conectar</Text>
+            <Text style={styles.conectar}>Cadastrar</Text>
           </TouchableOpacity>
+          </View>
           <Text style={styles.noContaContainer}>
             <Text style={styles.noConta}>Já possui Cadastro?</Text>
             <TouchableOpacity onPress={handleCadastro}>
               <Text style={styles.cadastreSe}> Conecte-se!</Text>
             </TouchableOpacity>
           </Text>
-        </View>
+       
 
         <TouchableOpacity style={styles.infoIconContainer} onPress={() => showAlert('Ajuda!', 'Crie sua conta preenchendo com seus dados. Caso já possua, clique em "Conecte-se! ".')}>
           <Image
@@ -112,7 +107,7 @@ const ConectarProfessor = () => {
           />
         </TouchableOpacity>
         
-        <View style={styles.footer} />
+        
 
         <Modal
           animationType="slide"
@@ -153,59 +148,47 @@ const styles = StyleSheet.create({
   },
   banner: {
     alignItems: "center",
-    flexDirection: "row",
-    marginTop: 58,
-    marginBottom: -40,
-    justifyContent: 'flex-start',
+    marginTop: 15,
+    justifyContent: 'center',
     paddingLeft: 0,
-    marginLeft: -30,
+    marginBottom:35
   },
-  logo: {
-    width: 41,
-    height: 57,
+  imgCad: {
+    width:250,
+    height: 250,
     marginTop: 10,
     marginRight: 10,
   },
-  titulo: {
-    fontSize: 20,
-    color: "#FFA404",
-    fontFamily: FontFamily.beVietnamProSemiBold,
-    fontWeight: 'bold',
-    marginLeft: 2,
-    marginTop: 35,
-  },
+
   content: {
     alignItems: "center",
     justifyContent: "center",
     flex: 1,
     paddingBottom: 80, // Espaço para o footer
   },
-  conectarSuaConta: {
-    fontSize: 27,
-    color: Color.colorBlack,
-    fontFamily: 'Cambay-Bold',
-    fontWeight: "600",
-    textAlign: "left",
-    marginBottom: 23,
-    top: 3,
-    position:'relative'
+  con:{
+    alignItems:"left",
+    width:"100%",
+    marginLeft: 92
+  },
+  titulo:{
+    marginTop:80,
+    fontSize:24,
+    color: '#40A2E3',
+    fontWeight:'bold'
   },
   txtbox: {
     width: 291,
-    height: 35,
-    borderWidth: 1,
+    borderWidth: 1.3,
     borderColor: Color.colorDeepskyblue,
-    borderRadius: Border.br_xl,
+    borderRadius: 10,
     padding: Padding.p_3xs,
     justifyContent: "center",
     backgroundColor: Color.colorWhite,
   },
   txtInput: {
-    fontFamily: FontFamily.beVietnamProRegular,
-    color: Color.colorDimgray,
-    fontSize: FontSize.size_base,
-    textAlign: 'left', // Alinhar o texto à esquerda
-    fontSize: 10,
+    fontSize: 16,
+    color: "#000",
   },
   btnContinuar: {
     marginTop: 20,
@@ -214,9 +197,9 @@ const styles = StyleSheet.create({
   },
   btnContinuarBackground: {
     backgroundColor: Color.colorDeepskyblue,
-    borderRadius: Border.br_xl,
-    width: 305,
-    height: 30,
+    borderRadius: 10,
+    width: 291,
+    height: 50,
     textAlign: 'center',
   },
   conectar: {
@@ -224,35 +207,27 @@ const styles = StyleSheet.create({
     color: Color.colorWhite,
     fontFamily: 'Cambay-Bold',
     fontWeight: "700",
-    fontSize: 13,
+    fontSize: 16,
   },
   noContaContainer: {
-    fontSize: FontSize.size_sm,
-    textAlign: "center",
-    marginTop: 20,
+    marginBottom: 30,
+    flexDirection: 'row', // Dispor os itens lado a lado
+    alignItems: 'center',
   },
   noConta: {
-    color: Color.colorBlack,
-    fontFamily: 'Inter-VariableFont_slnt,wght',
+    color: "#000", // Texto branco para "Não possui conta?"
+    fontSize: 16,
   },
   cadastreSe: {
-    color: Color.colorSlateblue,
-    fontFamily: 'Inter-VariableFont_slnt,wght',
-    fontWeight: "700",
+    color: "#40A2E3", // Texto branco para "Cadastre-se"
+    fontSize: 16,
+    marginLeft: 10, // Espaçamento entre o texto e o botão
     fontWeight: 'bold',
-    marginBottom: -3,
-    marginTop: 20,
   },
-  footer: {
-    backgroundColor: Color.colorOrange,
-    width: "100%",
-    height: 65,
-    position: "relative",
-    bottom: 0,
-  },
+
   infoIconContainer: {
     position: 'absolute',
-    bottom: 10,
+    top: 30,
     right: 10,
     padding: 10,
     zIndex: 2,

@@ -14,6 +14,7 @@ import {
 import * as Font from 'expo-font';
 import { useNavigation } from '@react-navigation/native';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
+import { color } from "react-native-elements/dist/helpers";
 
 const ConectarProfessor = () => {
   const navigation = useNavigation();
@@ -63,9 +64,10 @@ const ConectarProfessor = () => {
           contentContainerStyle={styles.scrollContainer}
           showsVerticalScrollIndicator={false}
         >
+          <View style={styles.con}><Text style={styles.titulo}>Conecte-se</Text></View>
 
           <View style={styles.content}>
-            
+          
             <View style={[styles.inputBox, styles.inputBoxSpacing]}>
               <TextInput
                 style={styles.input}
@@ -110,7 +112,7 @@ const ConectarProfessor = () => {
         >
           <View style={styles.modalOverlay}>
             <View style={styles.modalContainer}>
-              <Text style={styles.modalTitle}>Attention</Text>
+              <Text style={styles.modalTitle}>Atenção!</Text>
               <Text style={styles.modalMessage}>{modalMessage}</Text>
               <TouchableOpacity
                 style={styles.modalButton}
@@ -132,6 +134,11 @@ const styles = StyleSheet.create({
     backgroundColor: "#2196F3", // Fundo preto como na imagem
   },
 
+  con:{
+    alignItems:"left",
+    width:"100%",
+    marginLeft: 82
+  },
   imgCentro:{
     alignItems: "center",
   },
@@ -159,6 +166,12 @@ const styles = StyleSheet.create({
     marginTop: 80,
     fontWeight:'bold'
   },
+
+  titulo:{
+    fontSize:24,
+    color: 'white',
+    fontWeight:'bold'
+  },
   inputBox: {
     width: '100%',
     backgroundColor: "#FFF", // Campo de entrada branco
@@ -171,7 +184,7 @@ const styles = StyleSheet.create({
     color: "#000", // Texto preto nos campos de entrada
   },
   btnSignIn: {
-    backgroundColor: "#fff", // Verde mais escuro para o botão
+    backgroundColor: "#fff", 
     borderRadius: 10,
     padding: 10,
     alignItems: "center",
