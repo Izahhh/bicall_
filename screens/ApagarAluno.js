@@ -17,7 +17,7 @@ const ApagarAluno = () => {
           keyboardShouldPersistTaps='handled'
         >
           <SafeAreaView style={styles.banner}>
-            <Text style={styles.titulo}>A P A G A R</Text>
+            <Text style={styles.titulo}>D E S V I N C U L A R</Text>
             <Text style={styles.subTitulo}>A L U N O</Text>
             <TouchableOpacity style={styles.voltarIconContainer} onPress={() => navigation.goBack()}>
               <Image

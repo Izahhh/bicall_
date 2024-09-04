@@ -91,13 +91,15 @@ const ConectarProfessor = () => {
             <View style={styles.btnContinuarBackground} />
             <Text style={styles.conectar}>Cadastrar</Text>
           </TouchableOpacity>
-          </View>
-          <Text style={styles.noContaContainer}>
+          
+          <View style={styles.noContaContainer}>
             <Text style={styles.noConta}>Já possui Cadastro?</Text>
             <TouchableOpacity onPress={handleCadastro}>
               <Text style={styles.cadastreSe}> Conecte-se!</Text>
             </TouchableOpacity>
-          </Text>
+          </View>
+          </View>
+          
        
 
         <TouchableOpacity style={styles.infoIconContainer} onPress={() => showAlert('Ajuda!', 'Crie sua conta preenchendo com seus dados. Caso já possua, clique em "Conecte-se! ".')}>
@@ -174,13 +176,13 @@ const styles = StyleSheet.create({
   titulo:{
     marginTop:80,
     fontSize:24,
-    color: '#40A2E3',
+    color: '#2196F3',
     fontWeight:'bold'
   },
   txtbox: {
     width: 291,
     borderWidth: 1.3,
-    borderColor: Color.colorDeepskyblue,
+    borderColor: "#2196F3",
     borderRadius: 10,
     padding: Padding.p_3xs,
     justifyContent: "center",
@@ -196,11 +198,12 @@ const styles = StyleSheet.create({
     justifyContent: "center",
   },
   btnContinuarBackground: {
-    backgroundColor: Color.colorDeepskyblue,
+    backgroundColor: "#2196F3",
     borderRadius: 10,
     width: 291,
     height: 50,
     textAlign: 'center',
+    marginTop: 10,
   },
   conectar: {
     position: "absolute",
@@ -210,7 +213,7 @@ const styles = StyleSheet.create({
     fontSize: 16,
   },
   noContaContainer: {
-    marginBottom: 30,
+    marginTop: 20,
     flexDirection: 'row', // Dispor os itens lado a lado
     alignItems: 'center',
   },
@@ -219,7 +222,7 @@ const styles = StyleSheet.create({
     fontSize: 16,
   },
   cadastreSe: {
-    color: "#40A2E3", // Texto branco para "Cadastre-se"
+    color: "#2196F3", 
     fontSize: 16,
     marginLeft: 10, // Espaçamento entre o texto e o botão
     fontWeight: 'bold',
