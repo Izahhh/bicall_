@@ -31,9 +31,14 @@ const TelaCurso = () => {
         <Image
           style={styles.logo}
           contentFit="cover"
-          source={require("../assets/imgs/logo.png")}
+          source={require("../assets/imgs/onda.png")}
         />
-        <Text style={styles.titulo}>   B I C A L L </Text>
+        <Image
+          style={styles.manImg}
+          contentFit="cover"
+          source={require("../assets/imgs/coffee.png")}
+        />
+        
       </View>
 
       <TouchableOpacity style={styles.voltarIconContainer} onPress={() => navigation.goBack()}>
@@ -57,7 +62,6 @@ const TelaCurso = () => {
         </TouchableOpacity>
       </View>
       
-      <View style={styles.footer} />
     </KeyboardAvoidingView>
   );
 };
@@ -88,35 +92,44 @@ const styles = StyleSheet.create({
     marginBottom: 20,
   },
   selecione: {
-    fontSize: 30,
+    fontSize: 24,
     color: Color.colorBlack,
     fontFamily: 'Cambay-Bold',
     fontWeight: "600",
-    marginBottom: 40,
-    marginTop: 90,
+    marginBottom: 50,
+    marginTop: 20,
   },
   txtButton: {
     color: "white",
-    fontSize: 20,
+    fontSize: 16,
   },
   banner: {
     alignItems: "center",
-    marginTop: 60,
+  
+    justifyContent: 'center',
+    
+  },
+  logo: {
+    alignItems: "center",
+    marginTop:-280,
+    marginRight:-150,
     justifyContent: 'center',
     paddingLeft: 45,
     marginLeft: -55,
-  },
-  logo: {
-    width: 41,
-    height: 57,
+    width: 580,
+    height: 580,
     marginBottom: 10, // Adjust this to control spacing between logo and title
+  },
+  manImg:{
+    width: 200,
+    height: 200,
+    marginTop:-200,
   },
   titulo: {
     fontSize: 25,
     color: "#FFA404",
     fontFamily: FontFamily.beVietnamProSemiBold,
     fontWeight: 'bold',
-    marginTop: 10, // Adjust this to control spacing between logo and title
   },
   divBtns: {
     width: '80%',

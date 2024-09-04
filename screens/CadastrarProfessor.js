@@ -138,7 +138,7 @@ const ConectarProfessor = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: Color.colorWhite,
+    backgroundColor: "white",
   },
   scrollContainer: {
     flexGrow: 1,

@@ -86,7 +86,6 @@ const AtualizarAluno = () => {
           </TouchableOpacity>
         </ScrollView>
       </KeyboardAvoidingView>
-      <View style={styles.footer} />
     </View>
   );
 };

@@ -50,7 +50,6 @@ const ApagarAluno = () => {
           </TouchableOpacity>
         </ScrollView>
       </KeyboardAvoidingView>
-      <View style={styles.footer} />
     </View>
   );
 };

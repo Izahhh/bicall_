@@ -70,14 +70,13 @@ const TelaPrincipal = () => {
 
         <TouchableOpacity style={styles.btns} onPress={() => navigation.navigate('ApagarAluno')}>
           <Image
-            source={require('../assets/imgs/delImg.png')}
-            style={styles.image}
+            source={require('../assets/imgs/desAluno.png')}
+            style={styles.imagedes}
           />
-          <Text style={styles.txtButton}>Apagar Aluno</Text>
+          <Text style={styles.txtButton}>Desvincular Aluno</Text>
         </TouchableOpacity>
       </View>
 
-      <View style={styles.footer} />
     </KeyboardAvoidingView>
   );
 };
@@ -87,11 +86,15 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: 'white',
     alignItems: "center",
-    top:50
   },
   image: {
     width: 30,
     height: 30,
+    marginRight: 20,
+  },
+  imagedes: {
+    width: 60,
+    height: 60,
     marginRight: 20,
   },
   voltarIconContainer: {
@@ -116,11 +119,11 @@ const styles = StyleSheet.create({
   },
   txtButton: {
     color: "white",
-    fontSize: 18, // Ajustado para manter a harmonia
+    fontSize: 16, // Ajustado para manter a harmonia
   },
   banner: {
     alignItems: "center",
-    marginTop: 20, // Ajuste do espaço superior
+    marginTop: 70, // Ajuste do espaço superior
     marginBottom: 40, // Ajuste do espaço inferior
     flexDirection: "column",
   },
