@@ -26,7 +26,7 @@ const ApagarAluno = () => {
               />
             </TouchableOpacity>
             <Image
-              source={require('../assets/imgs/iconapagar.png')}
+              source={require('../assets/imgs/iconDes.png')}
               style={styles.image}
             />
           </SafeAreaView>
@@ -77,7 +77,7 @@ const styles = StyleSheet.create({
     height: 244,
   },
   titulo: {
-    marginTop: 70,
+    marginTop: 65,
     fontSize: 30,
     color: '#FFA404',
     marginBottom: -55,
