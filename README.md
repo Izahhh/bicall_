@@ -1,2 +1,2 @@
 # bicall_
- app bicall 
+ Aplicativo da Empresa (projeto) de TCC, Biometric Call.
