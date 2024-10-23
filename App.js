@@ -1,10 +1,9 @@
 import * as React from "react";
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
+import { initializeApp } from 'firebase/app';
+import { getAuth } from 'firebase/auth';
 
-
-//importação firebase 
-import {getAuth, createUserWithEmailAndPassword, signInWithEmailPassword, onAuthStateChanged, signOut } from "@firebase/analytics";
 // Importação das telas
 import ConectarProfessor from "./screens/ConectarProfessor";
 import TelaPrincipal from "./screens/TelaPrincipal";
@@ -16,7 +15,7 @@ import CadastrarProfessor from "./screens/CadastrarProfessor";
 import TelaCurso from "./screens/telaCurso";
 import TelaSerie from "./screens/telaSerie";
 
-
+// Configuração do Firebase
 const firebaseConfig = {
   apiKey: "AIzaSyBWob7JNlMzYswSwh6YUzcE-xImIRIOlhQ",
   authDomain: "bicalloficial.firebaseapp.com",
@@ -27,20 +26,23 @@ const firebaseConfig = {
   measurementId: "G-HE5NDY9KL9"
 };
 
+// Inicializando o Firebase
+const app = initializeApp(firebaseConfig);
+const auth = getAuth(app);
+
 const Stack = createNativeStackNavigator();
 
 const App = () => {
   const [hideSplashScreen, setHideSplashScreen] = React.useState(false);
 
-  // Simula um tempo de exibição do SplashScreen
   React.useEffect(() => {
     setTimeout(() => {
       setHideSplashScreen(true);
-    }, 2000); // Tempo de 2 segundos para o SplashScreen
+    }, 2000);
   }, []);
 
   if (!hideSplashScreen) {
-    return null; // Mostra o SplashScreen enquanto hideSplashScreen for false
+    return null;
   }
 
   return (

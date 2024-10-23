@@ -1,16 +1,20 @@
 import React, { useState, useEffect } from "react";
 import {
-  Text, StyleSheet,View,TextInput,TouchableOpacity,Image,Modal,Pressable,SafeAreaView,
+  Text, StyleSheet, View, TextInput, TouchableOpacity, Image, Modal, Pressable, SafeAreaView,
 } from "react-native";
 import * as Font from 'expo-font';
 import { useNavigation } from '@react-navigation/native';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
-import { Padding, FontSize, Color, FontFamily, Border } from "../GlobalStyles";
+import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
+import { Padding, FontSize, Color, FontFamily } from "../GlobalStyles";
 
 const ConectarProfessor = () => {
   const navigation = useNavigation();
   const [fontLoaded, setFontLoaded] = useState(false);
+  const [email, setEmail] = useState("");
   const [cpf, setCpf] = useState("");
+  const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
   const [modalVisible, setModalVisible] = useState(false);
   const [alertContent, setAlertContent] = useState({ title: '', message: '' });
 
@@ -26,16 +30,27 @@ const ConectarProfessor = () => {
     loadFont();
   }, []);
 
-  const handleLogin = () => {
-    navigation.navigate('TelaPrincipal');
-  };
-
   const handleCadastro = () => {
-    navigation.navigate('ConectarProfessor'); 
+    if (password !== confirmPassword) {
+      showAlert('Erro', 'As senhas não correspondem.');
+      return;
+    }
+
+    const auth = getAuth();
+    createUserWithEmailAndPassword(auth, email, password)
+      .then((userCredential) => {
+        const user = userCredential.user;
+        showAlert('Sucesso', 'Cadastro realizado com sucesso!');
+        navigation.navigate('TelaPrincipal');
+      })
+      .catch((error) => {
+        const errorMessage = error.message;
+        showAlert('Erro', errorMessage);
+      });
   };
 
   const formatCpf = (text) => {
-    let cleaned = text.replace(/\D/g, ''); // Remove tudo que não é dígito
+    let cleaned = text.replace(/\D/g, '');
     let formatted = cleaned.replace(/(\d{3})(\d)/, '$1.$2')
                            .replace(/(\d{3})(\d)/, '$1.$2')
                            .replace(/(\d{3})(\d{1,2})$/, '$1-$2');
@@ -55,13 +70,21 @@ const ConectarProfessor = () => {
         showsVerticalScrollIndicator={false}
       >
         <View style={styles.banner}>
-          
         </View>
         
-            <View style={styles.con}><Text style={styles.titulo}>Cadastre-se</Text></View>
-            <View style={styles.content}>
+        <View style={styles.con}>
+          <Text style={styles.titulo}>Cadastre-se</Text>
+        </View>
+        
+        <View style={styles.content}>
           <View style={[styles.txtbox, styles.txtboxSpacing]}>
-            <TextInput style={styles.txtInput} placeholder="E-mail" />
+            <TextInput 
+              style={styles.txtInput} 
+              placeholder="E-mail" 
+              value={email} 
+              onChangeText={setEmail} 
+              keyboardType="email-address"
+            />
           </View>
           <View style={[styles.txtbox, styles.txtboxSpacing]}>
             <TextInput 
@@ -70,29 +93,39 @@ const ConectarProfessor = () => {
               value={cpf} 
               onChangeText={formatCpf} 
               keyboardType="numeric" 
-              maxLength={14} // Máximo de 14 caracteres no formato xxx.xxx.xxx-xx
+              maxLength={14}
             />
           </View>
           <View style={[styles.txtbox, styles.txtboxSpacing]}>
-            <TextInput style={styles.txtInput} placeholder="Senha" secureTextEntry={true} />
+            <TextInput 
+              style={styles.txtInput} 
+              placeholder="Senha" 
+              secureTextEntry={true} 
+              value={password} 
+              onChangeText={setPassword} 
+            />
           </View>
           <View style={[styles.txtbox, styles.txtboxSpacing]}>
-            <TextInput style={styles.txtInput} placeholder="Confirme a senha" secureTextEntry={true} />
+            <TextInput 
+              style={styles.txtInput} 
+              placeholder="Confirme a senha" 
+              secureTextEntry={true} 
+              value={confirmPassword} 
+              onChangeText={setConfirmPassword} 
+            />
           </View>
-          <TouchableOpacity style={styles.btnContinuar} onPress={() => showAlert('Atenção!', 'Insira suas credenciais para acessar.')}>
+          <TouchableOpacity style={styles.btnContinuar} onPress={handleCadastro}>
             <View style={styles.btnContinuarBackground} />
             <Text style={styles.conectar}>Cadastrar</Text>
           </TouchableOpacity>
-          
+
           <View style={styles.noContaContainer}>
             <Text style={styles.noConta}>Já possui Cadastro?</Text>
-            <TouchableOpacity onPress={handleCadastro}>
+            <TouchableOpacity onPress={() => navigation.navigate('ConectarProfessor')}>
               <Text style={styles.cadastreSe}> Conecte-se!</Text>
             </TouchableOpacity>
           </View>
-          </View>
-          
-       
+        </View>
 
         <TouchableOpacity style={styles.infoIconContainer} onPress={() => showAlert('Ajuda!', 'Crie sua conta preenchendo com seus dados. Caso já possua, clique em "Conecte-se! ".')}>
           <Image
@@ -100,8 +133,6 @@ const ConectarProfessor = () => {
             style={styles.infoIcon}
           />
         </TouchableOpacity>
-        
-        
 
         <Modal
           animationType="slide"
