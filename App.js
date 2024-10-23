@@ -2,6 +2,9 @@ import * as React from "react";
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 
+
+//importação firebase 
+import {getAuth, createUserWithEmailAndPassword, signInWithEmailPassword, onAuthStateChanged, signOut } from "@firebase/analytics";
 // Importação das telas
 import ConectarProfessor from "./screens/ConectarProfessor";
 import TelaPrincipal from "./screens/TelaPrincipal";
@@ -12,7 +15,17 @@ import VerificarAluno from "./screens/VerificarAluno";
 import CadastrarProfessor from "./screens/CadastrarProfessor";
 import TelaCurso from "./screens/telaCurso";
 import TelaSerie from "./screens/telaSerie";
-import TelaDados from "./screens/telaDados"; // Nova tela adicionada
+
+
+const firebaseConfig = {
+  apiKey: "AIzaSyBWob7JNlMzYswSwh6YUzcE-xImIRIOlhQ",
+  authDomain: "bicalloficial.firebaseapp.com",
+  projectId: "bicalloficial",
+  storageBucket: "bicalloficial.appspot.com",
+  messagingSenderId: "997635408353",
+  appId: "1:997635408353:web:664650f93539c8e5fc12a0",
+  measurementId: "G-HE5NDY9KL9"
+};
 
 const Stack = createNativeStackNavigator();
 
@@ -42,7 +55,6 @@ const App = () => {
         <Stack.Screen name="CadastrarProfessor" component={CadastrarProfessor} />
         <Stack.Screen name="telaCurso" component={TelaCurso} />
         <Stack.Screen name="telaSerie" component={TelaSerie} />
-        <Stack.Screen name="telaDados" component={TelaDados} />
       </Stack.Navigator>
     </NavigationContainer>
   );
