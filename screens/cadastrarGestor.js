@@ -6,9 +6,11 @@ import * as Font from 'expo-font';
 import { useNavigation } from '@react-navigation/native';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
+import { db } from '../App';  // Importando o Firestore do App.js
+import { doc, setDoc } from "firebase/firestore";  // Funções do Firestore
 import { Padding, FontSize, Color, FontFamily } from "../GlobalStyles";
 
-const ConectarProfessor = () => {
+const cadastrarGestor = () => {
   const navigation = useNavigation();
   const [fontLoaded, setFontLoaded] = useState(false);
   const [email, setEmail] = useState("");
@@ -26,7 +28,6 @@ const ConectarProfessor = () => {
       });
       setFontLoaded(true);
     }
-
     loadFont();
   }, []);
 
@@ -38,10 +39,20 @@ const ConectarProfessor = () => {
 
     const auth = getAuth();
     createUserWithEmailAndPassword(auth, email, password)
-      .then((userCredential) => {
+      .then(async (userCredential) => {
         const user = userCredential.user;
-        showAlert('Sucesso', 'Cadastro realizado com sucesso!');
-        navigation.navigate('TelaPrincipal');
+
+        // Salvar o CPF no Firestore
+        try {
+          await setDoc(doc(db, "nome", user.uid), {
+            email: email,
+            cpf: cpf,
+          });
+          showAlert('Sucesso', 'Cadastro realizado com sucesso!');
+          navigation.navigate('TelaPrincipal');
+        } catch (error) {
+          showAlert('Erro', 'Erro ao salvar o CPF no Firestore: ' + error.message);
+        }
       })
       .catch((error) => {
         const errorMessage = error.message;
@@ -69,49 +80,46 @@ const ConectarProfessor = () => {
         keyboardShouldPersistTaps="handled"
         showsVerticalScrollIndicator={false}
       >
-        <View style={styles.banner}>
-        </View>
-        
+        <View style={styles.banner}></View>
         <View style={styles.con}>
           <Text style={styles.titulo}>Cadastre-se</Text>
         </View>
-        
         <View style={styles.content}>
           <View style={[styles.txtbox, styles.txtboxSpacing]}>
-            <TextInput 
-              style={styles.txtInput} 
-              placeholder="E-mail" 
-              value={email} 
-              onChangeText={setEmail} 
+            <TextInput
+              style={styles.txtInput}
+              placeholder="E-mail"
+              value={email}
+              onChangeText={setEmail}
               keyboardType="email-address"
             />
           </View>
           <View style={[styles.txtbox, styles.txtboxSpacing]}>
-            <TextInput 
-              style={styles.txtInput} 
-              placeholder="CPF" 
-              value={cpf} 
-              onChangeText={formatCpf} 
-              keyboardType="numeric" 
+            <TextInput
+              style={styles.txtInput}
+              placeholder="CPF"
+              value={cpf}
+              onChangeText={formatCpf}
+              keyboardType="numeric"
               maxLength={14}
             />
           </View>
           <View style={[styles.txtbox, styles.txtboxSpacing]}>
-            <TextInput 
-              style={styles.txtInput} 
-              placeholder="Senha" 
-              secureTextEntry={true} 
-              value={password} 
-              onChangeText={setPassword} 
+            <TextInput
+              style={styles.txtInput}
+              placeholder="Senha"
+              secureTextEntry={true}
+              value={password}
+              onChangeText={setPassword}
             />
           </View>
           <View style={[styles.txtbox, styles.txtboxSpacing]}>
-            <TextInput 
-              style={styles.txtInput} 
-              placeholder="Confirme a senha" 
-              secureTextEntry={true} 
-              value={confirmPassword} 
-              onChangeText={setConfirmPassword} 
+            <TextInput
+              style={styles.txtInput}
+              placeholder="Confirme a senha"
+              secureTextEntry={true}
+              value={confirmPassword}
+              onChangeText={setConfirmPassword}
             />
           </View>
           <TouchableOpacity style={styles.btnContinuar} onPress={handleCadastro}>
@@ -121,15 +129,18 @@ const ConectarProfessor = () => {
 
           <View style={styles.noContaContainer}>
             <Text style={styles.noConta}>Já possui Cadastro?</Text>
-            <TouchableOpacity onPress={() => navigation.navigate('ConectarProfessor')}>
+            <TouchableOpacity onPress={() => navigation.navigate('conectarGestor')}>
               <Text style={styles.cadastreSe}> Conecte-se!</Text>
             </TouchableOpacity>
           </View>
         </View>
 
-        <TouchableOpacity style={styles.infoIconContainer} onPress={() => showAlert('Ajuda!', 'Crie sua conta preenchendo com seus dados. Caso já possua, clique em "Conecte-se! ".')}>
+        <TouchableOpacity
+          style={styles.infoIconContainer}
+          onPress={() => showAlert('Ajuda!', 'Crie sua conta preenchendo com seus dados. Caso já possua, clique em "Conecte-se! ".')}
+        >
           <Image
-            source={require('../assets/imgs/info.png')} 
+            source={require('../assets/imgs/info.png')}
             style={styles.infoIcon}
           />
         </TouchableOpacity>
@@ -138,9 +149,7 @@ const ConectarProfessor = () => {
           animationType="slide"
           transparent={true}
           visible={modalVisible}
-          onRequestClose={() => {
-            setModalVisible(!modalVisible);
-          }}
+          onRequestClose={() => setModalVisible(!modalVisible)}
         >
           <View style={styles.modalView}>
             <Text style={styles.modalTitle}>{alertContent.title}</Text>
@@ -176,31 +185,24 @@ const styles = StyleSheet.create({
     marginTop: 15,
     justifyContent: 'center',
     paddingLeft: 0,
-    marginBottom:35
+    marginBottom: 35,
   },
-  imgCad: {
-    width:250,
-    height: 250,
-    marginTop: 10,
-    marginRight: 10,
-  },
-
   content: {
     alignItems: "center",
     justifyContent: "center",
     flex: 1,
-    paddingBottom: 80, // Espaço para o footer
+    paddingBottom: 80,
   },
-  con:{
-    alignItems:"left",
-    width:"100%",
-    marginLeft: 92
+  con: {
+    alignItems: "left",
+    width: "100%",
+    marginLeft: 92,
   },
-  titulo:{
-    marginTop:80,
-    fontSize:24,
+  titulo: {
+    marginTop: 80,
+    fontSize: 24,
     color: '#2196F3',
-    fontWeight:'bold'
+    fontWeight: 'bold',
   },
   txtbox: {
     width: 291,
@@ -237,20 +239,19 @@ const styles = StyleSheet.create({
   },
   noContaContainer: {
     marginTop: 20,
-    flexDirection: 'row', // Dispor os itens lado a lado
+    flexDirection: 'row',
     alignItems: 'center',
   },
   noConta: {
-    color: "#000", // Texto branco para "Não possui conta?"
+    color: "#000",
     fontSize: 16,
   },
   cadastreSe: {
-    color: "#2196F3", 
+    color: "#2196F3",
     fontSize: 16,
-    marginLeft: 10, // Espaçamento entre o texto e o botão
+    marginLeft: 10,
     fontWeight: 'bold',
   },
-
   infoIconContainer: {
     position: 'absolute',
     top: 30,
@@ -277,14 +278,14 @@ const styles = StyleSheet.create({
   modalTitle: {
     fontSize: 18,
     fontWeight: 'bold',
-    marginBottom: 10,
+    marginBottom: 15,
   },
   modalMessage: {
     fontSize: 16,
-    marginBottom: 20,
+    marginBottom: 25,
   },
   button: {
-    borderRadius: 20,
+    borderRadius: 10,
     padding: 10,
     elevation: 2,
   },
@@ -298,4 +299,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default ConectarProfessor;
+export default cadastrarGestor;

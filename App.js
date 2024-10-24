@@ -3,15 +3,17 @@ import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { initializeApp } from 'firebase/app';
 import { getAuth } from 'firebase/auth';
+import { getFirestore } from 'firebase/firestore';  // Importação Firestore
+
 
 // Importação das telas
-import ConectarProfessor from "./screens/ConectarProfessor";
+import ConectarProfessor from "./screens/conectarGestor";
 import TelaPrincipal from "./screens/TelaPrincipal";
 import CadAluno from "./screens/CadAluno";
 import AtualizarAluno from "./screens/AtualizarAluno";
 import ApagarAluno from "./screens/ApagarAluno";
 import VerificarAluno from "./screens/VerificarAluno";
-import CadastrarProfessor from "./screens/CadastrarProfessor";
+import CadastrarProfessor from "./screens/cadastrarGestorr";
 import TelaCurso from "./screens/telaCurso";
 import TelaSerie from "./screens/telaSerie";
 
@@ -29,6 +31,9 @@ const firebaseConfig = {
 // Inicializando o Firebase
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
+const db = getFirestore(app);  // Inicializando o Firestore
+
+export { auth, db };  // Exportando `auth` e `db` para serem utilizados em outros arquivos
 
 const Stack = createNativeStackNavigator();
 
@@ -48,13 +53,13 @@ const App = () => {
   return (
     <NavigationContainer>
       <Stack.Navigator screenOptions={{ headerShown: false }}>
-        <Stack.Screen name="ConectarProfessor" component={ConectarProfessor} />
+        <Stack.Screen name="conectarGestor" component={ConectarProfessor} />
         <Stack.Screen name="TelaPrincipal" component={TelaPrincipal} />
         <Stack.Screen name="CadAluno" component={CadAluno} />
         <Stack.Screen name="AtualizarAluno" component={AtualizarAluno} />
         <Stack.Screen name="ApagarAluno" component={ApagarAluno} />
         <Stack.Screen name="VerificarAluno" component={VerificarAluno} />
-        <Stack.Screen name="CadastrarProfessor" component={CadastrarProfessor} />
+        <Stack.Screen name="cadastrarGestor" component={CadastrarProfessor} />
         <Stack.Screen name="telaCurso" component={TelaCurso} />
         <Stack.Screen name="telaSerie" component={TelaSerie} />
       </Stack.Navigator>

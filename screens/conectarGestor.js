@@ -1,22 +1,11 @@
 import React, { useState, useEffect } from "react";
-import {
-  Text,
-  StyleSheet,
-  View,
-  TextInput,
-  TouchableOpacity,
-  Modal,
-  Keyboard,
-  TouchableWithoutFeedback,
-  SafeAreaView,
-  Image, 
-} from "react-native";
+import {Text, StyleSheet,View,TextInput,TouchableOpacity,Modal,Keyboard,TouchableWithoutFeedback,SafeAreaView,Image, } from "react-native";
 import * as Font from 'expo-font';
 import { useNavigation } from '@react-navigation/native';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import { color } from "react-native-elements/dist/helpers";
 
-const ConectarProfessor = () => {
+const conectarGestor = () => {
   const navigation = useNavigation();
   const [fontLoaded, setFontLoaded] = useState(false);
   const [login, setLogin] = useState("");
@@ -51,7 +40,7 @@ const ConectarProfessor = () => {
   };
 
   const handleCadastro = () => {
-    navigation.navigate('CadastrarProfessor');
+    navigation.navigate('cadastrarGestor');
   };
 
   return (
@@ -260,4 +249,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default ConectarProfessor;
+export default conectarGestor;
