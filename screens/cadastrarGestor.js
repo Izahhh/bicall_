@@ -80,7 +80,8 @@ const cadastrarGestor = () => {
         keyboardShouldPersistTaps="handled"
         showsVerticalScrollIndicator={false}
       >
-        <View style={styles.banner}></View>
+        <View style={styles.banner}></View> 
+        <Image source={require('../assets/imgs/cadPro.png')} style={styles.imgCad} />
         <View style={styles.con}>
           <Text style={styles.titulo}>Cadastre-se</Text>
         </View>
@@ -177,15 +178,19 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
   },
+  imgCad:{
+    width:250,
+    height:200,
+    top: -90
+  },
   txtboxSpacing: {
     marginVertical: 15,
   },
   banner: {
-    alignItems: "center",
-    marginTop: 15,
-    justifyContent: 'center',
-    paddingLeft: 0,
-    marginBottom: 35,
+  height: 130,
+  width: '100%',
+  backgroundColor: '#40A2E3',
+  borderBottomRightRadius: 90,
   },
   content: {
     alignItems: "center",

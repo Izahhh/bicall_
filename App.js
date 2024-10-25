@@ -13,7 +13,7 @@ import CadAluno from "./screens/CadAluno";
 import AtualizarAluno from "./screens/AtualizarAluno";
 import ApagarAluno from "./screens/ApagarAluno";
 import VerificarAluno from "./screens/VerificarAluno";
-import CadastrarProfessor from "./screens/cadastrarGestorr";
+import cadastrarGestor from "./screens/cadastrarGestor";
 import TelaCurso from "./screens/telaCurso";
 import TelaSerie from "./screens/telaSerie";
 
@@ -59,7 +59,7 @@ const App = () => {
         <Stack.Screen name="AtualizarAluno" component={AtualizarAluno} />
         <Stack.Screen name="ApagarAluno" component={ApagarAluno} />
         <Stack.Screen name="VerificarAluno" component={VerificarAluno} />
-        <Stack.Screen name="cadastrarGestor" component={CadastrarProfessor} />
+        <Stack.Screen name="cadastrarGestor" component={cadastrarGestor} />
         <Stack.Screen name="telaCurso" component={TelaCurso} />
         <Stack.Screen name="telaSerie" component={TelaSerie} />
       </Stack.Navigator>
