@@ -181,7 +181,8 @@ const styles = StyleSheet.create({
   imgCad:{
     width:250,
     height:200,
-    top: -90
+    top: -90,
+  
   },
   txtboxSpacing: {
     marginVertical: 15,
@@ -204,10 +205,10 @@ const styles = StyleSheet.create({
     marginLeft: 92,
   },
   titulo: {
-    marginTop: 80,
     fontSize: 24,
     color: '#2196F3',
     fontWeight: 'bold',
+    marginTop:-70
   },
   txtbox: {
     width: 291,

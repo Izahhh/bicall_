@@ -28,15 +28,11 @@ const TelaCurso = () => {
       behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
     >
       <View style={styles.banner}>
-        <Image
-          style={styles.logo}
-          contentFit="cover"
-          source={require("../assets/imgs/onda.png")}
-        />
+        
         <Image
           style={styles.manImg}
           contentFit="cover"
-          source={require("../assets/imgs/coffee.png")}
+          source={require("../assets/imgs/curso.png")}
         />
         
       </View>
@@ -97,33 +93,26 @@ const styles = StyleSheet.create({
     fontFamily: 'Cambay-Bold',
     fontWeight: "600",
     marginBottom: 50,
-    marginTop: 20,
+    marginTop: 130,
   },
   txtButton: {
     color: "white",
     fontSize: 16,
   },
   banner: {
-    alignItems: "center",
-  
-    justifyContent: 'center',
-    
+    height: 220, // Mantém a altura do banner
+    width: '110%',
+    backgroundColor: '#40A2E3',
+    borderBottomLeftRadius: 200,
+    borderBottomRightRadius: 200,
   },
-  logo: {
-    alignItems: "center",
-    marginTop:-280,
-    marginRight:-150,
-    justifyContent: 'center',
-    paddingLeft: 45,
-    marginLeft: -55,
-    width: 580,
-    height: 580,
-    marginBottom: 10, // Adjust this to control spacing between logo and title
-  },
+
   manImg:{
-    width: 200,
+    width: 250,
     height: 200,
-    marginTop:-200,
+    position: 'absolute',
+    top: 100, // Posiciona a imagem logo abaixo do banner
+    alignSelf: 'center', // Centraliza a imagem
   },
   titulo: {
     fontSize: 25,

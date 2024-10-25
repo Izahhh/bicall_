@@ -28,15 +28,11 @@ const TelaCurso = () => {
       behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
     >
       <View style={styles.banner}>
-        <Image
-          style={styles.logo}
-          contentFit="cover"
-          source={require("../assets/imgs/onda.png")}
-        />
+        
         <Image
           style={styles.manImg}
           contentFit="cover"
-          source={require("../assets/imgs/coffee.png")}
+          source={require("../assets/imgs/curso.png")}
         />
         
       </View>
@@ -96,46 +92,30 @@ const styles = StyleSheet.create({
     color: Color.colorBlack,
     fontFamily: 'Cambay-Bold',
     fontWeight: "600",
-    marginBottom: 50,
-    marginTop: 20,
+    marginTop: 130, // Espaço maior acima do texto
   },
   txtButton: {
     color: "white",
     fontSize: 16,
   },
   banner: {
-    alignItems: "center",
-  
-    justifyContent: 'center',
-    
+    height: 220, // Mantém a altura do banner
+    width: '110%',
+    backgroundColor: '#40A2E3',
+    borderBottomLeftRadius: 200,
+    borderBottomRightRadius: 200,
   },
-  logo: {
-    alignItems: "center",
-    marginTop:-280,
-    marginRight:-150,
-    justifyContent: 'center',
-    paddingLeft: 45,
-    marginLeft: -55,
-    width: 580,
-    height: 580,
-    marginBottom: 10, // Adjust this to control spacing between logo and title
-  },
-  manImg:{
-    width: 200,
+  manImg: {
+    width: 250,
     height: 200,
-    marginTop:-200,
-  },
-  titulo: {
-    fontSize: 25,
-    color: "#FFA404",
-    fontFamily: FontFamily.beVietnamProSemiBold,
-    fontWeight: 'bold',
-    marginTop: 10, // Adjust this to control spacing between logo and title
+    position: 'absolute',
+    top: 100, // Posiciona a imagem logo abaixo do banner
+    alignSelf: 'center', // Centraliza a imagem
   },
   divBtns: {
     width: '80%',
     alignItems: 'center',
-    marginTop: 20,
+    marginTop: 60, // Espaço maior entre a imagem e os botões
   },
   footer: {
     backgroundColor: Color.colorOrange,
@@ -145,5 +125,8 @@ const styles = StyleSheet.create({
     bottom: -3,
   },
 });
+
+
+
 
 export default TelaCurso;

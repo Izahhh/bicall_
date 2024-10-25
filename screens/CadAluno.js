@@ -70,6 +70,7 @@ const CadAluno = () => {
       style={styles.cadaluno}
     >
       <ScrollView contentContainerStyle={styles.scrollView}>
+        
         <SafeAreaView style={styles.banner}>
           <TouchableOpacity style={styles.voltarIconContainer} onPress={() => navigation.goBack()}>
             <Image
@@ -77,9 +78,7 @@ const CadAluno = () => {
               style={styles.voltar}
             />
           </TouchableOpacity>
-          <Text style={styles.titulo}>   C A D A S T R A R </Text>
-          <Text style={styles.subTi}>   A L U N O </Text>
-
+          <Text style={styles.titulo}>Cadastrar Aluno</Text>
           <Image
             source={require('../assets/imgs/alunoImg.png')}
             style={styles.image}
@@ -90,7 +89,7 @@ const CadAluno = () => {
           {errorNome ? <Text style={styles.errorMessage}>{errorNome}</Text> : null}
           <TextInput
             style={[styles.input, { borderColor: errorNome ? 'red' : '#40A2E3' }]}
-            placeholder="Nome Aluno (a) Completo"
+            placeholder="Nome do Aluno"
             placeholderTextColor="#000"
             value={nome}
             onChangeText={setNome}
@@ -162,9 +161,9 @@ const styles = StyleSheet.create({
     flexGrow: 1,
   },
   banner: {
-    alignItems: 'center',
-    marginBottom: 20,
-    position: 'relative',
+    height: 220, // Mantém a altura do banner
+    width: '100%',
+    backgroundColor: '#40A2E3',
   },
   image: {
     marginTop: 40,
@@ -173,18 +172,11 @@ const styles = StyleSheet.create({
   },
   titulo: {
     marginTop: 50,
-    fontSize: 30,
-    color: '#FFA404',
+    fontSize: 28,
+    color: '#40A2E3',
     marginBottom: 20,
     textAlign: 'center',
     fontWeight: 'bold',
-  },
-  subTi: {
-    fontSize: 25,
-    color: '#FFA404',
-    marginBottom: 0,
-    textAlign: 'center',
-    marginTop: -7,
   },
   infoIconContainer: {
     position: 'absolute',
