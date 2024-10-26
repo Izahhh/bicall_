@@ -77,7 +77,7 @@ const conectarGestor = () => {
             <TouchableOpacity style={styles.btnSignIn} onPress={handleLogin}>
               <Text style={styles.btnText}>Conectar</Text>
             </TouchableOpacity>
-            <Text style={styles.orText}>OR</Text>
+            <Text style={styles.orText}>Ou</Text>
             <View style={styles.socialIconsContainer}>
               {/* Substitua os ícones abaixo pelos seus ícones reais */}
               <Image source={require('../assets/imgs/googleIcon.webp')} style={styles.socialIcon} />

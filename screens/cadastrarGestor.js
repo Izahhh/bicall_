@@ -1,7 +1,5 @@
 import React, { useState, useEffect } from "react";
-import {
-  Text, StyleSheet, View, TextInput, TouchableOpacity, Image, Modal, Pressable, SafeAreaView,
-} from "react-native";
+import {Text, StyleSheet, View, TextInput, TouchableOpacity, Image, Modal, Pressable, SafeAreaView,} from "react-native";
 import * as Font from 'expo-font';
 import { useNavigation } from '@react-navigation/native';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';

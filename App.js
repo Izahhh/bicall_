@@ -3,19 +3,18 @@ import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { initializeApp } from 'firebase/app';
 import { getAuth } from 'firebase/auth';
-import { getFirestore } from 'firebase/firestore';  // Importação Firestore
-
+import { getFirestore } from 'firebase/firestore';
 
 // Importação das telas
-import ConectarProfessor from "./screens/conectarGestor";
 import TelaPrincipal from "./screens/TelaPrincipal";
 import CadAluno from "./screens/CadAluno";
 import AtualizarAluno from "./screens/AtualizarAluno";
-import ApagarAluno from "./screens/desvinAluno";
+import desvinAluno from "./screens/desvinAluno";
 import VerificarAluno from "./screens/VerificarAluno";
 import cadastrarGestor from "./screens/cadastrarGestor";
 import TelaCurso from "./screens/telaCurso";
 import TelaSerie from "./screens/telaSerie";
+import conectarGestor from "./screens/conectarGestor";
 
 // Configuração do Firebase
 const firebaseConfig = {
@@ -53,11 +52,11 @@ const App = () => {
   return (
     <NavigationContainer>
       <Stack.Navigator screenOptions={{ headerShown: false }}>
-        <Stack.Screen name="conectarGestor" component={ConectarProfessor} />
+        <Stack.Screen name="conectarGestor" component={conectarGestor} />
         <Stack.Screen name="TelaPrincipal" component={TelaPrincipal} />
         <Stack.Screen name="CadAluno" component={CadAluno} />
         <Stack.Screen name="AtualizarAluno" component={AtualizarAluno} />
-        <Stack.Screen name="ApagarAluno" component={ApagarAluno} />
+        <Stack.Screen name="desvinAluno" component={desvinAluno} />
         <Stack.Screen name="VerificarAluno" component={VerificarAluno} />
         <Stack.Screen name="cadastrarGestor" component={cadastrarGestor} />
         <Stack.Screen name="telaCurso" component={TelaCurso} />
