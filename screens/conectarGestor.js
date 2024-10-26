@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from "react";
-import {Text, StyleSheet,View,TextInput,TouchableOpacity,Modal,Keyboard,TouchableWithoutFeedback,SafeAreaView,Image, } from "react-native";
+import { Text, StyleSheet, View, TextInput, TouchableOpacity, Modal, Keyboard, TouchableWithoutFeedback, SafeAreaView, Image } from "react-native";
 import * as Font from 'expo-font';
 import { useNavigation } from '@react-navigation/native';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
-import { color } from "react-native-elements/dist/helpers";
+import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
 
 const conectarGestor = () => {
   const navigation = useNavigation();
@@ -21,22 +21,36 @@ const conectarGestor = () => {
       });
       setFontLoaded(true);
     }
-
     loadFont();
   }, []);
 
   const handleLogin = () => {
+    const auth = getAuth();
+
     if (login.trim() === "") {
       setModalMessage("Por favor, preencha o campo de login.");
       setModalVisible(true);
       return;
     }
+
     if (senha.trim() === "") {
       setModalMessage("Por favor, preencha o campo de senha.");
       setModalVisible(true);
       return;
     }
-    navigation.navigate('telaCurso');
+
+    // Verifica se o usuário está cadastrado no Firebase
+    signInWithEmailAndPassword(auth, login, senha)
+      .then((userCredential) => {
+        const user = userCredential.user;
+        if (user) {
+          navigation.navigate('telaCurso');  // Redireciona para a tela principal
+        }
+      })
+      .catch((error) => {
+        setModalMessage("Erro ao conectar: " + error.message);
+        setModalVisible(true);
+      });
   };
 
   const handleCadastro = () => {
@@ -46,9 +60,10 @@ const conectarGestor = () => {
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
       <SafeAreaView style={styles.container}>
-      <View style={styles.imgCentro}>
-      <Text style={styles.title}>Seja bem-vindo!</Text>
-      <Image source={require('../assets/imgs/hello.png')} style={styles.imgInicial} /></View>
+        <View style={styles.imgCentro}>
+          <Text style={styles.title}>Seja bem-vindo!</Text>
+          <Image source={require('../assets/imgs/hello.png')} style={styles.imgInicial} />
+        </View>
         <KeyboardAwareScrollView
           contentContainerStyle={styles.scrollContainer}
           showsVerticalScrollIndicator={false}
@@ -56,7 +71,6 @@ const conectarGestor = () => {
           <View style={styles.con}><Text style={styles.titulo}>Conecte-se</Text></View>
 
           <View style={styles.content}>
-          
             <View style={[styles.inputBox, styles.inputBoxSpacing]}>
               <TextInput
                 style={styles.input}
@@ -79,20 +93,18 @@ const conectarGestor = () => {
             </TouchableOpacity>
             <Text style={styles.orText}>Ou</Text>
             <View style={styles.socialIconsContainer}>
-              {/* Substitua os ícones abaixo pelos seus ícones reais */}
               <Image source={require('../assets/imgs/googleIcon.webp')} style={styles.socialIcon} />
               <Image source={require('../assets/imgs/microsoft.webp')} style={styles.socialIcon} />
             </View>
           </View>
           <View style={styles.signUpContainer}>
-  <Text style={styles.signUpText}>Não possui conta?</Text>
-  <TouchableOpacity onPress={handleCadastro}>
-    <Text style={styles.signUpButton}>Cadastre-se</Text>
-  </TouchableOpacity>
-</View>
+            <Text style={styles.signUpText}>Não possui conta?</Text>
+            <TouchableOpacity onPress={handleCadastro}>
+              <Text style={styles.signUpButton}>Cadastre-se</Text>
+            </TouchableOpacity>
+          </View>
         </KeyboardAwareScrollView>
 
-        {/* Modal de Alerta Personalizado */}
         <Modal
           animationType="fade"
           transparent={true}
@@ -116,6 +128,7 @@ const conectarGestor = () => {
     </TouchableWithoutFeedback>
   );
 };
+
 
 const styles = StyleSheet.create({
   container: {
