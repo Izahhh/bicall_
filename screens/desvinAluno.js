@@ -2,7 +2,7 @@ import * as React from "react";
 import { StyleSheet, View, Text, TouchableOpacity, TextInput, Image, KeyboardAvoidingView, Platform, ScrollView, SafeAreaView, Dimensions } from "react-native";
 import { useNavigation } from '@react-navigation/native';
 
-const ApagarAluno = () => {
+const desvinAluno = () => {
   const navigation = useNavigation();
 
   return (
@@ -147,4 +147,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default ApagarAluno;
+export default desvinAluno;

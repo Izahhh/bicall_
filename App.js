@@ -11,7 +11,7 @@ import ConectarProfessor from "./screens/conectarGestor";
 import TelaPrincipal from "./screens/TelaPrincipal";
 import CadAluno from "./screens/CadAluno";
 import AtualizarAluno from "./screens/AtualizarAluno";
-import ApagarAluno from "./screens/ApagarAluno";
+import ApagarAluno from "./screens/desvinAluno";
 import VerificarAluno from "./screens/VerificarAluno";
 import cadastrarGestor from "./screens/cadastrarGestor";
 import TelaCurso from "./screens/telaCurso";
