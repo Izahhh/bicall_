@@ -1,9 +1,8 @@
 import React, { useState } from "react";
 import { StyleSheet, View, Text, TouchableOpacity, TextInput, Image, SafeAreaView, KeyboardAvoidingView, Platform, ScrollView } from "react-native";
 import { TextInputMask } from "react-native-masked-text"; 
-import {Padding, Color, Border, FontFamily, FontSize} from "../GlobalStyles";
+import { Padding, Color, Border, FontFamily, FontSize } from "../GlobalStyles";
 import { useNavigation } from '@react-navigation/native';
-import Icon from 'react-native-vector-icons/FontAwesome'; 
 
 const CadAluno = () => {
   const [nome, setNome] = useState("");
@@ -68,11 +67,11 @@ const CadAluno = () => {
   return (
     <KeyboardAvoidingView
       behavior={Platform.OS === "ios" ? "padding" : "height"}
-      style={styles.cadaluno}
+      style={styles.container}
     >
       <ScrollView contentContainerStyle={styles.scrollView}>
         
-        <SafeAreaView style={styles.bannerAzul}>
+        <View style={styles.bannerAzul}>
           <TouchableOpacity style={styles.voltarIconContainer} onPress={() => navigation.goBack()}>
             <Image
               source={require('../assets/imgs/voltar.png')} 
@@ -80,151 +79,163 @@ const CadAluno = () => {
             />
           </TouchableOpacity>
 
-
-          <Text style={styles.titulo}>Cadastrar Aluno</Text>
+          <View style={styles.txtEImg}>
+          <Text style={styles.titulo}>Cadastrar {"\n"} Aluno</Text>
           <Image
             source={require('../assets/imgs/imgcad.png')}
             style={styles.image}
           />
-        </SafeAreaView>
+          </View>
+          
+        </View>
 
-        <View style={styles.retangulo} />
-
-        <SafeAreaView style={styles.form}>
-          {errorNome ? <Text style={styles.errorMessage}>{errorNome}</Text> : null}
-          <TextInput
-            style={[styles.input, { borderColor: errorNome ? 'red' : '#40A2E3' }]}
-            placeholder="Nome do Aluno"
-            placeholderTextColor="#000"
-            value={nome}
-            onChangeText={setNome}
-          />
-
-          {errorCpf ? <Text style={styles.errorMessage}>{errorCpf}</Text> : null}
-          <TextInputMask
-            type={'cpf'}
-            style={[styles.input, { borderColor: errorCpf ? 'red' : '#40A2E3' }]}
-            placeholder="CPF"
-            placeholderTextColor="#000"
-            value={cpf}
-            onChangeText={setCpf}
-          />
-
-          <TextInput
-            style={[styles.input, { borderColor: errorEnd ? 'red' : '#40A2E3' }]}
-            placeholder="CEP"
-            placeholderTextColor="#000"
-            value={cep}
-            onChangeText={(text) => setCep(text)}
-            onBlur={buscarCEP}
-            keyboardType="numeric"
-          />
-
-          <View style={styles.divEndNum}>
-            {errorEnd ? <Text style={styles.errorMessage}>{errorEnd}</Text> : null}
+        <View style={styles.retangulo}>
+          <View style={styles.form}>
+            {errorNome ? <Text style={styles.errorMessage}>{errorNome}</Text> : null}
             <TextInput
-              style={[styles.inputEnd, { borderColor: errorEnd ? 'red' : '#40A2E3' }]}
-              placeholder="Endereço"
+              style={[styles.input, { borderColor: errorNome ? 'red' : '#40A2E3' }]}
+              placeholder="Nome do Aluno"
               placeholderTextColor="#000"
-              value={endereco}
-              onChangeText={setEndereco}
+              value={nome}
+              onChangeText={setNome}
             />
-            {errorNum ? <Text style={styles.errorMessage}>{errorNum}</Text> : null}
-            <TextInput
-              style={[styles.inputNum, { borderColor: errorNum ? 'red' : '#40A2E3' }]}
-              placeholder="Nº"
+
+            {errorCpf ? <Text style={styles.errorMessage}>{errorCpf}</Text> : null}
+            <TextInputMask
+              type={'cpf'}
+              style={[styles.input, { borderColor: errorCpf ? 'red' : '#40A2E3' }]}
+              placeholder="CPF"
               placeholderTextColor="#000"
-              value={numEnd}
-              onChangeText={setNumEnd}
+              value={cpf}
+              onChangeText={setCpf}
+            />
+
+            <TextInput
+              style={[styles.input, { borderColor: errorEnd ? 'red' : '#40A2E3' }]}
+              placeholder="CEP"
+              placeholderTextColor="#000"
+              value={cep}
+              onChangeText={(text) => setCep(text)}
+              onBlur={buscarCEP}
+              keyboardType="numeric"
+            />
+
+            <View style={styles.divEndNum}>
+              {errorEnd ? <Text style={styles.errorMessage}>{errorEnd}</Text> : null}
+              <TextInput
+                style={[styles.inputEnd, { borderColor: errorEnd ? 'red' : '#40A2E3' }]}
+                placeholder="Endereço"
+                placeholderTextColor="#000"
+                value={endereco}
+                onChangeText={setEndereco}
+              />
+              {errorNum ? <Text style={styles.errorMessage}>{errorNum}</Text> : null}
+              <TextInput
+                style={[styles.inputNum, { borderColor: errorNum ? 'red' : '#40A2E3' }]}
+                placeholder="Nº"
+                placeholderTextColor="#000"
+                value={numEnd}
+                onChangeText={setNumEnd}
+                keyboardType="numeric"
+              />
+            </View>
+
+            <TextInput
+              style={styles.input}
+              placeholder="Bairro"
+              placeholderTextColor="#000"
+              value={bairro}
+              onChangeText={setBairro}
             />
           </View>
 
-          <TextInput
-            style={styles.input}
-            placeholder="Bairro"
-            placeholderTextColor="#000"
-            value={bairro}
-            onChangeText={setBairro}
-          />
-        </SafeAreaView>
+          <TouchableOpacity style={styles.btnCon} onPress={validar}>
+            <Text style={styles.txtCon}>Continuar</Text>
+          </TouchableOpacity>
+        </View>
 
-        <View></View>
-        <TouchableOpacity style={styles.btnCon} onPress={validar}>
-          <Text style={styles.txtCon}>Continuar</Text>
-        </TouchableOpacity>
       </ScrollView>
     </KeyboardAvoidingView>
   );
 };
 
 const styles = StyleSheet.create({
-  cadaluno: {
+  container: {
     flex: 1,
     backgroundColor: '#fff',
-    padding: 20,
+  },
+  txtEImg:{
+    flexDirection: "row",
+    justifyContent: 'space-around',
+    width: '100%',
   },
   scrollView: {
     flexGrow: 1,
+    alignItems: "center",
   },
   bannerAzul: {
     width: '100%',
     backgroundColor: '#40A2E3',
-    height: 151,
-    position: "absolute",
+    height: 161,
+    alignItems: 'center',
+    justifyContent: 'center',
   },
   image: {
-    marginTop: 40,
-    width: 200,
+    marginTop: 10,
+    width: 140,
     height: 120,
   },
   titulo: {
-    marginTop: 50,
-    fontSize: 28,
-    color: '#40A2E3',
-    marginBottom: 20,
-    textAlign: 'center',
+    fontSize: 24,
+    color: '#FFF',
     fontWeight: 'bold',
-  },
-  infoIconContainer: {
-    position: 'absolute',
-    bottom: 8,
-    right: 10,
-    padding: 10,
-    zIndex: 2,
-  },
-  infoIcon: {
-    width: 30,
-    height: 30,
+    fontSize: 28,
+    marginRight: 10,
+    marginTop:30,
+    marginLeft:20,
   },
   voltarIconContainer: {
     position: 'absolute',
-    top: 130, // ajustar altura
-    left: 10,
+    top: 60, 
+    left: 20,
     zIndex: 2,
   },
   voltar: {
     width: 20,
     height: 20,
   },
-  form: {
-    flex: 1,
-    justifyContent: 'center',
+  retangulo: {
+    marginTop: -15,
+    width: '90%',
+    height:'80%',
+    backgroundColor: Color.colorWhite,
+    borderRadius: Border.br_xl,
+    paddingVertical: 50,
+    paddingHorizontal: 5,
+    shadowColor: "#000000",
+    shadowOffset: { width: 0, height: 0 },
+    shadowRadius: 20.5,
+    elevation: 20.5,
   },
-  divEndNum: {
-    flexDirection: "row",
-    justifyContent: 'space-between',
+  form: {
+    width: '100%',
     alignItems: 'center',
-    marginBottom: 20,
   },
   input: {
+    width: '100%',
     height: 50,
     backgroundColor: '#FFF',
     borderRadius: 25,
     paddingLeft: 20,
-    marginBottom: 20,
+    marginBottom: 40,
     fontSize: 16,
     borderColor: '#40A2E3',
     borderWidth: 1,
+  },
+  divEndNum: {
+    flexDirection: "row",
+    justifyContent: 'space-between',
+    width: '100%',
   },
   inputEnd: {
     flex: 3,
@@ -232,7 +243,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#FFF',
     borderRadius: 25,
     paddingLeft: 20,
-    marginBottom: 20,
+    marginBottom: 40,
     fontSize: 16,
     borderColor: '#40A2E3',
     borderWidth: 1,
@@ -243,53 +254,21 @@ const styles = StyleSheet.create({
     backgroundColor: '#FFF',
     borderRadius: 25,
     paddingLeft: 20,
-    marginBottom: 20,
+    marginBottom: 15,
     fontSize: 16,
     borderColor: '#40A2E3',
     borderWidth: 1,
     marginLeft: 10,
   },
   btnCon: {
+    width: '100%',
     height: 50,
     backgroundColor: '#40A2E3',
     borderRadius: 25,
     justifyContent: 'center',
     alignItems: 'center',
-    marginBottom: 20,
+    marginTop: 50,
   },
-  retangulo: {
-
-    top: 134,
-    
-    left: 14,
-    
-    shadowColor: "rgba(0, 0, 0, 0.25)",
-    
-    shadowOffset: {
-    
-    width: 0,
-    
-    height: 0,
-    
-    },
-    
-    shadowRadius: 20.5,
-    
-    elevation: 20.5,
-    
-    shadowOpacity: 1,
-    
-    width: 326,
-    
-    height: 607,
-    
-    borderRadius: Border.br_xl,
-    
-    position: "absolute",
-    
-    backgroundColor: Color.colorWhite,
-    
-    },
   txtCon: {
     color: '#FFF',
     fontSize: 18,
@@ -298,7 +277,8 @@ const styles = StyleSheet.create({
   errorMessage: {
     color: 'red',
     fontSize: 12,
-    marginLeft: 10,
+    marginBottom: 5,
+    alignSelf: 'flex-start',
   },
 });
 

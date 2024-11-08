@@ -27,40 +27,36 @@ const AtualizarAluno = () => {
 
   const salvar = () => {
     if (validar()) {
-      // Navegar para a tela CadastrarAluno
       navigation.navigate('CadAluno');
     }
   };
 
   return (
-    <View style={styles.container}>
-      <KeyboardAvoidingView
-        style={styles.keyboardAvoidingView}
-        behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-        keyboardVerticalOffset={Platform.OS === 'ios' ? 64 : 0}
-      >
-        <ScrollView
-          contentContainerStyle={styles.scrollView}
-          keyboardShouldPersistTaps='handled'
-        >
-          <SafeAreaView style={styles.banner}>
-            <Text style={styles.titulo}>   A T U A L I Z A R </Text>
-            <Text style={styles.subTit}>    A L U N O </Text>
-
-            <TouchableOpacity style={styles.voltarIconContainer} onPress={() => navigation.goBack()}>
-              <Image
-                source={require('../assets/imgs/voltar.png')} 
-                style={styles.voltar}
-              />
-            </TouchableOpacity>
+    <KeyboardAvoidingView
+      behavior={Platform.OS === "ios" ? "padding" : "height"}
+      style={styles.container}
+    >
+      <ScrollView contentContainerStyle={styles.scrollView}>
+        
+        <View style={styles.bannerAzul}>
+          <TouchableOpacity style={styles.voltarIconContainer} onPress={() => navigation.goBack()}>
+            <Image
+              source={require('../assets/imgs/voltar.png')} 
+              style={styles.voltar}
+            />
+          </TouchableOpacity>
 
             <Image
-              source={require('../assets/imgs/iconatualizar.png')}
+              source={require('../assets/imgs/imgup.png')}
               style={styles.image}
             />
-          </SafeAreaView>
+          </View>
 
+
+        <View style={styles.retangulo}>
+        <Text style={styles.title}>Atualizar aluno</Text>
           <View style={styles.form}>
+            {errorNome ? <Text style={styles.errorMessage}>{errorNome}</Text> : null}
             <TextInput
               style={[styles.input, { borderColor: errorNome ? 'red' : '#40A2E3' }]}
               placeholder="Nome Completo do Estudante"
@@ -68,8 +64,23 @@ const AtualizarAluno = () => {
               value={nome}
               onChangeText={setNome}
             />
-            {errorNome ? <Text style={styles.errorMessage}>{errorNome}</Text> : null}
 
+            <TextInput
+              style={[styles.input, { borderColor: errorNome ? 'red' : '#40A2E3' }]}
+              placeholder="Nome Completo do Estudante"
+              placeholderTextColor="#000"
+              value={nome}
+              onChangeText={setNome}
+            />
+            <TextInput
+              style={[styles.input, { borderColor: errorNome ? 'red' : '#40A2E3' }]}
+              placeholder="Nome Completo do Estudante"
+              placeholderTextColor="#000"
+              value={nome}
+              onChangeText={setNome}
+            />
+            
+            {errorCodigo ? <Text style={styles.errorMessage}>{errorCodigo}</Text> : null}
             <TextInput
               style={[styles.input, { borderColor: errorCodigo ? 'red' : '#40A2E3' }]}
               placeholder="Código do Estudante"
@@ -78,15 +89,15 @@ const AtualizarAluno = () => {
               onChangeText={setCodigo}
               keyboardType="numeric"
             />
-            {errorCodigo ? <Text style={styles.errorMessage}>{errorCodigo}</Text> : null}
           </View>
 
           <TouchableOpacity style={styles.btnCon} onPress={salvar}>
             <Text style={styles.txtCon}>Continuar</Text>
           </TouchableOpacity>
-        </ScrollView>
-      </KeyboardAvoidingView>
-    </View>
+        </View>
+
+      </ScrollView>
+    </KeyboardAvoidingView>
   );
 };
 
@@ -95,59 +106,84 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: '#fff',
   },
-  keyboardAvoidingView: {
-    flex: 1,
+  title: {
+    fontSize: 28,
+    color: "#000000", // Branco para o texto de boas-vindas
+    fontWeight:'bold',
+    marginBottom: 30,
+    marginLeft: 20,
+  },
+  txtEImg:{
+    flexDirection: "row",
+    justifyContent: 'space-around',
+    width: '100%',
   },
   scrollView: {
     flexGrow: 1,
-    padding: 20,
-    paddingBottom: 60, // Espaço para o footer
+    alignItems: "center",
   },
-  banner: {
+  bannerAzul: {
+    width: '100%',
+    backgroundColor: '#40A2E3',
+    height: 180,
     alignItems: 'center',
-    marginBottom: 20,
+    justifyContent: 'center',
   },
   image: {
-    marginTop: 40,
-    width: 207,
-    height: 244,
+    marginTop: 20,
+    width: 140,
+    height: 120,
   },
   titulo: {
-    marginTop: 65,
-    fontSize: 30,
-    color: '#FFA404',
-    marginBottom: 20,
-    textAlign: 'center',
+    fontSize: 28,
+    color: '#FFF',
     fontWeight: 'bold',
+    marginRight: 10,
+    marginTop: 30,
   },
-  subTit: {
-    fontSize: 25,
-    color: '#FFA404',
-    marginBottom: 0,
-    textAlign: 'center',
+  voltarIconContainer: {
+    position: 'absolute',
+    top: 60, 
+    left: 20,
+    zIndex: 2,
+  },
+  voltar: {
+    width: 20,
+    height: 20,
+  },
+  retangulo: {
+    marginTop: -20,
+    width: '100%',
+    height: '80%',
+    backgroundColor: '#FFF',
+    borderTopLeftRadius: 25,
+    borderTopRightRadius: 25,
+    paddingVertical: 50,
+    paddingHorizontal: 5,
   },
   form: {
-    flex: 1,
-    justifyContent: 'center',
-    marginBottom: 20, // Espaço acima do botão
+    width: '100%',
+    alignItems: 'center',
   },
   input: {
+    width: '90%',
     height: 50,
     backgroundColor: '#FFF',
     borderRadius: 25,
     paddingLeft: 20,
-    marginBottom: 20,
+    marginBottom: 40,
     fontSize: 16,
     borderColor: '#40A2E3',
     borderWidth: 1,
   },
   btnCon: {
+    width: '100%',
     height: 50,
     backgroundColor: '#40A2E3',
     borderRadius: 25,
     justifyContent: 'center',
     alignItems: 'center',
-    marginBottom: 10, // Espaço acima do footer
+    marginTop: 50,
   },
   txtCon: {
     color: '#FFF',
@@ -157,24 +193,8 @@ const styles = StyleSheet.create({
   errorMessage: {
     color: 'red',
     fontSize: 12,
-    marginLeft: 10,
-  },
-  voltarIconContainer: {
-    position: 'absolute',
-    top: 115, // Ajustar altura
-    left: 7,
-    zIndex: 2,
-  },
-  voltar: {
-    width: 20,
-    height: 20,
-  },
-  footer: {
-    backgroundColor: '#FFA404',
-    width: "100%",
-    height: 35,
-    position: "relative",
-    bottom: 0,
+    marginBottom: 5,
+    alignSelf: 'flex-start',
   },
 });
 

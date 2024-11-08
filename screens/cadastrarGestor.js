@@ -79,7 +79,7 @@ const cadastrarGestor = () => {
         showsVerticalScrollIndicator={false}
       >
         <View style={styles.banner}></View> 
-        <Image source={require('../assets/imgs/cadPro.png')} style={styles.imgCad} />
+        <Image source={require('../assets/imgs/imgcadprof.png')} style={styles.imgCad} />
         <View style={styles.con}>
           <Text style={styles.titulo}>Cadastre-se</Text>
         </View>
@@ -177,7 +177,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   imgCad:{
-    width:250,
+    width:220,
     height:200,
     top: -90,
   

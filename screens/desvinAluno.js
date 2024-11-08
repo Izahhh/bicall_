@@ -95,7 +95,7 @@ const styles = StyleSheet.create({
   },
   banner: {
     alignItems: 'center',
-    marginBottom: 80,
+    marginBottom: 100,
     width:'125%'
   },
   image: {
@@ -162,8 +162,8 @@ const styles = StyleSheet.create({
   },
   voltarIconContainer: {
     position: 'absolute',
-    top: 115, 
-    left: 7,
+    top: 60, 
+    left: 20,
     zIndex: 2,
   },
   voltar: {

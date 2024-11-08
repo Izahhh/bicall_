@@ -32,7 +32,7 @@ const TelaCurso = () => {
         <Image
           style={styles.manImg}
           contentFit="cover"
-          source={require("../assets/imgs/curso.png")}
+          source={require("../assets/imgs/imgselecione.png")}
         />
         
       </View>
@@ -70,8 +70,8 @@ const styles = StyleSheet.create({
   },
   voltarIconContainer: {
     position: 'absolute',
-    top: 150, 
-    left: 25, 
+    top: 60, 
+    left: 20,
     zIndex: 2,
   },
   voltar: {
@@ -106,11 +106,11 @@ const styles = StyleSheet.create({
     borderBottomRightRadius: 200,
   },
   manImg: {
-    width: 250,
-    height: 200,
+    width: 230,
+    height: 170,
     position: 'absolute',
-    top: 100, // Posiciona a imagem logo abaixo do banner
-    alignSelf: 'center', // Centraliza a imagem
+    top: 100,
+    alignSelf: 'center',
   },
   divBtns: {
     width: '80%',

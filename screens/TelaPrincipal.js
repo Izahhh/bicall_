@@ -99,8 +99,8 @@ const styles = StyleSheet.create({
   },
   voltarIconContainer: {
     position: 'absolute',
-    top: 40, 
-    left: 25, 
+    top: 60, 
+    left: 20,
     zIndex: 2,
   },
   voltar: {

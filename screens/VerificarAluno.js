@@ -2,20 +2,21 @@ import React from 'react';
 import { Text, SafeAreaView, TouchableOpacity, StyleSheet, View, Image, ScrollView } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { useNavigation } from '@react-navigation/native';
+import { Color } from "../GlobalStyles";
 
 const orders = [
-  { nome: 'Ana Oliveira', rm: '#1213', presenca: false },
-  { nome: 'Ana Souza Fernandes', rm: '#2585', presenca: false },
-  { nome: 'Beatriz Santos', rm: '#5547', presenca: false },
-  { nome: 'Carlos Santana', rm: '#4755', presenca: true },
-  { nome: 'Daniela Souza', rm: '#2522', presenca: true },
-  { nome: 'Danilo Oliveira', rm: '#4757', presenca: true },
-  { nome: 'Fransisco Silva', rm: '#7444', presenca: false },
-  { nome: 'Gabriel Barbosa', rm: '#4445', presenca: true },
-  { nome: 'Henrique Pereira', rm: '#4222', presenca: true },
-  { nome: 'Isaias Matos', rm: '#2212', presenca: true },
-  { nome: 'Joana Freitas', rm: '#3256', presenca: false },
-  { nome: 'Larissa Almeida', rm: '#1258', presenca: false },
+  { nome: 'Ana Oliveira', rm: '1213', presenca: false },
+  { nome: 'Ana Souza Fernandes', rm: '2585', presenca: false },
+  { nome: 'Beatriz Santos', rm: '5547', presenca: false },
+  { nome: 'Carlos Santana', rm: '4755', presenca: true },
+  { nome: 'Daniela Souza', rm: '2522', presenca: true },
+  { nome: 'Danilo Oliveira', rm: '4757', presenca: true },
+  { nome: 'Fransisco Silva', rm: '7444', presenca: false },
+  { nome: 'Gabriel Barbosa', rm: '4445', presenca: true },
+  { nome: 'Henrique Pereira', rm: '4222', presenca: true },
+  { nome: 'Isaias Matos', rm: '2212', presenca: true },
+  { nome: 'Joana Freitas', rm: '3256', presenca: false },
+  { nome: 'Larissa Almeida', rm: '1258', presenca: false },
 ];
 
 // Componente que representa uma linha da tabela
@@ -35,18 +36,18 @@ const TableRow = ({ order }) => (
 
 // Componente principal do aplicativo
 export default function App() {
-  const navigation = useNavigation(); // Mover useNavigation para dentro do componente
+  const navigation = useNavigation();
 
   return (
     <SafeAreaView style={styles.container}>
       <ScrollView contentContainerStyle={styles.scrollViewContainer}>
-        {/* Título */}
-        <View style={styles.banner}>
+        {/* Banner com o design do VerChamada */}
+        <View style={styles.bannerContainer}>
+          <View style={styles.bannerazul} />
           <Image
-            source={require('../assets/imgs/lista.png')}
-            style={styles.image}
+            source={require('../assets/imgs/imgchamada.png')}
+            style={styles.imgchamadaIcon}
           />
-          <Text style={styles.titulo}>Lista de Presença</Text>
           <TouchableOpacity style={styles.voltarIconContainer} onPress={() => navigation.goBack()}>
             <Image
               source={require('../assets/imgs/voltar.png')} 
@@ -54,6 +55,7 @@ export default function App() {
             />
           </TouchableOpacity>
         </View>
+        
         {/* Tabela */}
         <View style={styles.table}>
           {/* Cabeçalho da Tabela */}
@@ -79,25 +81,43 @@ const styles = StyleSheet.create({
   },
   scrollViewContainer: {
     alignItems: 'center',
-    padding: 20,
   },
-  banner: {
-    alignItems: 'center',
+  bannerContainer: {
+    width: '100%',
+    height: 151,
+    position: 'relative',
     marginBottom: 20,
-    flexDirection: 'row',
   },
-  titulo: {
-    fontSize: 28,
-    color: '#000', // Atualize com a cor definida em GlobalStyles
-    fontFamily: 'Cambay-Bold',
-    fontWeight: "600",
-    marginBottom: 55,
-    top: 60,
-    marginLeft: -16, // Ajustado para mover para a direita
+  bannerazul: {
+    position: 'absolute',
+    top: -14,
+    left: 0,
+    backgroundColor: Color.colorDeepskyblue,
+    width: '100%',
+    height: 161,
+  },
+  imgchamadaIcon: {
+    position: 'absolute',
+    top: 61,
+    left: 40,
+    width: 162,
+    height: 152,
+    overflow: "hidden",
+  },
+  voltarIconContainer: {
+    position: 'absolute',
+    top: 60, 
+    left: 20,
+    zIndex: 2,
+  },
+  voltar: {
+    width: 20,
+    height: 20,
   },
   table: {
-    width: '100%',
-    marginTop: 62,
+    width: '90%',
+    marginTop: 60,
+    marginBottom: 40,
     borderWidth: 1,
     borderColor: '#ddd',
     borderRadius: 10,
@@ -138,33 +158,5 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     flexDirection: 'row',
-  },
-  image: {
-    width: 30,
-    height: 30,
-    top: 65,
-    marginLeft: 240, // Ajustado para mover para a direita
-    position: 'absolute',
-  },
-  infoIconContainer: {
-    position: 'absolute',
-    bottom: 8,
-    right: 10,
-    padding: 10,
-    zIndex: 2,
-  },
-  infoIcon: {
-    width: 30,
-    height: 30,
-  },
-  voltarIconContainer: {
-    position: 'absolute',
-    top: 130, // Ajustar altura
-    left: -50, // Ajustado para mover para a direita
-    zIndex: 2,
-  },
-  voltar: {
-    width: 20,
-    height: 20,
   },
 });
