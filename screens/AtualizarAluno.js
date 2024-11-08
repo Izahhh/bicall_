@@ -15,11 +15,11 @@ const AtualizarAluno = () => {
     setErrorCodigo("");
 
     if (nome.trim() === "") {
-      setErrorNome("Por favor, insira o nome do aluno");
+      setErrorNome("Por favor, insira o nome do estudante");
       error = true;
     }
     if (codigo.trim() === "") {
-      setErrorCodigo("Por favor, insira o código do aluno");
+      setErrorCodigo("Por favor, insira o código do estudante");
       error = true;
     }
     return !error;
@@ -63,7 +63,7 @@ const AtualizarAluno = () => {
           <View style={styles.form}>
             <TextInput
               style={[styles.input, { borderColor: errorNome ? 'red' : '#40A2E3' }]}
-              placeholder="Nome Completo "
+              placeholder="Nome Completo do Estudante"
               placeholderTextColor="#000"
               value={nome}
               onChangeText={setNome}
@@ -72,7 +72,7 @@ const AtualizarAluno = () => {
 
             <TextInput
               style={[styles.input, { borderColor: errorCodigo ? 'red' : '#40A2E3' }]}
-              placeholder="Código do Aluno (a)"
+              placeholder="Código do Estudante"
               placeholderTextColor="#000"
               value={codigo}
               onChangeText={setCodigo}

@@ -1,5 +1,6 @@
 import * as React from "react";
 import { StyleSheet, View, Text, TouchableOpacity, TextInput, Image, KeyboardAvoidingView, Platform, ScrollView, SafeAreaView, Dimensions } from "react-native";
+import { Color, Border, Padding, FontFamily, FontSize } from "../GlobalStyles";
 import { useNavigation } from '@react-navigation/native';
 
 const desvinAluno = () => {
@@ -17,32 +18,57 @@ const desvinAluno = () => {
           keyboardShouldPersistTaps='handled'
         >
           <SafeAreaView style={styles.banner}>
-            <Text style={styles.titulo}>D E S V I N C U L A R</Text>
-            <Text style={styles.subTitulo}>A L U N O</Text>
+
+          <View style={[styles.retangulo, styles.retanguloLayout]} />
+          <View style={[styles.retangulo1, styles.retanguloLayout]} />
+          <View style={[styles.retangulo2, styles.retanguloLayout]} />
+          <Image
+           style={styles.imgdesIcon}
+           contentFit="cover"
+           source={require("../assets/imgs/imgdes.png")}
+         />
+</SafeAreaView>
+
             <TouchableOpacity style={styles.voltarIconContainer} onPress={() => navigation.goBack()}>
               <Image
                 source={require('../assets/imgs/voltar.png')}
                 style={styles.voltar}
               />
             </TouchableOpacity>
-            <Image
-              source={require('../assets/imgs/iconDes.png')}
-              style={styles.image}
-            />
-          </SafeAreaView>
+          
 
           <View style={styles.form}>
+
+          <Text style={styles.title}>Desvincular aluno</Text>
+          
+          <TextInput
+              style={styles.txtnome}
+              placeholder="Nome completo do Estudante"
+              placeholderTextColor="#000"
+            /> 
             <TextInput
               style={styles.txtcod}
-              placeholder="Código do Aluno (a)"
+              placeholder="Código do Estudante"
               placeholderTextColor="#000"
               keyboardType="numeric"
             />
+            
+
             <TextInput
-              style={styles.txtnome}
-              placeholder="Nome completo do Aluno (a)"
+              style={styles.txtBox}
+              placeholder="Senha"
               placeholderTextColor="#000"
+              secureTextEntry={true}
             />
+
+            <TextInput
+              style={styles.txtBox}
+              placeholder="Confirme a Senha"
+              placeholderTextColor="#000"
+              secureTextEntry={true}
+            />
+
+           
           </View>
 
           <TouchableOpacity style={styles.btnCon}>
@@ -65,36 +91,42 @@ const styles = StyleSheet.create({
   scrollView: {
     flexGrow: 1,
     padding: 20,
-    paddingBottom: 60, // Espaço para o footer
+    paddingBottom: 60,
   },
   banner: {
     alignItems: 'center',
-    marginBottom: 20,
+    marginBottom: 80,
+    width:'125%'
   },
   image: {
     marginTop: 65,
     width: 207,
     height: 244,
   },
-  titulo: {
-    marginTop: 65,
-    fontSize: 30,
-    color: '#FFA404',
-    marginBottom: -55,
-    textAlign: 'center',
-    fontWeight: 'bold',
+  title: {
+    fontSize: 28,
+    color: "#000000", // Branco para o texto de boas-vindas
+    fontWeight:'bold',
+    marginBottom: 30,
   },
-  subTitulo: {
-    marginTop: 70,
-    fontSize: 25,
-    color: '#FFA404',
-    marginBottom: -70,
-    textAlign: 'center',
-  },
+
   form: {
-    marginBottom: 20, // Espaço acima do botão
+    marginBottom: 20,
+    marginTop:'60%',
+
   },
   txtnome: {
+    height: 50,
+    backgroundColor: '#FFF',
+    borderRadius: 25,
+    paddingLeft: 20,
+    marginBottom: 20,
+    fontSize: 16,
+    borderColor: '#40A2E3',
+    borderWidth: 1,
+  },
+
+  txtBox: {
     height: 50,
     backgroundColor: '#FFF',
     borderRadius: 25,
@@ -113,7 +145,7 @@ const styles = StyleSheet.create({
     fontSize: 16,
     borderColor: '#40A2E3',
     borderWidth: 1,
-    width: 200,
+
   },
   btnCon: {
     height: 50,
@@ -121,7 +153,7 @@ const styles = StyleSheet.create({
     borderRadius: 25,
     justifyContent: 'center',
     alignItems: 'center',
-    marginBottom: 10, // Espaço acima do footer
+    marginBottom: 10,
   },
   txtCon: {
     color: '#FFF',
@@ -130,7 +162,7 @@ const styles = StyleSheet.create({
   },
   voltarIconContainer: {
     position: 'absolute',
-    top: 115, // Ajustar altura
+    top: 115, 
     left: 7,
     zIndex: 2,
   },
@@ -145,6 +177,40 @@ const styles = StyleSheet.create({
     position: "relative",
     bottom: 0,
   },
+  
+  retanguloLayout: {
+    borderTopRightRadius: 107,
+    borderBottomRightRadius: 107,
+    borderBottomLeftRadius: 107,
+    borderTopLeftRadius: 0,
+    backgroundColor: Color.colorDeepskyblue,
+    position: "absolute",
+  },
+  retangulo: {
+    right: 120, 
+    width: '25%',
+    height: 230,
+  },
+  retangulo1: {
+    top: -25,
+    width: '125%',
+    height: 180,
+  },
+  retangulo2: {
+    right: 15,
+    width: '25%',
+    height: 300,
+  },
+
+  imgdesIcon: {
+    top: 57,
+    left: 53,
+    width: 254,
+    height: 187,
+    position: "absolute",
+    overflow: "hidden",
+  },
+
 });
 
 export default desvinAluno;

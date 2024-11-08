@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { StyleSheet, View, Text, TouchableOpacity, TextInput, Image, SafeAreaView, KeyboardAvoidingView, Platform, ScrollView } from "react-native";
 import { TextInputMask } from "react-native-masked-text"; 
+import {Padding, Color, Border, FontFamily, FontSize} from "../GlobalStyles";
 import { useNavigation } from '@react-navigation/native';
 import Icon from 'react-native-vector-icons/FontAwesome'; 
 
@@ -43,11 +44,11 @@ const CadAluno = () => {
     setErrorCpf("");
 
     if (nome.trim() === "") {
-      setErrorNome("Por favor, insira o nome do aluno");
+      setErrorNome("Por favor, insira o nome do estudante");
       error = true;
     }
     if (endereco.trim() === "") {
-      setErrorEnd("Por favor, insira o endereço do aluno");
+      setErrorEnd("Por favor, insira o endereço do estudante");
       error = true;
     }
     if (numEnd.trim() === "") {
@@ -71,19 +72,23 @@ const CadAluno = () => {
     >
       <ScrollView contentContainerStyle={styles.scrollView}>
         
-        <SafeAreaView style={styles.banner}>
+        <SafeAreaView style={styles.bannerAzul}>
           <TouchableOpacity style={styles.voltarIconContainer} onPress={() => navigation.goBack()}>
             <Image
               source={require('../assets/imgs/voltar.png')} 
               style={styles.voltar}
             />
           </TouchableOpacity>
+
+
           <Text style={styles.titulo}>Cadastrar Aluno</Text>
           <Image
-            source={require('../assets/imgs/alunoImg.png')}
+            source={require('../assets/imgs/imgcad.png')}
             style={styles.image}
           />
         </SafeAreaView>
+
+        <View style={styles.retangulo} />
 
         <SafeAreaView style={styles.form}>
           {errorNome ? <Text style={styles.errorMessage}>{errorNome}</Text> : null}
@@ -143,6 +148,7 @@ const CadAluno = () => {
           />
         </SafeAreaView>
 
+        <View></View>
         <TouchableOpacity style={styles.btnCon} onPress={validar}>
           <Text style={styles.txtCon}>Continuar</Text>
         </TouchableOpacity>
@@ -160,10 +166,11 @@ const styles = StyleSheet.create({
   scrollView: {
     flexGrow: 1,
   },
-  banner: {
-    height: 220, // Mantém a altura do banner
+  bannerAzul: {
     width: '100%',
     backgroundColor: '#40A2E3',
+    height: 151,
+    position: "absolute",
   },
   image: {
     marginTop: 40,
@@ -250,6 +257,39 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     marginBottom: 20,
   },
+  retangulo: {
+
+    top: 134,
+    
+    left: 14,
+    
+    shadowColor: "rgba(0, 0, 0, 0.25)",
+    
+    shadowOffset: {
+    
+    width: 0,
+    
+    height: 0,
+    
+    },
+    
+    shadowRadius: 20.5,
+    
+    elevation: 20.5,
+    
+    shadowOpacity: 1,
+    
+    width: 326,
+    
+    height: 607,
+    
+    borderRadius: Border.br_xl,
+    
+    position: "absolute",
+    
+    backgroundColor: Color.colorWhite,
+    
+    },
   txtCon: {
     color: '#FFF',
     fontSize: 18,
