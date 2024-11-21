@@ -79,7 +79,7 @@ const cadastrarGestor = () => {
         showsVerticalScrollIndicator={false}
       >
         <View style={styles.banner}></View> 
-        <Image source={require('../assets/imgs/imgcadprof.png')} style={styles.imgCad} />
+        <Image source={require('../assets/imgs/imgCadProf.png')} style={styles.imgCad} />
         <View style={styles.con}>
           <Text style={styles.titulo}>Cadastre-se</Text>
         </View>
