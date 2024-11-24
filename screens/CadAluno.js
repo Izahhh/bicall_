@@ -1,22 +1,40 @@
 import React, { useState } from "react";
-import { StyleSheet, View, Text, TouchableOpacity, TextInput, Image, SafeAreaView, KeyboardAvoidingView, Platform, ScrollView } from "react-native";
-import { TextInputMask } from "react-native-masked-text"; 
-import { Padding, Color, Border, FontFamily, FontSize } from "../GlobalStyles";
+import { StyleSheet, View, Text, TouchableOpacity, TextInput, Image, SafeAreaView, Color, KeyboardAvoidingView, Platform, ScrollView } from "react-native";
+import { TextInputMask } from "react-native-masked-text";
 import { useNavigation } from '@react-navigation/native';
+import { db } from '../screens/firebaseConfig';  // Importando o Firestore firestoreConfig.js
+import { collection, addDoc, getDocs, query, orderBy } from "firebase/firestore"; // Importando funções do Firestore
 
 const CadAluno = () => {
   const [nome, setNome] = useState("");
   const [cpf, setCpf] = useState("");
   const [endereco, setEndereco] = useState("");
   const [bairro, setBairro] = useState("");
-  const [errorEnd, setErrorEnd] = useState("");  
+  const [errorEnd, setErrorEnd] = useState("");
   const [errorNum, setErrorNum] = useState("");
   const [errorNome, setErrorNome] = useState("");
   const [errorCpf, setErrorCpf] = useState("");
   const [numEnd, setNumEnd] = useState("");
   const [cep, setCep] = useState("");
+  const [codigoAluno, setCodigoAluno] = useState(null);  // Estado para o código do aluno
 
   const navigation = useNavigation();
+
+  // Função para buscar o último código cadastrado
+  const buscarUltimoCodigo = async () => {
+    try {
+      const q = query(collection(db, "alunos"), orderBy("codigo", "desc"));
+      const querySnapshot = await getDocs(q);
+      if (!querySnapshot.empty) {
+        const ultimoAluno = querySnapshot.docs[0].data();
+        setCodigoAluno(ultimoAluno.codigo + 1); // Incrementa o último código
+      } else {
+        setCodigoAluno(1); // Caso não haja alunos cadastrados, inicia com o código 1
+      }
+    } catch (error) {
+      console.error("Erro ao buscar o último código:", error);
+    }
+  };
 
   const buscarCEP = async () => {
     try {
@@ -58,9 +76,31 @@ const CadAluno = () => {
       setErrorCpf("Por favor, insira um CPF válido");
       error = true;
     }
-    
-    if (!error) {
-      console.log("Dados válidos, continuar...");
+
+    if (!error && codigoAluno !== null) {
+      // Cadastro no Firestore
+      cadastrarNoFirestore();
+    } else {
+      buscarUltimoCodigo(); // Se não tiver código, busca o último
+    }
+  };
+
+  const cadastrarNoFirestore = async () => {
+    try {
+      const docRef = await addDoc(collection(db, "alunos"), {
+        nome: nome,
+        cpf: cpf,
+        endereco: endereco,
+        bairro: bairro,
+        numero: numEnd,
+        cep: cep,
+        codigo: codigoAluno,  // Salva o código gerado
+      });
+      console.log("Aluno cadastrado com ID: ", docRef.id);
+      // Navegar para outra tela após o cadastro
+      navigation.navigate('TelaPrincipal');  // Modifique conforme sua navegação
+    } catch (e) {
+      console.error("Erro ao adicionar documento: ", e);
     }
   };
 
@@ -80,11 +120,11 @@ const CadAluno = () => {
           </TouchableOpacity>
 
           <View style={styles.txtEImg}>
-          <Text style={styles.titulo}>Cadastrar {"\n"} Aluno</Text>
-          <Image
-            source={require('../assets/imgs/imgcad.png')}
-            style={styles.image}
-          />
+            <Text style={styles.titulo}>Cadastrar {"\n"} Aluno</Text>
+            <Image
+              source={require('../assets/imgs/imgcad.png')}
+              style={styles.image}
+            />
           </View>
           
         </View>
@@ -164,14 +204,14 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: '#fff',
   },
-  txtEImg:{
-    flexDirection: "row",
+  txtEImg: {
+    flexDirection: 'row',
     justifyContent: 'space-around',
     width: '100%',
   },
   scrollView: {
     flexGrow: 1,
-    alignItems: "center",
+    alignItems: 'center',
   },
   bannerAzul: {
     width: '100%',
@@ -191,12 +231,12 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     fontSize: 28,
     marginRight: 10,
-    marginTop:30,
-    marginLeft:20,
+    marginTop: 30,
+    marginLeft: 20,
   },
   voltarIconContainer: {
     position: 'absolute',
-    top: 60, 
+    top: 60,
     left: 20,
     zIndex: 2,
   },
@@ -207,9 +247,9 @@ const styles = StyleSheet.create({
   retangulo: {
     marginTop: -15,
     width: '90%',
-    height:'80%',
-    backgroundColor: Color.colorWhite,
-    borderRadius: Border.br_xl,
+    height: '80%',
+    backgroundColor: '#fff', // Substituindo Color.colorWhite por uma cor direta
+    borderRadius: 25, // Ajuste a borda como necessário
     paddingVertical: 50,
     paddingHorizontal: 5,
     shadowColor: "#000000",
@@ -233,7 +273,7 @@ const styles = StyleSheet.create({
     borderWidth: 1,
   },
   divEndNum: {
-    flexDirection: "row",
+    flexDirection: 'row',
     justifyContent: 'space-between',
     width: '100%',
   },

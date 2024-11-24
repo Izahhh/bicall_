@@ -4,7 +4,7 @@ import * as Font from 'expo-font';
 import { useNavigation } from '@react-navigation/native';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
-import { db } from '../App';  // Importando o Firestore do App.js
+import { db } from '../screens/firebaseConfig';  // Importando o Firestore firestoreConfig.js
 import { doc, setDoc } from "firebase/firestore";  // Funções do Firestore
 import { Padding, FontSize, Color, FontFamily } from "../GlobalStyles";
 
@@ -222,7 +222,7 @@ const styles = StyleSheet.create({
     color: "#000",
   },
   btnContinuar: {
-    marginTop: 20,
+    marginTop: 0,
     alignItems: "center",
     justifyContent: "center",
   },
@@ -240,6 +240,7 @@ const styles = StyleSheet.create({
     fontFamily: 'Cambay-Bold',
     fontWeight: "700",
     fontSize: 16,
+    top:20,
   },
   noContaContainer: {
     marginTop: 20,

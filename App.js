@@ -1,9 +1,7 @@
 import * as React from "react";
 import { NavigationContainer } from "@react-navigation/native";
+import { createDrawerNavigator } from "@react-navigation/drawer"; // Adicionando Drawer Navigator
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
-import { initializeApp } from 'firebase/app';
-import { getAuth } from 'firebase/auth';
-import { getFirestore } from 'firebase/firestore';
 
 // Importação das telas
 import TelaPrincipal from "./screens/TelaPrincipal";
@@ -16,25 +14,26 @@ import TelaCurso from "./screens/telaCurso";
 import TelaSerie from "./screens/telaSerie";
 import conectarGestor from "./screens/conectarGestor";
 
-// Configuração do Firebase
-const firebaseConfig = {
-  apiKey: "AIzaSyBWob7JNlMzYswSwh6YUzcE-xImIRIOlhQ",
-  authDomain: "bicalloficial.firebaseapp.com",
-  projectId: "bicalloficial",
-  storageBucket: "bicalloficial.appspot.com",
-  messagingSenderId: "997635408353",
-  appId: "1:997635408353:web:664650f93539c8e5fc12a0",
-  measurementId: "G-HE5NDY9KL9"
-};
+// Não precisa mais da configuração do Firebase aqui, pois ela foi movida para firebaseConfig.js
+import { auth, db } from './screens/firebaseConfig'; // Agora importando de firebaseConfig
 
-// Inicializando o Firebase
-const app = initializeApp(firebaseConfig);
-const auth = getAuth(app);
-const db = getFirestore(app);  // Inicializando o Firestore
-
-export { auth, db };  // Exportando `auth` e `db` para serem utilizados em outros arquivos
-
+// Criando o Drawer e o Stack
+const Drawer = createDrawerNavigator();
 const Stack = createNativeStackNavigator();
+
+// Tela principal com o menu
+const TelaPrincipalStack = () => (
+  <Stack.Navigator screenOptions={{ headerShown: false }}>
+    <Stack.Screen name="TelaPrincipal" component={TelaPrincipal} />
+    <Stack.Screen name="CadAluno" component={CadAluno} />
+    <Stack.Screen name="AtualizarAluno" component={AtualizarAluno} />
+    <Stack.Screen name="desvinAluno" component={desvinAluno} />
+    <Stack.Screen name="VerificarAluno" component={VerificarAluno} />
+    <Stack.Screen name="cadastrarGestor" component={cadastrarGestor} />
+    <Stack.Screen name="telaCurso" component={TelaCurso} />
+    <Stack.Screen name="telaSerie" component={TelaSerie} />
+  </Stack.Navigator>
+);
 
 const App = () => {
   const [hideSplashScreen, setHideSplashScreen] = React.useState(false);
@@ -51,17 +50,10 @@ const App = () => {
 
   return (
     <NavigationContainer>
-      <Stack.Navigator screenOptions={{ headerShown: false }}>
-        <Stack.Screen name="conectarGestor" component={conectarGestor} />
-        <Stack.Screen name="TelaPrincipal" component={TelaPrincipal} />
-        <Stack.Screen name="CadAluno" component={CadAluno} />
-        <Stack.Screen name="AtualizarAluno" component={AtualizarAluno} />
-        <Stack.Screen name="desvinAluno" component={desvinAluno} />
-        <Stack.Screen name="VerificarAluno" component={VerificarAluno} />
-        <Stack.Screen name="cadastrarGestor" component={cadastrarGestor} />
-        <Stack.Screen name="telaCurso" component={TelaCurso} />
-        <Stack.Screen name="telaSerie" component={TelaSerie} />
-      </Stack.Navigator>
+      <Drawer.Navigator initialRouteName="TelaPrincipalStack">
+        <Drawer.Screen name="TelaPrincipal" component={TelaPrincipalStack} />
+        {/* Adicione outras telas ao Drawer, se necessário */}
+      </Drawer.Navigator>
     </NavigationContainer>
   );
 };
