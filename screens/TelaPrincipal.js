@@ -4,9 +4,8 @@ import { NavigationContainer } from '@react-navigation/native';
 import { StyleSheet, View, Text, Image, TouchableOpacity, ScrollView } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 
-// Componente TelaPrincipal
 const TelaPrincipal = () => {
-  const navigation = useNavigation(); // Este hook é utilizado dentro do DrawerNavigator, funcionando normalmente
+  const navigation = useNavigation();
 
   return (
     <ScrollView contentContainerStyle={styles.telaprincipal}>
@@ -18,16 +17,6 @@ const TelaPrincipal = () => {
         />
         <Text style={styles.titulo}>B I C A L L</Text>
       </View>
-
-      <TouchableOpacity
-        style={styles.menuButton}
-        onPress={() => navigation.openDrawer()} // Funciona corretamente dentro do Drawer.Navigator
-      >
-        <Image
-          source={require("../assets/imgs/menu.png")}
-          style={styles.menuIcon}
-        />
-      </TouchableOpacity>
 
       {/* Outros botões e conteúdo */}
       <View style={styles.divBtns}>
@@ -125,20 +114,6 @@ const renderDrawer = () => (
   </View>
 );
 
-// DrawerNavigator com a TelaPrincipal
-const Drawer = createDrawerNavigator();
-
-function App() {
-  return (
-    <NavigationContainer>
-      <Drawer.Navigator initialRouteName="TelaPrincipal">
-        <Drawer.Screen name="TelaPrincipal" component={TelaPrincipal} />
-        {/* Adicione outras telas ao Drawer se necessário */}
-      </Drawer.Navigator>
-    </NavigationContainer>
-  );
-}
-
 const styles = StyleSheet.create({
   telaprincipal: {
     flex: 1,
@@ -156,7 +131,7 @@ const styles = StyleSheet.create({
     marginRight: 20,
   },
   btns: {
-    backgroundColor: "#00bfff",
+    backgroundColor: "#40A2E3",
     borderRadius: 10,
     width: "110%",
     height: 60,
@@ -232,11 +207,6 @@ const styles = StyleSheet.create({
   menuText: {
     fontSize: 16,
     color: "#333",
-  },
-  menuButton: {
-    position: "absolute",
-    top: 60,
-    left: 20,
   },
 });
 
