@@ -1,200 +1,306 @@
 import React, { useState, useEffect } from "react";
-import { Text, StyleSheet, View, TextInput, TouchableOpacity, Modal, Image } from "react-native";
+import { Text, StyleSheet, View, TextInput, TouchableOpacity, Modal, Keyboard, TouchableWithoutFeedback, SafeAreaView, Image } from "react-native";
+import * as Font from 'expo-font';
 import { useNavigation } from '@react-navigation/native';
-import * as Google from 'expo-auth-session/providers/google';
-import { getAuth, GoogleAuthProvider, signInWithCredential } from "firebase/auth";
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
+import { getAuth, signInWithEmailAndPassword, signInWithCredential } from "firebase/auth";
+import { GoogleAuthProvider, signInWithRedirect, getRedirectResult } from "firebase/auth";  
+import { MicrosoftAuthProvider, OAuthProvider } from "firebase/auth";
 import { useAuthRequest } from 'expo-auth-session';
-import * as WebBrowser from 'expo-web-browser';
 
-WebBrowser.maybeCompleteAuthSession();
-
+// Carregar fontes
 const conectarGestor = () => {
   const navigation = useNavigation();
+  const [fontLoaded, setFontLoaded] = useState(false);
   const [login, setLogin] = useState("");
   const [senha, setSenha] = useState("");
   const [modalVisible, setModalVisible] = useState(false);
   const [modalMessage, setModalMessage] = useState("");
 
-  // Configuração do Google
-  const [googleRequest, googleResponse, promptGoogleAsync] = Google.useIdTokenAuthRequest({
-    clientId: 'YOUR_GOOGLE_CLIENT_ID', // Substitua pelo seu client ID
-  });
-
-  // Configuração do Microsoft - manualmente configurando a URL OAuth
-  const [microsoftRequest, microsoftResponse, promptMicrosoftAsync] = useAuthRequest({
-    clientId: 'YOUR_MICROSOFT_CLIENT_ID',  // Substitua pelo seu client ID
-    redirectUri: 'https://auth.expo.io/@your-username/your-app', // Substitua pela sua URI de redirecionamento
-    scopes: ['user.read'],
-    extraParams: { prompt: 'login' },
-  });
-
   useEffect(() => {
-    if (googleResponse?.type === 'success') {
-      const { id_token } = googleResponse.params;
-      const auth = getAuth();
-      const credential = GoogleAuthProvider.credential(id_token);
-      signInWithCredential(auth, credential)
-        .then(() => {
-          navigation.navigate('telaCurso');
-        })
-        .catch((error) => {
-          setModalMessage("Erro ao conectar: " + error.message);
-          setModalVisible(true);
-        });
+    async function loadFont() {
+      await Font.loadAsync({
+        'Cambay-Bold': require('../assets/Fonts/Cambay-Bold.ttf'),
+        'Inter-VariableFont_slnt,wght': require('../assets/Fonts/Inter-VariableFont_slnt,wght.ttf'),
+      });
+      setFontLoaded(true);
     }
+    loadFont();
+  }, []);
 
-    if (microsoftResponse?.type === 'success') {
-      const { access_token } = microsoftResponse.params;
-      const auth = getAuth();
-      const credential = OAuthProvider.credential(access_token);
-      signInWithCredential(auth, credential)
-        .then(() => {
-          navigation.navigate('telaCurso');
-        })
-        .catch((error) => {
-          setModalMessage("Erro ao conectar: " + error.message);
-          setModalVisible(true);
-        });
-    }
-  }, [googleResponse, microsoftResponse]);
-
-  const handleGoogleLogin = async () => {
-    await promptGoogleAsync();
-  };
-
-  const handleMicrosoftLogin = async () => {
-    await promptMicrosoftAsync();
-  };
-
+  // Função de login com email e senha
   const handleLogin = () => {
     const auth = getAuth();
-    if (login.trim() === "" || senha.trim() === "") {
-      setModalMessage("Por favor, preencha os campos.");
+
+    if (login.trim() === "") {
+      setModalMessage("Por favor, preencha o campo de login.");
       setModalVisible(true);
       return;
     }
 
-    // Aqui você pode implementar o login com email/senha se necessário
+    if (senha.trim() === "") {
+      setModalMessage("Por favor, preencha o campo de senha.");
+      setModalVisible(true);
+      return;
+    }
+
+    // Verifica se o usuário está cadastrado no Firebase
+    signInWithEmailAndPassword(auth, login, senha)
+      .then((userCredential) => {
+        const user = userCredential.user;
+        if (user) {
+          navigation.navigate('telaCurso');  // Redireciona para a tela principal
+        }
+      })
+      .catch((error) => {
+        setModalMessage("Erro ao conectar: " + error.message);
+        setModalVisible(true);
+      });
   };
 
+  // Função de login com Google
+  const handleGoogleLogin = () => {
+    const auth = getAuth();
+    const provider = new GoogleAuthProvider();
+    signInWithRedirect(auth, provider);
+  };
+
+  useEffect(() => {
+    const auth = getAuth();
+    getRedirectResult(auth)
+      .then((result) => {
+        if (result && result.user) {
+          navigation.navigate('telaCurso');
+        }
+      })
+      .catch((error) => {
+        setModalMessage("Erro ao conectar com Google: " + error.message);
+        setModalVisible(true);
+      });
+  }, []);
+
+  // Função de login com Microsoft
+  const handleMicrosoftLogin = async () => {
+    const provider = new OAuthProvider('https://bicalloficial.firebaseapp.com/__/auth/handler');
+    provider.setCustomParameters({
+      prompt: 'select_account',
+    });
+    try {
+      const result = await signInWithRedirect(getAuth(), provider);
+      if (result.user) {
+        navigation.navigate('telaCurso');
+      }
+    } catch (error) {
+      setModalMessage("Erro ao conectar com Microsoft: " + error.message);
+      setModalVisible(true);
+    }
+  };
+
+  // Função de cadastro
   const handleCadastro = () => {
     navigation.navigate('cadastrarGestor');
   };
 
   return (
-    <View style={styles.container}>
-      <Text style={styles.title}>Seja bem-vindo!</Text>
-
-      <TextInput
-        style={styles.input}
-        placeholder="E-mail"
-        value={login}
-        onChangeText={setLogin}
-      />
-      <TextInput
-        style={styles.input}
-        placeholder="Senha"
-        secureTextEntry={true}
-        value={senha}
-        onChangeText={setSenha}
-      />
-      <TouchableOpacity style={styles.btnSignIn} onPress={handleLogin}>
-        <Text style={styles.btnText}>Conectar</Text>
-      </TouchableOpacity>
-
-      <TouchableOpacity style={styles.socialBtn} onPress={handleGoogleLogin}>
-        <Image source={require('../assets/imgs/googleIcon.webp')} style={styles.socialIcon} />
-        <Text>Login com Google</Text>
-      </TouchableOpacity>
-
-      <TouchableOpacity style={styles.socialBtn} onPress={handleMicrosoftLogin}>
-        <Image source={require('../assets/imgs/microsoft.webp')} style={styles.socialIcon} />
-        <Text>Login com Microsoft</Text>
-      </TouchableOpacity>
-
-      <Text onPress={handleCadastro} style={styles.cadastroText}>Cadastre-se</Text>
-
-      <Modal
-        transparent={true}
-        visible={modalVisible}
-        onRequestClose={() => setModalVisible(false)}
-      >
-        <View style={styles.modalContainer}>
-          <Text>{modalMessage}</Text>
-          <TouchableOpacity onPress={() => setModalVisible(false)}>
-            <Text>OK</Text>
-          </TouchableOpacity>
+    <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+      <SafeAreaView style={styles.container}>
+        <View style={styles.imgCentro}>
+          <Text style={styles.title}>Seja bem-vindo!</Text>
+          <Image source={require('../assets/imgs/hello.png')} style={styles.imgInicial} />
         </View>
-      </Modal>
-    </View>
+        <KeyboardAwareScrollView
+          contentContainerStyle={styles.scrollContainer}
+          showsVerticalScrollIndicator={false}
+        >
+          <View style={styles.con}><Text style={styles.titulo}>Conecte-se</Text></View>
+
+          <View style={styles.content}>
+            <View style={[styles.inputBox, styles.inputBoxSpacing]}>
+              <TextInput
+                style={styles.input}
+                placeholder="E-mail"
+                value={login}
+                onChangeText={setLogin}
+              />
+            </View>
+            <View style={[styles.inputBox, styles.inputBoxSpacing]}>
+              <TextInput
+                style={styles.input}
+                placeholder="Senha"
+                secureTextEntry={true}
+                value={senha}
+                onChangeText={setSenha}
+              />
+            </View>
+            <TouchableOpacity style={styles.btnSignIn} onPress={handleLogin}>
+              <Text style={styles.btnText}>Conectar</Text>
+            </TouchableOpacity>
+            <Text style={styles.orText}>Ou</Text>
+            <View style={styles.socialIconsContainer}>
+              <TouchableOpacity onPress={handleGoogleLogin}>
+                <Image source={require('../assets/imgs/googleIcon.webp')} style={styles.socialIcon} />
+              </TouchableOpacity>
+              <TouchableOpacity onPress={handleMicrosoftLogin}>
+                <Image source={require('../assets/imgs/microsoft.webp')} style={styles.socialIcon} />
+              </TouchableOpacity>
+            </View>
+          </View>
+          <View style={styles.signUpContainer}>
+            <Text style={styles.signUpText}>Não possui conta?</Text>
+            <TouchableOpacity onPress={handleCadastro}>
+              <Text style={styles.signUpButton}>Cadastre-se</Text>
+            </TouchableOpacity>
+          </View>
+        </KeyboardAwareScrollView>
+
+        <Modal
+          animationType="fade"
+          transparent={true}
+          visible={modalVisible}
+          onRequestClose={() => setModalVisible(false)}
+        >
+          <View style={styles.modalOverlay}>
+            <View style={styles.modalContainer}>
+              <Text style={styles.modalTitle}>Atenção!</Text>
+              <Text style={styles.modalMessage}>{modalMessage}</Text>
+              <TouchableOpacity
+                style={styles.modalButton}
+                onPress={() => setModalVisible(false)}
+              >
+                <Text style={styles.modalButtonText}>OK</Text>
+              </TouchableOpacity>
+            </View>
+          </View>
+        </Modal>
+      </SafeAreaView>
+    </TouchableWithoutFeedback>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: 'center',
+    backgroundColor: "#2196F3",
+  },
+
+  con: {
+    alignItems: "left",
+    width: "100%",
+    marginLeft: 82,
+  },
+  imgCentro: {
+    alignItems: "center",
+  },
+
+  imgInicial: {
+    width: 200,
+    height: 200,
+  },
+
+  scrollContainer: {
+    flexGrow: 1,
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  content: {
+    borderRadius: 30,
     padding: 20,
-    backgroundColor: '#f8f8f8', // Cor de fundo da tela
+    alignItems: "center",
+    width: '90%',
   },
   title: {
-    fontSize: 24,
+    fontSize: 28,
+    color: "#FFF",
+    marginTop: 80,
     fontWeight: 'bold',
-    textAlign: 'center',
-    marginBottom: 20,
-    color: '#333', // Cor do título
+  },
+
+  titulo: {
+    fontSize: 24,
+    color: 'white',
+    fontWeight: 'bold',
+  },
+  inputBox: {
+    width: '100%',
+    backgroundColor: "#FFF",
+    borderRadius: 10,
+    padding: 10,
+    marginBottom: 15,
   },
   input: {
-    height: 40,
-    borderColor: '#ccc',
-    borderWidth: 1,
-    marginBottom: 10,
-    paddingLeft: 10,
-    borderRadius: 5,
-    backgroundColor: '#fff', // Cor de fundo dos campos de entrada
+    fontSize: 16,
+    color: "#000",
   },
   btnSignIn: {
-    backgroundColor: '#2196F3',
+    backgroundColor: "#fff",
+    borderRadius: 10,
     padding: 10,
-    alignItems: 'center',
-    borderRadius: 5,
-    marginBottom: 20,
+    alignItems: "center",
+    width: '100%',
+    marginTop: 10,
   },
   btnText: {
-    color: 'white',
-    fontSize: 16,
+    color: "#2196F3",
+    fontSize: 18,
+    fontWeight: 'bold',
   },
-  socialBtn: {
+  orText: {
+    color: "#FFF",
+    marginTop: 20,
+    marginBottom: 10,
+  },
+  socialIconsContainer: {
     flexDirection: 'row',
-    alignItems: 'center',
-    marginBottom: 15,
-    padding: 10,
-    backgroundColor: '#fff',
-    borderRadius: 5,
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.1,
-    shadowRadius: 2,
+    justifyContent: 'space-between',
+    width: '60%',
   },
   socialIcon: {
-    width: 30,
-    height: 30,
-    marginRight: 10,
+    width: 40,
+    height: 40,
   },
-  cadastroText: {
-    textAlign: 'center',
-    color: '#2196F3',
-    marginTop: 10,
-    fontSize: 14,
+  signUpContainer: {
+    marginTop: 20,
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  signUpText: {
+    color: '#FFF',
+    marginRight: 5,
+  },
+  signUpButton: {
+    color: '#FFF',
+    fontWeight: 'bold',
+  },
+  modalOverlay: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+    backgroundColor: "rgba(0,0,0,0.5)",
   },
   modalContainer: {
-    backgroundColor: 'white',
+    backgroundColor: "#FFF",
     padding: 20,
-    alignItems: 'center',
-    justifyContent: 'center',
     borderRadius: 10,
-    marginHorizontal: 40,
-    marginTop: 100,
+    width: 300,
+    alignItems: "center",
+  },
+  modalTitle: {
+    fontSize: 18,
+    fontWeight: "bold",
+  },
+  modalMessage: {
+    marginVertical: 10,
+    fontSize: 16,
+  },
+  modalButton: {
+    backgroundColor: "#2196F3",
+    padding: 10,
+    borderRadius: 10,
+    width: "100%",
+  },
+  modalButtonText: {
+    color: "#FFF",
+    textAlign: "center",
   },
 });
 
