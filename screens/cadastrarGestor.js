@@ -47,9 +47,9 @@ const cadastrarGestor = () => {
             cpf: cpf,
           });
           showAlert('Sucesso', 'Cadastro realizado com sucesso!');
-          navigation.navigate('TelaPrincipal');
+          navigation.navigate('telaCurso');
         } catch (error) {
-          showAlert('Erro', 'Erro ao salvar o CPF no Firestore: ' + error.message);
+          showAlert('Erro', 'Erro ao salvar o CPF! Insira novamente!: ' + error.message);
         }
       })
       .catch((error) => {

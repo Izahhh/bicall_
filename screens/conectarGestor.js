@@ -40,20 +40,32 @@ const ConectarGestor = () => {
       return;
     }
 
+    const emailPattern = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+    if (!emailPattern.test(login)) {
+      setModalMessage("O e-mail fornecido não é válido.");
+      setModalVisible(true);
+      return;
+    }
+
     try {
       setLoading(true);
       const auth = getAuth();
-      await signInWithEmailAndPassword(auth, login, senha);
-      setLoading(false);
-      navigation.navigate('telaCurso');
+      const userCredential = await signInWithEmailAndPassword(auth, login, senha);
+      const user = userCredential.user;
+
+      // Verificando se o usuário é autenticado sem precisar da verificação de email
+      if (user) {
+        setLoading(false);
+        navigation.navigate('telaCurso');  // Redireciona para a tela de cursos após login bem-sucedido
+      }
     } catch (error) {
       setLoading(false);
-
-      // Detalhamento do erro
       if (error.code === 'auth/user-not-found') {
         handleAuthError("Usuário não encontrado", error);
       } else if (error.code === 'auth/wrong-password') {
         handleAuthError("Senha incorreta", error);
+      } else if (error.code === 'auth/invalid-email') {
+        handleAuthError("E-mail inválido", error);
       } else {
         handleAuthError("Erro ao conectar", error);
       }

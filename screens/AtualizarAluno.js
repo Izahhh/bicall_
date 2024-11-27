@@ -1,35 +1,43 @@
 import React, { useState } from "react";
 import { StyleSheet, View, Text, TouchableOpacity, TextInput, Image, KeyboardAvoidingView, Platform, ScrollView } from "react-native";
-import { TextInputMask } from "react-native-masked-text";
 import { useNavigation } from '@react-navigation/native';
+import { getFirestore, collection, query, where, getDocs } from "firebase/firestore";
+import { getAuth } from "firebase/auth";
 
 const AtualizarAluno = () => {
   const [nome, setNome] = useState("");
   const [codigo, setCodigo] = useState("");
-  const [cep, setCep] = useState("");
-  const [endereco, setEndereco] = useState("");
-  const [bairro, setBairro] = useState("");
-  const [numEnd, setNumEnd] = useState("");
+  const [senha, setSenha] = useState(""); // Para a senha de confirmação
   const [errorNome, setErrorNome] = useState("");
   const [errorCodigo, setErrorCodigo] = useState("");
-  const [errorEnd, setErrorEnd] = useState("");
-  const [errorNum, setErrorNum] = useState("");
+  const [errorSenha, setErrorSenha] = useState(""); // Erro de senha
   const navigation = useNavigation();
 
-  const buscarCEP = async () => {
+  const buscarAluno = async () => {
+    const db = getFirestore();
+    const auth = getAuth();
+    const user = auth.currentUser; // Pega o usuário logado
+    if (!user) {
+      setErrorSenha("Você precisa estar logado para realizar essa ação.");
+      return;
+    }
+
     try {
-      const response = await fetch(`https://viacep.com.br/ws/${cep.replace("-", "")}/json/`);
-      const data = await response.json();
-      if (data.erro) {
-        setErrorEnd("CEP não encontrado");
+      const alunosRef = collection(db, "alunos");
+      const q = query(alunosRef, where("codigo", "==", codigo)); // Filtra pela propriedade 'codigo'
+
+      const querySnapshot = await getDocs(q);
+
+      if (!querySnapshot.empty) {
+        const aluno = querySnapshot.docs[0].data(); // Pega o primeiro documento retornado
+        setNome(aluno.nome); // Preenche o nome do estudante
+        setErrorNome(""); // Limpa a mensagem de erro
       } else {
-        setEndereco(data.logradouro);
-        setBairro(data.bairro);
-        setErrorEnd("");
+        setErrorCodigo("Aluno não encontrado.");
       }
     } catch (error) {
-      console.error("Erro ao buscar CEP:", error);
-      setErrorEnd("Erro ao buscar CEP");
+      console.error("Erro ao buscar aluno:", error);
+      setErrorCodigo("Erro ao buscar aluno.");
     }
   };
 
@@ -37,8 +45,7 @@ const AtualizarAluno = () => {
     let error = false;
     setErrorNome("");
     setErrorCodigo("");
-    setErrorEnd("");
-    setErrorNum("");
+    setErrorSenha("");
 
     if (nome.trim() === "") {
       setErrorNome("Por favor, insira o nome do estudante");
@@ -48,12 +55,8 @@ const AtualizarAluno = () => {
       setErrorCodigo("Por favor, insira o código do estudante");
       error = true;
     }
-    if (endereco.trim() === "") {
-      setErrorEnd("Por favor, insira o endereço do estudante");
-      error = true;
-    }
-    if (numEnd.trim() === "") {
-      setErrorNum("Por favor, insira o número da casa");
+    if (senha.trim() === "") {
+      setErrorSenha("Por favor, insira a senha para confirmar a alteração.");
       error = true;
     }
 
@@ -62,7 +65,8 @@ const AtualizarAluno = () => {
 
   const salvar = () => {
     if (validar()) {
-      navigation.navigate('CadAluno');
+      // Aqui, você pode adicionar a lógica para confirmar a senha e redirecionar
+      navigation.navigate('CadAluno', { nome, codigo }); // Passa os dados para a tela CadAluno
     }
   };
 
@@ -97,6 +101,7 @@ const AtualizarAluno = () => {
               placeholderTextColor="#000"
               value={nome}
               onChangeText={setNome}
+              editable={false} // Desabilita a edição do nome
             />
 
             {errorCodigo ? <Text style={styles.errorMessage}>{errorCodigo}</Text> : null}
@@ -107,45 +112,17 @@ const AtualizarAluno = () => {
               value={codigo}
               onChangeText={setCodigo}
               keyboardType="numeric"
+              onBlur={buscarAluno} // Chama a função ao sair do campo
             />
 
-            <TextInputMask
-              type={'zip-code'}
-              style={[styles.input, { borderColor: errorEnd ? 'red' : '#40A2E3' }]}
-              placeholder="CEP"
-              placeholderTextColor="#000"
-              value={cep}
-              onChangeText={setCep}
-              onBlur={buscarCEP}
-              keyboardType="numeric"
-            />
-
-            <View style={styles.divEndNum}>
-              {errorEnd ? <Text style={styles.errorMessage}>{errorEnd}</Text> : null}
-              <TextInput
-                style={[styles.inputEnd, { borderColor: errorEnd ? 'red' : '#40A2E3' }]}
-                placeholder="Rua"
-                placeholderTextColor="#000"
-                value={endereco}
-                onChangeText={setEndereco}
-              />
-              {errorNum ? <Text style={styles.errorMessage}>{errorNum}</Text> : null}
-              <TextInput
-                style={[styles.inputNum, { borderColor: errorNum ? 'red' : '#40A2E3' }]}
-                placeholder="Nº"
-                placeholderTextColor="#000"
-                value={numEnd}
-                onChangeText={setNumEnd}
-                keyboardType="numeric"
-              />
-            </View>
-
+            {errorSenha ? <Text style={styles.errorMessage}>{errorSenha}</Text> : null}
             <TextInput
-              style={styles.input}
-              placeholder="Bairro"
+              style={[styles.input, { borderColor: errorSenha ? 'red' : '#40A2E3' }]}
+              placeholder="Senha para confirmação"
               placeholderTextColor="#000"
-              value={bairro}
-              onChangeText={setBairro}
+              value={senha}
+              onChangeText={setSenha}
+              secureTextEntry
             />
           </View>
 
@@ -170,11 +147,6 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     marginBottom: 30,
     marginLeft: 20,
-  },
-  txtEImg:{
-    flexDirection: "row",
-    justifyContent: 'space-around',
-    width: '100%',
   },
   scrollView: {
     flexGrow: 1,
@@ -226,34 +198,6 @@ const styles = StyleSheet.create({
     fontSize: 16,
     borderColor: '#40A2E3',
     borderWidth: 1,
-  },
-  divEndNum: {
-    flexDirection: "row",
-    justifyContent: 'space-between',
-    width: '90%',
-  },
-  inputEnd: {
-    flex: 3,
-    height: 50,
-    backgroundColor: '#FFF',
-    borderRadius: 25,
-    paddingLeft: 20,
-    marginBottom: 40,
-    fontSize: 16,
-    borderColor: '#40A2E3',
-    borderWidth: 1,
-  },
-  inputNum: {
-    flex: 1,
-    height: 50,
-    backgroundColor: '#FFF',
-    borderRadius: 25,
-    paddingLeft: 20,
-    marginBottom: 15,
-    fontSize: 16,
-    borderColor: '#40A2E3',
-    borderWidth: 1,
-    marginLeft: 10,
   },
   btnCon: {
     width: '100%',
