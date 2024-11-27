@@ -50,10 +50,13 @@ const TelaPrincipal = () => {
         renderNavigationView={navigationView}
       >
         <ScrollView contentContainerStyle={styles.telaprincipal}>
+          <View style={styles.topoContainer}>
+            <View style={styles.ondulacao} />
+          </View>
+
           <View style={styles.bannerPrincipal}>
             <Image
               style={styles.bannerImage}
-              source={require('../assets/imgs/bannerPrincipal.png')} // Imagem do banner
             />
           </View>
 
@@ -64,12 +67,13 @@ const TelaPrincipal = () => {
             />
             <Text style={styles.titulo}> B I C A L L</Text>
           </View>
+          
           <TouchableOpacity style={styles.voltarIconContainer} onPress={() => navigation.goBack()}>
-        <Image
-          source={require('../assets/imgs/voltar.png')} 
-          style={styles.voltar}
-        />
-      </TouchableOpacity>
+            <Image
+              source={require('../assets/imgs/voltar.png')} 
+              style={styles.voltar}
+            />
+          </TouchableOpacity>
 
           <View style={styles.divBtns}>
             <TouchableOpacity
@@ -132,15 +136,37 @@ const styles = StyleSheet.create({
     backgroundColor: '#D3D3D3',
     flex: 1,
   },
+  topoContainer: {
+    width: '100%',
+    backgroundColor: '#ef9e05', // Cor azul dos botões
+    height: 100, // Altura da parte azul
+    borderBottomLeftRadius: 50,
+    borderBottomRightRadius: 50,
+    overflow: 'hidden', // Garante que a ondulação não saia da área definida
+    shadowColor: '#000', // Cor da sombra
+    shadowOffset: { width: 0, height: 4 }, // Deslocamento da sombra
+    shadowOpacity: 0.10, // Opacidade da sombra
+    shadowRadius: 10,
+    elevation: 5, 
+  },
+  
+  ondulacao: {
+    width: '100%',
+    height: 30,
+    backgroundColor: '#ef9e05',
+    transform: [{ rotate: '180deg' }],
+    position: 'absolute',
+    top: 50,
+  },
   bannerPrincipal: {
     width: '100%',
-    height: 200, // Altura do banner
-    resizeMode: 'cover', // Garantir que a imagem ocupe toda a largura
+    height: 200,
+    resizeMode: 'cover',
   },
   bannerImage: {
     width: '100%',
     height: '100%',
-    resizeMode: 'cover', // A imagem será cortada se necessário para cobrir a área
+    resizeMode: 'cover',
   },
   image: {
     width: 30,
@@ -207,25 +233,26 @@ const styles = StyleSheet.create({
   },
   banner: {
     alignItems: 'center',
-    marginTop: -20, 
-    marginBottom: 40,
+    marginTop: -40, 
+    marginBottom: 20, 
   },
   logo: {
     width: '35%',
     height: undefined,
     aspectRatio: 1,
     resizeMode: 'contain',
+    marginTop:-80,
   },
   titulo: {
     fontSize: 30,
     color: '#1C1C1C',
     fontWeight: 'bold',
-    marginTop: 10,
+    marginTop:5,
   },
   divBtns: {
     width: '80%',
     alignItems: 'center',
-    marginTop: 30,
+    marginTop:42, 
   },
 });
 

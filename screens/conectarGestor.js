@@ -3,19 +3,17 @@ import { Text, StyleSheet, View, TextInput, TouchableOpacity, Modal, Keyboard, T
 import * as Font from 'expo-font';
 import { useNavigation } from '@react-navigation/native';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
-import { getAuth, signInWithEmailAndPassword, signInWithCredential } from "firebase/auth";
-import { GoogleAuthProvider, signInWithRedirect, getRedirectResult } from "firebase/auth";  
-import { MicrosoftAuthProvider, OAuthProvider } from "firebase/auth";
-import { useAuthRequest } from 'expo-auth-session';
+import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
 
 // Carregar fontes
-const conectarGestor = () => {
+const ConectarGestor = () => {
   const navigation = useNavigation();
   const [fontLoaded, setFontLoaded] = useState(false);
   const [login, setLogin] = useState("");
   const [senha, setSenha] = useState("");
   const [modalVisible, setModalVisible] = useState(false);
   const [modalMessage, setModalMessage] = useState("");
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     async function loadFont() {
@@ -28,71 +26,37 @@ const conectarGestor = () => {
     loadFont();
   }, []);
 
-  // Função de login com email e senha
-  const handleLogin = () => {
-    const auth = getAuth();
+  const handleAuthError = (message, error) => {
+    console.error(message, error.message);
+    setModalMessage(`${message}: ${error.message}`);
+    setModalVisible(true);
+  };
 
-    if (login.trim() === "") {
-      setModalMessage("Por favor, preencha o campo de login.");
+  // Função de login com e-mail e senha
+  const handleLogin = async () => {
+    if (login === "" || senha === "") {
+      setModalMessage("Por favor, preencha todos os campos.");
       setModalVisible(true);
       return;
     }
 
-    if (senha.trim() === "") {
-      setModalMessage("Por favor, preencha o campo de senha.");
-      setModalVisible(true);
-      return;
-    }
-
-    // Verifica se o usuário está cadastrado no Firebase
-    signInWithEmailAndPassword(auth, login, senha)
-      .then((userCredential) => {
-        const user = userCredential.user;
-        if (user) {
-          navigation.navigate('telaCurso');  // Redireciona para a tela principal
-        }
-      })
-      .catch((error) => {
-        setModalMessage("Erro ao conectar: " + error.message);
-        setModalVisible(true);
-      });
-  };
-
-  // Função de login com Google
-  const handleGoogleLogin = () => {
-    const auth = getAuth();
-    const provider = new GoogleAuthProvider();
-    signInWithRedirect(auth, provider);
-  };
-
-  useEffect(() => {
-    const auth = getAuth();
-    getRedirectResult(auth)
-      .then((result) => {
-        if (result && result.user) {
-          navigation.navigate('telaCurso');
-        }
-      })
-      .catch((error) => {
-        setModalMessage("Erro ao conectar com Google: " + error.message);
-        setModalVisible(true);
-      });
-  }, []);
-
-  // Função de login com Microsoft
-  const handleMicrosoftLogin = async () => {
-    const provider = new OAuthProvider('https://bicalloficial.firebaseapp.com/__/auth/handler');
-    provider.setCustomParameters({
-      prompt: 'select_account',
-    });
     try {
-      const result = await signInWithRedirect(getAuth(), provider);
-      if (result.user) {
-        navigation.navigate('telaCurso');
-      }
+      setLoading(true);
+      const auth = getAuth();
+      await signInWithEmailAndPassword(auth, login, senha);
+      setLoading(false);
+      navigation.navigate('telaCurso');
     } catch (error) {
-      setModalMessage("Erro ao conectar com Microsoft: " + error.message);
-      setModalVisible(true);
+      setLoading(false);
+
+      // Detalhamento do erro
+      if (error.code === 'auth/user-not-found') {
+        handleAuthError("Usuário não encontrado", error);
+      } else if (error.code === 'auth/wrong-password') {
+        handleAuthError("Senha incorreta", error);
+      } else {
+        handleAuthError("Erro ao conectar", error);
+      }
     }
   };
 
@@ -112,7 +76,9 @@ const conectarGestor = () => {
           contentContainerStyle={styles.scrollContainer}
           showsVerticalScrollIndicator={false}
         >
-          <View style={styles.con}><Text style={styles.titulo}>Conecte-se</Text></View>
+          <View style={styles.con}>
+            <Text style={styles.titulo}>Conecte-se</Text>
+          </View>
 
           <View style={styles.content}>
             <View style={[styles.inputBox, styles.inputBoxSpacing]}>
@@ -132,18 +98,9 @@ const conectarGestor = () => {
                 onChangeText={setSenha}
               />
             </View>
-            <TouchableOpacity style={styles.btnSignIn} onPress={handleLogin}>
-              <Text style={styles.btnText}>Conectar</Text>
+            <TouchableOpacity style={styles.btnSignIn} onPress={handleLogin} disabled={loading}>
+              <Text style={styles.btnText}>{loading ? "Conectando..." : "Conectar"}</Text>
             </TouchableOpacity>
-            <Text style={styles.orText}>Ou</Text>
-            <View style={styles.socialIconsContainer}>
-              <TouchableOpacity onPress={handleGoogleLogin}>
-                <Image source={require('../assets/imgs/googleIcon.webp')} style={styles.socialIcon} />
-              </TouchableOpacity>
-              <TouchableOpacity onPress={handleMicrosoftLogin}>
-                <Image source={require('../assets/imgs/microsoft.webp')} style={styles.socialIcon} />
-              </TouchableOpacity>
-            </View>
           </View>
           <View style={styles.signUpContainer}>
             <Text style={styles.signUpText}>Não possui conta?</Text>
@@ -182,7 +139,6 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: "#2196F3",
   },
-
   con: {
     alignItems: "left",
     width: "100%",
@@ -191,12 +147,10 @@ const styles = StyleSheet.create({
   imgCentro: {
     alignItems: "center",
   },
-
   imgInicial: {
     width: 200,
     height: 200,
   },
-
   scrollContainer: {
     flexGrow: 1,
     justifyContent: "center",
@@ -214,7 +168,6 @@ const styles = StyleSheet.create({
     marginTop: 80,
     fontWeight: 'bold',
   },
-
   titulo: {
     fontSize: 24,
     color: 'white',
@@ -243,20 +196,6 @@ const styles = StyleSheet.create({
     color: "#2196F3",
     fontSize: 18,
     fontWeight: 'bold',
-  },
-  orText: {
-    color: "#FFF",
-    marginTop: 20,
-    marginBottom: 10,
-  },
-  socialIconsContainer: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    width: '60%',
-  },
-  socialIcon: {
-    width: 40,
-    height: 40,
   },
   signUpContainer: {
     marginTop: 20,
@@ -291,17 +230,18 @@ const styles = StyleSheet.create({
   modalMessage: {
     marginVertical: 10,
     fontSize: 16,
+    textAlign: "center",
   },
   modalButton: {
+    marginTop: 10,
     backgroundColor: "#2196F3",
     padding: 10,
-    borderRadius: 10,
-    width: "100%",
+    borderRadius: 5,
   },
   modalButtonText: {
     color: "#FFF",
-    textAlign: "center",
+    fontWeight: "bold",
   },
 });
 
-export default conectarGestor;
+export default ConectarGestor;
