@@ -1,72 +1,93 @@
 import React, { useState } from "react";
 import { StyleSheet, View, Text, TouchableOpacity, TextInput, Image, KeyboardAvoidingView, Platform, ScrollView } from "react-native";
 import { useNavigation } from '@react-navigation/native';
-import { getFirestore, collection, query, where, getDocs } from "firebase/firestore";
-import { getAuth } from "firebase/auth";
+import { getFirestore, collection, query, where, getDocs, updateDoc, doc } from "firebase/firestore";
 
 const AtualizarAluno = () => {
   const [nome, setNome] = useState("");
   const [codigo, setCodigo] = useState("");
-  const [senha, setSenha] = useState(""); // Para a senha de confirmação
-  const [errorNome, setErrorNome] = useState("");
+  const [cpf, setCpf] = useState("");
+  const [endereco, setEndereco] = useState("");
+  const [numero, setNumero] = useState("");
+  const [bairro, setBairro] = useState("");
+  const [alunoId, setAlunoId] = useState(""); // ID do documento no Firestore
   const [errorCodigo, setErrorCodigo] = useState("");
-  const [errorSenha, setErrorSenha] = useState(""); // Erro de senha
   const navigation = useNavigation();
 
-  const buscarAluno = async () => {
-    const db = getFirestore();
-    const auth = getAuth();
-    const user = auth.currentUser; // Pega o usuário logado
-    if (!user) {
-      setErrorSenha("Você precisa estar logado para realizar essa ação.");
-      return;
-    }
-
+  const buscarAlunoPorCodigo = async () => {
     try {
-      const alunosRef = collection(db, "alunos");
-      const q = query(alunosRef, where("codigo", "==", codigo)); // Filtra pela propriedade 'codigo'
+      const db = getFirestore();
+      const codigoNumero = parseInt(codigo, 10);
 
+      if (isNaN(codigoNumero)) {
+        alert("O código do aluno deve ser um número válido!");
+        limparCampos();
+        return;
+      }
+
+      const q = query(collection(db, 'alunos'), where('codigo', '==', codigoNumero));
       const querySnapshot = await getDocs(q);
 
       if (!querySnapshot.empty) {
-        const aluno = querySnapshot.docs[0].data(); // Pega o primeiro documento retornado
-        setNome(aluno.nome); // Preenche o nome do estudante
-        setErrorNome(""); // Limpa a mensagem de erro
+        querySnapshot.forEach((doc) => {
+          const alunoData = doc.data();
+          setAlunoId(doc.id); // Armazena o ID do documento
+          setNome(alunoData.nome || "");
+          setCpf(alunoData.cpf || "");
+          setEndereco(alunoData.endereco || "");
+          setNumero(alunoData.numero || "");
+          setBairro(alunoData.bairro || "");
+          setErrorCodigo("");
+        });
       } else {
-        setErrorCodigo("Aluno não encontrado.");
+        limparCampos();
+        setErrorCodigo('Aluno não encontrado!');
       }
     } catch (error) {
       console.error("Erro ao buscar aluno:", error);
-      setErrorCodigo("Erro ao buscar aluno.");
+      alert('Erro ao buscar aluno: ' + error.message);
     }
+  };
+
+  const limparCampos = () => {
+    setNome("");
+    setCpf("");
+    setEndereco("");
+    setNumero("");
+    setBairro("");
+    setAlunoId("");
   };
 
   const validar = () => {
-    let error = false;
-    setErrorNome("");
-    setErrorCodigo("");
-    setErrorSenha("");
-
-    if (nome.trim() === "") {
-      setErrorNome("Por favor, insira o nome do estudante");
-      error = true;
+    if (!codigo.trim()) {
+      setErrorCodigo("Por favor, insira o código do estudante.");
+      return false;
     }
-    if (codigo.trim() === "") {
-      setErrorCodigo("Por favor, insira o código do estudante");
-      error = true;
-    }
-    if (senha.trim() === "") {
-      setErrorSenha("Por favor, insira a senha para confirmar a alteração.");
-      error = true;
-    }
-
-    return !error;
+    return true;
   };
 
-  const salvar = () => {
-    if (validar()) {
-      // Aqui, você pode adicionar a lógica para confirmar a senha e redirecionar
-      navigation.navigate('CadAluno', { nome, codigo }); // Passa os dados para a tela CadAluno
+  const salvar = async () => {
+    if (validar() && alunoId) {
+      try {
+        const db = getFirestore();
+        const alunoRef = doc(db, "alunos", alunoId);
+
+        await updateDoc(alunoRef, {
+          nome,
+          cpf,
+          endereco,
+          numero,
+          bairro,
+        });
+
+        alert("Dados atualizados com sucesso!");
+        navigation.goBack();
+      } catch (error) {
+        console.error("Erro ao salvar aluno:", error);
+        alert("Erro ao salvar os dados: " + error.message);
+      }
+    } else {
+      alert("Busque um aluno válido antes de salvar.");
     }
   };
 
@@ -76,11 +97,10 @@ const AtualizarAluno = () => {
       style={styles.container}
     >
       <ScrollView contentContainerStyle={styles.scrollView}>
-        
         <View style={styles.bannerAzul}>
           <TouchableOpacity style={styles.voltarIconContainer} onPress={() => navigation.goBack()}>
             <Image
-              source={require('../assets/imgs/voltar.png')} 
+              source={require('../assets/imgs/voltar.png')}
               style={styles.voltar}
             />
           </TouchableOpacity>
@@ -94,16 +114,6 @@ const AtualizarAluno = () => {
         <View style={styles.retangulo}>
           <Text style={styles.title}>Atualizar aluno</Text>
           <View style={styles.form}>
-            {errorNome ? <Text style={styles.errorMessage}>{errorNome}</Text> : null}
-            <TextInput
-              style={[styles.input, { borderColor: errorNome ? 'red' : '#40A2E3' }]}
-              placeholder="Nome Completo do Estudante"
-              placeholderTextColor="#000"
-              value={nome}
-              onChangeText={setNome}
-              editable={false} // Desabilita a edição do nome
-            />
-
             {errorCodigo ? <Text style={styles.errorMessage}>{errorCodigo}</Text> : null}
             <TextInput
               style={[styles.input, { borderColor: errorCodigo ? 'red' : '#40A2E3' }]}
@@ -112,25 +122,50 @@ const AtualizarAluno = () => {
               value={codigo}
               onChangeText={setCodigo}
               keyboardType="numeric"
-              onBlur={buscarAluno} // Chama a função ao sair do campo
+              onBlur={buscarAlunoPorCodigo}
             />
-
-            {errorSenha ? <Text style={styles.errorMessage}>{errorSenha}</Text> : null}
             <TextInput
-              style={[styles.input, { borderColor: errorSenha ? 'red' : '#40A2E3' }]}
-              placeholder="Senha para confirmação"
+              style={styles.input}
+              placeholder="Nome Completo"
               placeholderTextColor="#000"
-              value={senha}
-              onChangeText={setSenha}
-              secureTextEntry
+              value={nome}
+              onChangeText={setNome}
+            />
+            <TextInput
+              style={styles.input}
+              placeholder="CPF"
+              placeholderTextColor="#000"
+              value={cpf}
+              onChangeText={setCpf}
+            />
+            <TextInput
+              style={styles.input}
+              placeholder="Endereço"
+              placeholderTextColor="#000"
+              value={endereco}
+              onChangeText={setEndereco}
+            />
+            <TextInput
+              style={styles.input}
+              placeholder="Número"
+              placeholderTextColor="#000"
+              value={numero}
+              onChangeText={setNumero}
+              keyboardType="numeric"
+            />
+            <TextInput
+              style={styles.input}
+              placeholder="Bairro"
+              placeholderTextColor="#000"
+              value={bairro}
+              onChangeText={setBairro}
             />
           </View>
 
           <TouchableOpacity style={styles.btnCon} onPress={salvar}>
-            <Text style={styles.txtCon}>Continuar</Text>
+            <Text style={styles.txtCon}>Salvar</Text>
           </TouchableOpacity>
         </View>
-
       </ScrollView>
     </KeyboardAvoidingView>
   );
