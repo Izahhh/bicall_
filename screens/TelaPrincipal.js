@@ -14,13 +14,15 @@ const TelaPrincipal = () => {
 
   const navigationView = () => (
     <SafeAreaView style={[styles.container, styles.navigationContainer]}>
-      <Text style={styles.paragraph}>Usuario</Text>
+              <Image source={require('../assets/imgs/perfil.png')} style={styles.perfilft} />
+
+      <Text style={styles.paragraph}>Olá Gestor(a)!</Text>
 
       <TouchableOpacity
         style={styles.button}
         onPress={() => navigation.navigate('cadastrarGestor')}>
         <Image source={require('../assets/imgs/editar.png')} style={styles.buttonImage} />
-        <Text style={styles.buttonText}>Editar Dados</Text>
+        <Text style={styles.buttonText}>Editar Cadastro</Text>
       </TouchableOpacity>
 
       <TouchableOpacity
@@ -67,7 +69,17 @@ const TelaPrincipal = () => {
             />
             <Text style={styles.titulo}> B I C A L L</Text>
           </View>
-          
+
+          <TouchableOpacity
+            style={styles.menuIconContainer}
+            onPress={() => drawer.current.openDrawer()}
+          >
+            <Image
+              source={require('../assets/imgs/menu.png')}
+              style={styles.menuIcon}
+            />
+          </TouchableOpacity>
+
           <TouchableOpacity style={styles.voltarIconContainer} onPress={() => navigation.goBack()}>
             <Image
               source={require('../assets/imgs/voltar.png')} 
@@ -138,14 +150,14 @@ const styles = StyleSheet.create({
   },
   topoContainer: {
     width: '100%',
-    backgroundColor: '#ef9e05', // Cor azul dos botões
-    height: 100, // Altura da parte azul
+    backgroundColor: '#ef9e05',
+    height: 100,
     borderBottomLeftRadius: 50,
     borderBottomRightRadius: 50,
-    overflow: 'hidden', // Garante que a ondulação não saia da área definida
-    shadowColor: '#000', // Cor da sombra
-    shadowOffset: { width: 0, height: 4 }, // Deslocamento da sombra
-    shadowOpacity: 0.10, // Opacidade da sombra
+    overflow: 'hidden',
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.10,
     shadowRadius: 10,
     elevation: 5, 
   },
@@ -188,6 +200,14 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     marginBottom: 20,
   },
+  perfilft: {
+    width: 150,
+    height: 150,
+    marginRight: 5,
+    borderRadius: 30, // Isso vai fazer a imagem ficar redonda
+    overflow: 'hidden', // Garante que a imagem não ultrapasse as bordas arredondadas
+  },
+  
   container: {
     flex: 1,
     justifyContent: 'center',
@@ -231,28 +251,38 @@ const styles = StyleSheet.create({
     width: 20,
     height: 20,
   },
+  menuIconContainer: {
+    position: 'absolute',
+    top:50, 
+    left: 20, 
+    zIndex: 2,
+  },
+  menuIcon: {
+    width: 30,
+    height: 30,
+  },
   banner: {
     alignItems: 'center',
-    marginTop: -40, 
-    marginBottom: 20, 
+    marginTop: -40,
+    marginBottom: 20,
   },
   logo: {
     width: '35%',
     height: undefined,
     aspectRatio: 1,
     resizeMode: 'contain',
-    marginTop:-80,
+    marginTop: -80,
   },
   titulo: {
     fontSize: 30,
     color: '#1C1C1C',
     fontWeight: 'bold',
-    marginTop:5,
+    marginTop: 5,
   },
   divBtns: {
     width: '80%',
     alignItems: 'center',
-    marginTop:42, 
+    marginTop: 42,
   },
 });
 
