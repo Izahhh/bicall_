@@ -10,6 +10,7 @@ const AtualizarAluno = () => {
   const [endereco, setEndereco] = useState("");
   const [numero, setNumero] = useState("");
   const [bairro, setBairro] = useState("");
+  const [senha, setSenha] = useState(""); // Novo campo para senha
   const [alunoId, setAlunoId] = useState(""); // ID do documento no Firestore
   const [errorCodigo, setErrorCodigo] = useState("");
   const navigation = useNavigation();
@@ -37,6 +38,7 @@ const AtualizarAluno = () => {
           setEndereco(alunoData.endereco || "");
           setNumero(alunoData.numero || "");
           setBairro(alunoData.bairro || "");
+          setSenha(alunoData.senha || ""); // Preenche o campo senha se existir
           setErrorCodigo("");
         });
       } else {
@@ -55,6 +57,7 @@ const AtualizarAluno = () => {
     setEndereco("");
     setNumero("");
     setBairro("");
+    setSenha("");
     setAlunoId("");
   };
 
@@ -78,6 +81,7 @@ const AtualizarAluno = () => {
           endereco,
           numero,
           bairro,
+          senha, // Atualiza a senha no Firestore
         });
 
         alert("Dados atualizados com sucesso!");
@@ -159,6 +163,14 @@ const AtualizarAluno = () => {
               placeholderTextColor="#000"
               value={bairro}
               onChangeText={setBairro}
+            />
+            <TextInput
+              style={styles.input}
+              placeholder="Senha"
+              placeholderTextColor="#000"
+              value={senha}
+              onChangeText={setSenha}
+              secureTextEntry // Campo para senha
             />
           </View>
 
