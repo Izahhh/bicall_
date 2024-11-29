@@ -46,7 +46,7 @@ export default function App() {
         <View style={styles.bannerContainer}>
 
           <View style={styles.bannerazul} />
-          <Text style={styles.tit}>Verificar {"\n"} Chamada</Text>
+          <Text style={styles.tit}> Verificar {"\n"} Chamada</Text>
 
           <Image
             source={require('../assets/imgs/imgchamada.png')}
