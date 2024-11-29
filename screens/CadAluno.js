@@ -98,7 +98,7 @@ const CadAluno = () => {
       });
       console.log("Aluno cadastrado com ID: ", docRef.id);
       // Navegar para outra tela após o cadastro
-      navigation.navigate('telaCurso');  // Modifique conforme sua navegação
+      navigation.navigate('TelaPrincipal');  // Modifique conforme sua navegação
     } catch (e) {
       console.error("Erro ao adicionar documento: ", e);
     }
@@ -232,7 +232,7 @@ const styles = StyleSheet.create({
     fontSize: 28,
     marginRight: 10,
     marginTop: 30,
-    marginLeft: 20,
+    marginLeft: 30,
   },
   voltarIconContainer: {
     position: 'absolute',

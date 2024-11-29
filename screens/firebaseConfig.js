@@ -19,4 +19,10 @@ const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const db = getFirestore(app);  // Inicializando o Firestore
 
-export { auth, db };  // Exportando `auth` e `db` para serem utilizados em outros arquivos
+export { auth, db };  
+
+
+
+
+
+

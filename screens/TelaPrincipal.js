@@ -1,5 +1,5 @@
 import React, { useRef, useState } from 'react';
-import { Button, DrawerLayoutAndroid, Text, StyleSheet, View, TouchableOpacity, ScrollView, Image, Alert } from 'react-native';
+import { Button, DrawerLayoutAndroid, Text, StyleSheet, View, TouchableOpacity, ScrollView, Image, Alert, BackHandler } from 'react-native';
 import { SafeAreaView, SafeAreaProvider } from 'react-native-safe-area-context';
 import { useNavigation } from '@react-navigation/native';
 
@@ -12,31 +12,43 @@ const TelaPrincipal = () => {
     setDrawerPosition(drawerPosition === 'left' ? 'right' : 'left');
   };
 
+  const handleExitApp = () => {
+    Alert.alert(
+      'Confirmar Saída',
+      'Tem certeza que deseja sair?',
+      [
+        { text: 'Cancelar', style: 'cancel' },
+        {
+          text: 'Sair',
+          onPress: () => {
+            BackHandler.exitApp(); 
+          }
+        }
+      ]
+    );
+  };
+
   const navigationView = () => (
     <SafeAreaView style={[styles.container, styles.navigationContainer]}>
-              <Image source={require('../assets/imgs/perfil.png')} style={styles.perfilft} />
-
+      <Image source={require('../assets/imgs/perfil.png')} style={styles.perfilft} />
       <Text style={styles.paragraph}>Olá Gestor(a)!</Text>
-
       <TouchableOpacity
         style={styles.button}
         onPress={() => navigation.navigate('cadastrarGestor')}>
         <Image source={require('../assets/imgs/editar.png')} style={styles.buttonImage} />
         <Text style={styles.buttonText}>Editar Cadastro</Text>
       </TouchableOpacity>
-
       <TouchableOpacity
         style={styles.button}
         onPress={() => {
-          Alert.alert('Informação', 'Aqui você pode tirar dúvidas!');
+          Alert.alert('Ajuda!', 'Em caso de dúvidas ou problemas, entre em contato conosco pelo e-mail: biometriccall@gmail.com. Estamos à disposição para ajudar!');
         }}>
         <Image source={require('../assets/imgs/duvidas.png')} style={styles.buttonImage} />
-        <Text style={styles.buttonText}>Dúvidas</Text>
+        <Text style={styles.buttonText}>Ajuda</Text>
       </TouchableOpacity>
-
       <TouchableOpacity
         style={styles.button}
-        onPress={() => navigation.navigate('Login')}>
+        onPress={handleExitApp}>
         <Image source={require('../assets/imgs/sair.png')} style={styles.buttonImage} />
         <Text style={styles.buttonText}>Sair</Text>
       </TouchableOpacity>
@@ -55,13 +67,11 @@ const TelaPrincipal = () => {
           <View style={styles.topoContainer}>
             <View style={styles.ondulacao} />
           </View>
-
           <View style={styles.bannerPrincipal}>
             <Image
               style={styles.bannerImage}
             />
           </View>
-
           <View style={styles.banner}>
             <Image
               style={styles.logo}
@@ -69,7 +79,6 @@ const TelaPrincipal = () => {
             />
             <Text style={styles.titulo}> B I C A L L</Text>
           </View>
-
           <TouchableOpacity
             style={styles.menuIconContainer}
             onPress={() => drawer.current.openDrawer()}
@@ -79,14 +88,12 @@ const TelaPrincipal = () => {
               style={styles.menuIcon}
             />
           </TouchableOpacity>
-
           <TouchableOpacity style={styles.voltarIconContainer} onPress={() => navigation.goBack()}>
             <Image
               source={require('../assets/imgs/voltar.png')} 
               style={styles.voltar}
             />
           </TouchableOpacity>
-
           <View style={styles.divBtns}>
             <TouchableOpacity
               style={styles.btns}
@@ -161,7 +168,6 @@ const styles = StyleSheet.create({
     shadowRadius: 10,
     elevation: 5, 
   },
-  
   ondulacao: {
     width: '100%',
     height: 30,
@@ -204,10 +210,9 @@ const styles = StyleSheet.create({
     width: 150,
     height: 150,
     marginRight: 5,
-    borderRadius: 30, // Isso vai fazer a imagem ficar redonda
-    overflow: 'hidden', // Garante que a imagem não ultrapasse as bordas arredondadas
+    borderRadius: 30,
+    overflow: 'hidden',
   },
-  
   container: {
     flex: 1,
     justifyContent: 'center',

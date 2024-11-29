@@ -4,26 +4,28 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 import { useNavigation } from '@react-navigation/native';
 import { Color } from "../GlobalStyles";
 
+
+
 const orders = [
-  { nome: 'Ana Oliveira', rm: '1213', presenca: false },
-  { nome: 'Ana Souza Fernandes', rm: '2585', presenca: false },
-  { nome: 'Beatriz Santos', rm: '5547', presenca: false },
-  { nome: 'Carlos Santana', rm: '4755', presenca: true },
-  { nome: 'Daniela Souza', rm: '2522', presenca: true },
-  { nome: 'Danilo Oliveira', rm: '4757', presenca: true },
-  { nome: 'Fransisco Silva', rm: '7444', presenca: false },
-  { nome: 'Gabriel Barbosa', rm: '4445', presenca: true },
-  { nome: 'Henrique Pereira', rm: '4222', presenca: true },
-  { nome: 'Isaias Matos', rm: '2212', presenca: true },
-  { nome: 'Joana Freitas', rm: '3256', presenca: false },
-  { nome: 'Larissa Almeida', rm: '1258', presenca: false },
+  { nome: 'Ana Oliveira', cd: '1213', presenca: false },
+  { nome: 'Ana Souza Fernandes', cd: '2585', presenca: false },
+  { nome: 'Beatriz Santos', cd: '5547', presenca: false },
+  { nome: 'Carlos Santana', cd: '4755', presenca: true },
+  { nome: 'Daniela Souza', cd: '2522', presenca: true },
+  { nome: 'Danilo Oliveira', cd: '4757', presenca: true },
+  { nome: 'Fransisco Silva', cd: '7444', presenca: false },
+  { nome: 'Gabriel Barbosa', cd: '4445', presenca: true },
+  { nome: 'Henrique Pereira', cd: '4222', presenca: true },
+  { nome: 'Isaias Matos', cd: '2212', presenca: true },
+  { nome: 'Joana Freitas', cd: '3256', presenca: false },
+  { nome: 'Larissa Almeida', cd: '1258', presenca: false },
 ];
 
-// Componente que representa uma linha da tabela
 const TableRow = ({ order }) => (
+  
   <View style={styles.tableRow}>
     <Text style={[styles.tableCell, styles.cellName]}>{order.nome}</Text>
-    <Text style={[styles.tableCell, styles.cellId]}>{order.rm}</Text>
+    <Text style={[styles.tableCell, styles.cellId]}>{order.cd}</Text>
     <View style={[styles.tableCell, styles.cellIcon]}>
       <Icon 
         name={order.presenca ? "check-circle" : "times-circle"} 
@@ -41,13 +43,16 @@ export default function App() {
   return (
     <SafeAreaView style={styles.container}>
       <ScrollView contentContainerStyle={styles.scrollViewContainer}>
-        {/* Banner com o design do VerChamada */}
         <View style={styles.bannerContainer}>
+
           <View style={styles.bannerazul} />
+          <Text style={styles.tit}>Verificar {"\n"} Chamada</Text>
+
           <Image
             source={require('../assets/imgs/imgchamada.png')}
             style={styles.imgchamadaIcon}
           />
+          
           <TouchableOpacity style={styles.voltarIconContainer} onPress={() => navigation.goBack()}>
             <Image
               source={require('../assets/imgs/voltar.png')} 
@@ -61,7 +66,7 @@ export default function App() {
           {/* Cabeçalho da Tabela */}
           <View style={styles.tableHeader}>
             <Text style={[styles.tableCellHeader, styles.cellName]}>Nome</Text>
-            <Text style={[styles.tableCellHeader, styles.cellId]}>RM</Text>
+            <Text style={[styles.tableCellHeader, styles.cellId]}>CD</Text>
             <Text style={[styles.tableCellHeader, styles.cellIcon]}>Presença</Text>
           </View>
           {/* Linhas da Tabela */}
@@ -87,6 +92,15 @@ const styles = StyleSheet.create({
     height: 151,
     position: 'relative',
     marginBottom: 20,
+  },
+  tit: {
+    fontSize: 24,
+    color: '#FFF',
+    fontWeight: 'bold',
+    fontSize: 28,
+    marginRight: 10,
+    marginTop: 60,
+    marginLeft: 230,
   },
   bannerazul: {
     position: 'absolute',

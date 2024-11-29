@@ -53,7 +53,6 @@ const ConectarGestor = () => {
       const userCredential = await signInWithEmailAndPassword(auth, login, senha);
       const user = userCredential.user;
 
-      // Verificando se o usuário é autenticado sem precisar da verificação de email
       if (user) {
         setLoading(false);
         navigation.navigate('telaCurso');  // Redireciona para a tela de cursos após login bem-sucedido

@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { StyleSheet, View, Text, TouchableOpacity, TextInput, Image, KeyboardAvoidingView, Platform, ScrollView } from "react-native";
 import { useNavigation } from '@react-navigation/native';
 import { getFirestore, collection, query, where, getDocs, updateDoc, doc } from "firebase/firestore";
+import { getAuth, reauthenticateWithCredential, EmailAuthProvider } from "firebase/auth";
 
 const AtualizarAluno = () => {
   const [nome, setNome] = useState("");
@@ -10,7 +11,8 @@ const AtualizarAluno = () => {
   const [endereco, setEndereco] = useState("");
   const [numero, setNumero] = useState("");
   const [bairro, setBairro] = useState("");
-  const [senha, setSenha] = useState(""); // Novo campo para senha
+  const [senha, setSenha] = useState(""); // Campo para nova senha
+  const [senhaAtual, setSenhaAtual] = useState(""); // Campo para autenticação
   const [alunoId, setAlunoId] = useState(""); // ID do documento no Firestore
   const [errorCodigo, setErrorCodigo] = useState("");
   const navigation = useNavigation();
@@ -38,7 +40,8 @@ const AtualizarAluno = () => {
           setEndereco(alunoData.endereco || "");
           setNumero(alunoData.numero || "");
           setBairro(alunoData.bairro || "");
-          setSenha(alunoData.senha || ""); // Preenche o campo senha se existir
+          setSenha(""); // Limpa o campo de nova senha
+          setSenhaAtual(""); // Limpa o campo de senha atual
           setErrorCodigo("");
         });
       } else {
@@ -58,6 +61,7 @@ const AtualizarAluno = () => {
     setNumero("");
     setBairro("");
     setSenha("");
+    setSenhaAtual("");
     setAlunoId("");
   };
 
@@ -66,12 +70,30 @@ const AtualizarAluno = () => {
       setErrorCodigo("Por favor, insira o código do estudante.");
       return false;
     }
+    if (!senhaAtual.trim()) {
+      alert("Por favor, insira sua senha atual para confirmar.");
+      return false;
+    }
     return true;
   };
 
   const salvar = async () => {
     if (validar() && alunoId) {
       try {
+        const auth = getAuth();
+        const user = auth.currentUser;
+
+        if (!user) {
+          alert("Usuário não autenticado. Por favor, faça login novamente.");
+          return;
+        }
+
+        const credential = EmailAuthProvider.credential(user.email, senhaAtual);
+
+        // Re-autenticação
+        await reauthenticateWithCredential(user, credential);
+
+        // Atualizar dados do aluno no Firestore
         const db = getFirestore();
         const alunoRef = doc(db, "alunos", alunoId);
 
@@ -88,7 +110,11 @@ const AtualizarAluno = () => {
         navigation.goBack();
       } catch (error) {
         console.error("Erro ao salvar aluno:", error);
-        alert("Erro ao salvar os dados: " + error.message);
+        if (error.code === "auth/wrong-password") {
+          alert("Senha atual incorreta.");
+        } else {
+          alert("Erro ao salvar os dados: " + error.message);
+        }
       }
     } else {
       alert("Busque um aluno válido antes de salvar.");
@@ -168,10 +194,11 @@ const AtualizarAluno = () => {
               style={styles.input}
               placeholder="Senha"
               placeholderTextColor="#000"
-              value={senha}
-              onChangeText={setSenha}
-              secureTextEntry // Campo para senha
+              value={senhaAtual}
+              onChangeText={setSenhaAtual}
+              secureTextEntry
             />
+           
           </View>
 
           <TouchableOpacity style={styles.btnCon} onPress={salvar}>
@@ -182,6 +209,7 @@ const AtualizarAluno = () => {
     </KeyboardAvoidingView>
   );
 };
+
 
 const styles = StyleSheet.create({
   container: {
@@ -241,19 +269,20 @@ const styles = StyleSheet.create({
     backgroundColor: '#FFF',
     borderRadius: 25,
     paddingLeft: 20,
-    marginBottom: 40,
+    marginBottom: 25,
     fontSize: 16,
     borderColor: '#40A2E3',
     borderWidth: 1,
   },
   btnCon: {
-    width: '100%',
+    width: '90%',
     height: 50,
     backgroundColor: '#40A2E3',
     borderRadius: 25,
     justifyContent: 'center',
     alignItems: 'center',
-    marginTop: 50,
+    marginTop: 5,
+    margin: 'auto',
   },
   txtCon: {
     color: '#FFF',
