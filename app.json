@@ -24,17 +24,36 @@
       "adaptiveIcon": {
         "foregroundImage": "./assets/imgs/icon.png",
         "backgroundColor": "#FFFFFF"
-      }
+      },
+      "package": "com.y4smln.Bicall"
     },
     "web": {
       "favicon": "./assets/imgs/favicon.png"
     },
     "packagerOpts": {
-      "assetExts": ["js", "json", "txt", "xml"],
-      "sourceExts": ["expo.js", "expo.json", "js", "json", "ts", "tsx", "jsx"],
+      "assetExts": [
+        "js",
+        "json",
+        "txt",
+        "xml"
+      ],
+      "sourceExts": [
+        "expo.js",
+        "expo.json",
+        "js",
+        "json",
+        "ts",
+        "tsx",
+        "jsx"
+      ],
       "config": {
         "githubUrl": "https://github.com/y4smln/bicallMobile",
         "githubBranch": "master"
+      }
+    },
+    "extra": {
+      "eas": {
+        "projectId": "2d971bb3-0e75-4d6f-88ed-e35f077f2a8d"
       }
     }
   }
